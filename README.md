@@ -2,7 +2,7 @@ Source code which runs the site: [osr4rightstools.org](https://osr4rightstools.o
 
 ## Introduction
 
-OSR4Rights Tools is a website providing open source tools for human rights investigators
+OSR4Rights Tools is a website providing open source tools for human rights investigators. The website provides the secure user experience and servers needed to run the tools.
 
 There are 2 tools currently in production
 
@@ -13,19 +13,16 @@ There are 2 tools currently in production
 Both of these tools, and the website are Open Source. 
 
 
-OSR4RightsTools website makes complex open source tools easy to use by providing the secure user experience, and servers needed to run them. 
-
-
 ## Context
-
-This is a £x budget website.
 
 The team is:
 
 - [Prof Yvonne McDermott Rees](https://osr4rights.org/team/), Swansea University
-- [Dr Phil Bartie](https://osr4rights.org/team/), Heriot-Watt University
-- [Dr Riza Batista-Navarro](https://osr4rights.org/team/), University of Manchester
+- [Dr Phil Bartie](https://osr4rights.org/team/), Heriot-Watt University. Developed the FaceSearch part of the system.
+- [Dr Riza Batista-Navarro](https://osr4rights.org/team/), University of Manchester. Develop
 - [Dave Mateer](https://davemateer.com), [hmsoftware.co.uk](https://hmsoftware.co.uk) - Developer
+
+The initial budget of the website was approx £12k.
 
 The budget to keep the website going for the next 3 years is around £5k. 
 
@@ -37,7 +34,6 @@ There are no paid for libraries used in any of this code.
 
 Evergreen browsers are supported only.
 
-
 ## Principles
 
 The [ASP.NET Core](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core) website is deployed onto an Ubuntu 20.04 LTS VM on Microsoft Azure Europe West (Holland)
@@ -47,13 +43,11 @@ The [Kestrel ASP.NET Core webserver]() has a reverse proxy in front of it [Nginx
 DNS is handled by [https://dnsimple.com](DNSimple) and the deployment script uses their API to automatically change DNS records when a new server comes online.
 
 
-Data Persistence is SQL Azure 
-
+Data Persistence is SQL Azure (Authentication Authorisation and workflow) and Azure File Share (results files and cookies)
 
 The website runs Background Services which monitor internal queues (Channels) which in turn spin up other VM's in Azure when needed.
 
 The queues allow the website to remain responsive all the time (and to allow). The queues are not resilient to a restart. They are in memory only.
-
 
 
 ### Data Security and Flow
@@ -62,12 +56,14 @@ User uploads a file via tus which is listening on /files to:
 
 /tusFileStore (or c:\tusFileStore on dev - set in AppConfiguration.cs)
 
+```bash
 -rw-r--r--  1 www-data www-data         1 Sep 20 09:48 1a89dc2e28ac46d7bcc9b0906405d269.chunkcomplete
 -rw-r--r--  1 www-data www-data 216553987 Sep 20 09:48 1a89dc2e28ac46d7bcc9b0906405d269
 -rw-r--r--  1 www-data www-data         1 Sep 20 09:46 1a89dc2e28ac46d7bcc9b0906405d269.chunkstart
 -rw-r--r--  1 www-data www-data        33 Sep 20 09:46 1a89dc2e28ac46d7bcc9b0906405d269.expiration
 -rw-r--r--  1 www-data www-data        75 Sep 20 09:46 1a89dc2e28ac46d7bcc9b0906405d269.metadata
 -rw-r--r--  1 www-data www-data         9 Sep 20 09:46 1a89dc2e28ac46d7bcc9b0906405d269.uploadlength
+```
 
 once the file has been successfully uploaded, control flow passes to face-search-go.  
 
@@ -93,6 +89,7 @@ This service deletes the /osrFileStore file when it is finished
 
 Results are saved into an Azure File Share which is mounted on
 
+```bash
 /mnt/osrshare/downloads/214
   results.html
   results214.zip
@@ -102,11 +99,11 @@ Results are saved into an Azure File Share which is mounted on
 /mnt/osrshare/downloads/210
   results.html
   results210.csv
+```
 
 All references to these files are handled through the /downloads.cshtml page which ensures authentication and authorisation.
 
 Username and password for this file share are handled like all secrets in this solution - in the build scripts. See /secretsRedacted folder for the template.
-
   
 ### Cookie Keys
 
@@ -239,7 +236,6 @@ Logon to the webserver using sshkeys (from the machine where site was deployed f
 /var/log/nginx
 ```
 
-
 ## Development Environment
 
 To get this code working locally on your dev machine, clone this repo. I use [VS2019 Community]() and make sure it is fully up to date.
@@ -247,6 +243,3 @@ To get this code working locally on your dev machine, clone this repo. I use [VS
 You'll need to create a local version of the db, so install MSSQL.
 
 You'll need an Azure account with access to the appropriate VM's - specifically my Azure Developer Account wouldn't give me any quota on the NC4as_T4_v3 GPU machine which we use for FaceSearch. So you'll need a paid account.
-
-
-
