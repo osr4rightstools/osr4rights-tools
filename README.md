@@ -10,7 +10,11 @@ There are 2 tools currently in production
 
 - HateSpeech which given a csv of text will classify how much hate speech the text contains
 
-Both of these tools, and the website are Open Source. 
+Both of these tools, and the website are Open Source.  There are no paid for libraries used in any of this code.
+
+[FaceSearch](src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg)
+
+Screenshot of the FaceSearch page showing upload, samples, and sample output.
 
 
 ## Context
@@ -24,15 +28,12 @@ The team is:
 
 The initial budget of the website was approx £12k.
 
-The budget to keep the website going for the next 3 years is around £5k. 
+The budget to keep the website going for 3 years is approx £5k, which is not enough to rent a GPU powered machine for all that time, so we use the cloud to spin up resources when needed
 
-This is not enough to rent a GPU powered machine for all that time, so we had to use the cloud to spin up resources when needed
-
-There are no paid for libraries used in any of this code.
 
 ## Constraints
 
-Evergreen browsers are supported only.
+Evergreen browsers are supported only. Javascript is required for file uploading.
 
 ## Principles
 
@@ -42,8 +43,7 @@ The [Kestrel ASP.NET Core webserver](https://docs.microsoft.com/en-us/aspnet/cor
 
 DNS is handled by [DNSimple](https://dnsimple.com) and the deployment script uses their API to automatically change DNS records when a new server comes online.
 
-
-Data Persistence is [SQL Azure](https://azure.microsoft.com/en-gb/products/azure-sql/database/#overview) (Authentication Authorisation and workflow) and ]Azure File Share](https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share?tabs=azure-portal) (results files and cookies)
+Data Persistence is [SQL Azure](https://azure.microsoft.com/en-gb/products/azure-sql/database/#overview) (Authentication Authorisation and workflow) and [Azure File Share](https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share?tabs=azure-portal) (results files and cookies)
 
 The website runs [Background Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services) which monitor internal queues (Channels) which in turn spin up other VM's in Azure when needed.
 
@@ -52,7 +52,7 @@ The queues allow the website to remain responsive all the time (and to allow). T
 
 ### Data Security and Flow
 
-User uploads a file via tus which is listening on /files to:
+User uploads a file via tus. The webserver listens on the route `/files`
 
 /tusFileStore (or c:\tusFileStore on dev - set in AppConfiguration.cs)
 
@@ -65,29 +65,26 @@ User uploads a file via tus which is listening on /files to:
 -rw-r--r--  1 www-data www-data         9 Sep 20 09:46 1a89dc2e28ac46d7bcc9b0906405d269.uploadlength
 ```
 
-once the file has been successfully uploaded, control flow passes to face-search-go.  
+Once the file has been successfully uploaded via `face-serach.cshtml`, control flow passes to `face-search-go.cshtml`
 
-validation happens now by unzipping file to /osrFileStore/123456789
+Validation happens now by unzipping file to /osrFileStore/123456789
 
-123456789 - a temp unixtime directory that the tusFile would be unzipped into by face-search-go which will guard against bad files
-  checks zip is okay
-  and directories are okay
+123456789 - a temp unixtime directory that the tusFile would be unzipped into by face-search-go which will guard against bad files. It checks zip is okay, and directories are okay.
 
-only after validation of the file is complete is it copied to /osrFileStore as job123.tmp
+Only after validation of the file is complete is it copied to /osrFileStore as job123.tmp
 
-all tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day)
+All tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day)
 
 
 /osrFileStore (or c:\osrFileStore)
 
 job123.tmp - this would be the renamed 216MB file from /tusFileStore above
 
-this full path and filename is then passed to the queue (Channel) which is picked up by `FaceSearchFileProcessingService`
+This full path and filename is then passed to the queue (Channel) which is picked up by `FaceSearchFileProcessingService`
 
 This service deletes the /osrFileStore file when it is finished
 
-
-Results are saved into an Azure File Share which is mounted on
+Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 
 ```bash
 /mnt/osrshare/downloads/214
