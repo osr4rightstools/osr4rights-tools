@@ -38,14 +38,14 @@ Evergreen browsers are supported only.
 
 The [ASP.NET Core](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core) website is deployed onto an Ubuntu 20.04 LTS VM on Microsoft Azure Europe West (Holland)
 
-The [Kestrel ASP.NET Core webserver]() has a reverse proxy in front of it [Nginx](). This is to serve the SSL Certificate, and to allow the [Tus.io]() file uploader to work properly. 
+The [Kestrel ASP.NET Core webserver](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0) has a reverse proxy in front of it [Nginx](https://www.nginx.com/). This is to serve the SSL Certificate, and to allow the [Tus.io](https://tus.io/) file uploader to work properly. 
 
-DNS is handled by [https://dnsimple.com](DNSimple) and the deployment script uses their API to automatically change DNS records when a new server comes online.
+DNS is handled by [DNSimple](https://dnsimple.com) and the deployment script uses their API to automatically change DNS records when a new server comes online.
 
 
-Data Persistence is SQL Azure (Authentication Authorisation and workflow) and Azure File Share (results files and cookies)
+Data Persistence is [SQL Azure](https://azure.microsoft.com/en-gb/products/azure-sql/database/#overview) (Authentication Authorisation and workflow) and ]Azure File Share](https://docs.microsoft.com/en-us/azure/storage/files/storage-how-to-create-file-share?tabs=azure-portal) (results files and cookies)
 
-The website runs Background Services which monitor internal queues (Channels) which in turn spin up other VM's in Azure when needed.
+The website runs [Background Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services) which monitor internal queues (Channels) which in turn spin up other VM's in Azure when needed.
 
 The queues allow the website to remain responsive all the time (and to allow). The queues are not resilient to a restart. They are in memory only.
 
@@ -135,7 +135,7 @@ Async all the way up, is used throughout the app to alleviate resource consumpti
 
 Configuration is in App.Configuration
 
-Outbound emails are handled by Postmark
+Outbound emails are handled by [Postmark](https://postmarkapp.com/)
 
 ### Authentication and Authorisation
 
@@ -190,11 +190,20 @@ To manually see all VM's use [https://portal.azure.con](portal.azure.com)
 
 ### Creating or Updating Working VM Images
 
+Conceptually we create a build script for a VM to do the processing, take a snapshot of it, then spin up that snapshot whenever we need it.
+
+[Infra.azcli](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
+
+[create_facesearch_gpu.sh](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
+
+You can see in this file that FaceSearch needed some specific versions of libraries to get the Python/C GPU running as expected.  
+
+
 ### DB Updates
 
 Use the Database project inside /src to get the correct schema
 
-
+[insertData.sql](https://github.com/djhmateer/osr4rights-tools/blob/main/src/Database/insertData.sqlX) inserts the needed data for the workflows.
 
 
 ## Operation and Support
@@ -213,7 +222,9 @@ If the VM is rebooted or the process unexpectely restarts (it is using systemctl
 
 ## Backups
 
-DB needs to be backed up.
+DB has a diff backup of every 12 hours and a 7 day.
+
+Azure File Share is on the LRS (Locally Redundant) system.
 
 
 ## Debugging and Log Files
