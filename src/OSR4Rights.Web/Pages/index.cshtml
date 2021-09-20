@@ -1,0 +1,95 @@
+﻿@page
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">OSR4Rights Tools</h1>
+    <p>A set of open source tools for human rights investigators </p>
+    <p><a href="https://osr4rights.org/">osr4rights.org</a> for more information</p>
+</div>
+
+@*<div class="text-center">
+    <p>help@osr4rightstools.org</p>
+</div>*@
+
+@*<div class="text-center">
+    <p class="text-danger">Site is in private testing! Please don't register yet.</p>
+</div>*@
+
+
+@if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+{
+    <p>Please see the top menu or go to <a href="/face-search">FaceSearch</a> or <a href="/hate-speech">HateSpeech</a>  to try these tools</p>
+}
+else
+{
+    <p>Please <a href="/account/login">Login</a> or if you are a new user <a href="/account/register">Register</a> for access to the live tools.</p>
+}
+
+<h3>Face Search</h3>
+
+<p>Looks for a target face which you give as an image, in many other images. </p>
+
+<p>This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
+
+<p><a href="https://osr4rights.org/technical-tools/">More information</a></p>
+
+@*<p>Here is a sample output</p>*@
+
+@*<img src="/screenshots/facesearch/1barack.jpg" />*@
+
+
+<h3>Hate Speech</h3>
+
+<p>We define "hate speech" as text that contains hateful, offensive and toxic language. The tool will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text. The languages currently supported by this tool are English, Arabic and Russian, although the language does not need to be specified together with the input text. </p>
+
+<p><a href="https://osr4rights.org/technical-tools/">More information</a></p>
+
+@*<h3>Proposed Tools</h3>
+
+<p>Here are more tools we are considering implementing into this site</p>*@
+
+@*<p><a href="/video-face-search">Video Face Search</a></p>
+    <p><a href="/camouflage">Camouflage</a></p>
+    <p><a href="/named-entity-recognition">Named Entity Recognition</a></p>
+    <p><a href="/text-to-map">Text to Map</a></p>*@
+
+@*<p>Video Face Search</p>
+<p>Camouflage</p>
+<p>Named Entity Recognition</p>
+<p>Text to Map</p>*@
+
+<br />
+
+<p>We are always open to suggestions for more tools to add to this site. Please <a href="https://osr4rights.org/contact-us/">Contact Us</a></p>
+
+@*<hr />
+    <p>Below are for developer testing only</p>
+
+    <ul>
+
+        <li class=""> <a class="" href="/hosting-environment-check">hosting-environment-check</a> </li>
+        <li class=""> <a class="" href="/health-check">health-check</a> </li>
+        <li class=""> <a class="" href="/health-check-db">health-check-db</a> </li>
+        <li class=""> <a class="" href="/enquiry">enquiry</a> </li>
+
+        <li class=""> <a class="" href="/status-code-400">status-code-400</a> ie 400 bad request </li>
+        <li class=""> <a class="" href="/nopagehere">nopagehere</a> ie 404 </li>
+        <li class=""> <a class="" href="/throw-exception">throw-exception</a> ie 500 </li>
+    </ul>
+
+    <br />
+
+    <ul>
+        <li class=""> <a class="" href="/account/access-denied">access-denied</a> </li>
+        <li class=""> <a class="" href="/tools-summary">tools-summary</a> anonymous </li>
+        <li class=""> <a class="" href="/face-search">face-search</a> tier1 or tier2 to view. Tier2 to post own file </li>
+        <li class=""> <a class="" href="/hate-speech">hate-speech</a> tier1 or tier2. Tier2 to post own file </li>
+        <li class=""> <a class="" href="/admin">admin</a> admin</li>
+    </ul>*@
+
+

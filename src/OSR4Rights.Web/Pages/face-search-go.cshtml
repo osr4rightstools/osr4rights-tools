@@ -1,0 +1,14 @@
+﻿@page
+@model OSR4Rights.Web.Pages.FaceSearchGoModel
+@{
+    ViewData["Title"] = "Face Search";
+}
+
+<h1 class="text-danger">Problem</h1>
+
+@if (Model.ErrorMessage != null)
+{
+    <p class="text-danger">@Model.ErrorMessage</p>
+}
+
+<p>Please check the zip file and <a href="/face-search">upload again</a></p>

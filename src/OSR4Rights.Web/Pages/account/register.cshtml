@@ -1,0 +1,58 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h4>Create a new account.</h4>
+            <hr />
+
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                @*<input asp-for="Email" class="form-control" value="tier1@contoso.com" />*@
+                <input asp-for="Email" class="form-control" value="" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" value="" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" value="1" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>*@
+            <button type="submit" class="btn btn-primary">Register</button>
+
+            <hr />
+
+            <div class="form-group">
+                <p> <a id="login" asp-page="./login">Already registered? Login here</a> </p>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h4>Password Advice</h4>
+            <hr />
+            <div>
+                <p>Consider using a password manager, or using a 3 random word password</p>
+                <p><a href="https://www.ncsc.gov.uk/blog-post/the-logic-behind-three-random-words">Gov UK</a></p>
+                
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

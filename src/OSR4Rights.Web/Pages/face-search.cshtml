@@ -1,0 +1,105 @@
+﻿@page
+@model OSR4Rights.Web.Pages.FaceSearchModel
+@{
+    ViewData["Title"] = "Face Search";
+}
+
+<h1>FaceSearch</h1>
+
+<p>Looks for a target face which you give as an image, in many other images. </p>
+
+<p>This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
+
+@if (Model.IsAllowedToUpload)
+{
+    <p>Please upload a zip file containing 2 folders</p>
+    <ul>
+        <li>/search directory which contains images to search</li>
+        <li>/target directory which contains target image(s)</li>
+    </ul>
+
+    <!-- keep for now as js code still references-->
+    <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
+    <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
+    <input type="number" id="chunksize" name="chunksize" hidden="true">
+
+    <br />
+    <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
+    <!-- file button -->
+    <label class="btn btn-default">
+        <input type="file">
+    </label>
+
+    <br />
+    <br />
+    <div class="progress" style="height: 32px;">
+        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
+    </div>
+
+    <br />
+    <!-- pause / resume button-->
+    <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
+
+    <p>If your upload is interrupted, come back to this page and try again. It will try to resume the upload. We use the <a href="https://tus.io/">tus.io</a> open protocol.</p>
+    <br />
+}
+else
+{
+    <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
+}
+
+<h4>Samples</h4>
+
+
+<p>1. <a href="/sample-data/facesearch/1barack.zip">barack.zip</a> 10 images with target is Barack Obama which is a 7KB headshot
+
+<form method="post" asp-page-handler="run1barack">
+    <input type="submit" value="Run Barack Sample" />
+</form>
+    
+<br />
+<p>2. <a href="/sample-data/facesearch/6lfwsmall.zip">lfwsmall.zip</a> A subset of <a href="http://vis-www.cs.umass.edu/lfw/">Labeled Faces in the Wild</a> 145 images</p>
+
+<form method="post" asp-page-handler="run6lfwsmall">
+    <input type="submit" value="Run LFW Sample" />
+</form>
+
+<br />
+
+<h4>Screenshots</h4>
+<p>Here is the output of the Barack sample</p>
+
+<img src="/screenshots/facesearch/1barack.jpg" asp-append-version="true" />
+
+<h1>Background</h1>
+
+<p>.png, .jpg, .jpeg supported</p>
+
+<p>Multiple target images supported</p>
+
+<p>Large zip filesizes are supported - we have tested up to 1.6GB. Please email support@osr4rights-tools.org if you have problems and need a different way to upload securely the files. </p>
+
+
+<p>Model is trained for adults. It is not as good on childrens faces</p>
+
+
+<h1>Security</h1>
+<p>We do not store any of your uploaded zip files.</p>
+
+<p>The VM where raw images are processed is deleted soon after your jobs are finished.</p>
+
+<p>To download results you need to login with your approved email address</p>
+
+<h1>Technical</h1>
+
+<p>A first job takes at a minimum 3 minutes to run. It runs on a Microsoft Azure GPU based virtual machine so needs time to initialise. Subsequent jobs are much faster</p>
+
+<p>Based on the <a href="https://github.com/ageitgey/face_recognition#usage">face_recognition</a> open source library which uses the <a href="http://dlib.net/">dlib</a> toolkit's state-of-the-art facial recognition algorithms. The model has an accuracy of 99.38% on the <a href="http://vis-www.cs.umass.edu/lfw/">Label Faces in the Wild</a> benchmark</p>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
+    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
+}

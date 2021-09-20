@@ -1,0 +1,39 @@
+﻿@page "{loginId:int}"
+@model OSR4Rights.Web.Pages.Admin.Logins.EditModel
+@{
+}
+<h1>Edit Login</h1>
+
+<form method="post" asp-page-handler="savechanges">
+
+    <p>@Model.LoginSmall.Email </p>
+
+    @if (Model.ViewingOwnLoginId)
+    {
+        <div class="text-center">
+            <p class="text-danger">Viewing your own account - can't update it. Use another admin account if you need to.</p>
+        </div>
+    }
+
+    @*<p><select name="authorId" asp-items="Model.LoginStateOptions"></select></p>*@
+
+
+    <h4>LoginState</h4>
+    <p>
+        <select asp-for="SelectedLoginStateId" asp-items="Model.LoginStateOptions">
+            @*<option value="">Choose a </option>*@
+        </select>
+    </p>
+
+    <br />
+
+    <h4>Role</h4>
+    <p>
+        <select asp-for="SelectedRoleId" asp-items="Model.RoleOptions">
+            @*<option value="">Choose a </option>*@
+        </select>
+    </p>
+
+    <input type="submit" value="Save Changes" />
+</form>
+

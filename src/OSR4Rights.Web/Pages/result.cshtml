@@ -1,0 +1,99 @@
+﻿@page "{jobId:int}"
+@model OSR4Rights.Web.Pages.ResultModel
+@{
+    var zipFile = $"results{Model.Job.JobId}.zip";
+    var csvFile = $"results{Model.Job.JobId}.csv";
+}
+
+@if (Model.Job.JobStatusId == Db.JobStatusId.WaitingToStart)
+{
+    <p>We will email you when the job is finished, or <a href="/result/@Model.Job.JobId">refresh this page.</a></p>
+    <p>You can safely close this page.</p>
+
+    <br />
+
+    <p>Job in Queue</p>
+    <p>Queue Length: @Model.QueueLength</p>
+    <p>File: @Model.Job.OrigFileName</p>
+}
+else if (Model.Job.JobStatusId == Db.JobStatusId.Running)
+{
+    <p>We will email you when the job is finished, or <a href="/result/@Model.Job.JobId">refresh this page.</a></p>
+    <p>You can safely close this page.</p>
+
+    <p>File: @Model.Job.OrigFileName</p>
+    <p>Status: @Model.Job.JobStatusString</p>
+    <p>Start and End (UTC): @Model.Job.DateTimeUtcUploaded.ToString("dd/MM/yyyy HH:mm:ss") @Model.Job.DateTimeUtcJobEndedOnVm?.ToString("dd/MM/yyyy HH:mm:ss")</p>
+    <p>Total Time: @Model.TotalTime.ToString(@"hh\:mm\:ss") (hh:mm:ss)</p>
+}
+else
+{
+    <p>File: @Model.Job.OrigFileName</p>
+    <p>Status: @Model.Job.JobStatusString </p>
+    <p>Start and End (UTC): @Model.Job.DateTimeUtcUploaded.ToString("dd/MM/yyyy HH:mm:ss") @Model.Job.DateTimeUtcJobEndedOnVm?.ToString("dd/MM/yyyy HH:mm:ss")</p>
+    <p>Total Time: @Model.TotalTime.ToString(@"hh\:mm\:ss") (hh:mm:ss)</p>
+}
+
+@if (Model.Job.JobStatusId == Db.JobStatusId.Exception)
+{
+    <p class="text-danger">Sorry - the job returned an exception which we couldn't handle. Please try again, see the Logs (click button below) for any more information, and finally contact us to look at server logs.</p>
+}
+
+
+@if (Model.Job.JobStatusId == Db.JobStatusId.Completed)
+{
+    <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
+    @if (Model.Job.JobTypeId == Db.JobTypeId.FaceSearch)
+    {
+        <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
+    }
+
+    @if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
+    {
+        <p><a href="/downloads/@Model.Job.JobId/@csvFile">Csv results</a></p>
+    }
+
+    <!-- show the html results in the same page-->
+    <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width:100%;height:100vh;"> </object>
+}
+
+@if (Model.Job.JobStatusId != Db.JobStatusId.WaitingToStart)
+{
+    <p>
+        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Show logs
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <ul class="list-group list-group-flush">
+            <!-- todo put in css instead of inline styling-->
+            @foreach (var log in Model.Logs)
+            {
+            <li class="list-group-item-light" style="border: none; list-style-type: none;">@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
+            }
+        </ul>
+        @*</div>*@
+    </div>
+}
+
+@if (Model.WarningMessage is { })
+{
+    <p class="text-danger">@Model.WarningMessage</p>
+}
+
+@if (Model.Job.JobTypeId == Db.JobTypeId.FaceSearch)
+{
+    <p>The remote VM will remain open for 15 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/face-search">add them</a> to the queue</p>
+    <p>We have a maximum 2 hour processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
+}
+
+@if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
+{
+    <p>The VM will remain 30 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/face-search">add them</a> to the queue</p>
+    <p>We have a maximum 30 minute processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
+}
+
+@section Scripts {
+}
+
+

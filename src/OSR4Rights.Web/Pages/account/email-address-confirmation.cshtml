@@ -1,0 +1,24 @@
+﻿@page "{emailAddressConfirmationCode:guid}"
+@model EmailAddressConfirmationModel
+
+<h1>Email Address Confirmation</h1>
+
+<p>@Model.Message</p>
+
+@if (Model.EmailConfirmationSuccess)
+{
+    <p>Thank you - your email is confirmed. <a href="/account/login">Please login</a></p>
+
+    <p>You have been granted limited access to the system - you can run the examples, but can't upload your own files yet. We will be in touch shortly by email</p>
+
+    <p>Many thanks</p>
+    <p>OSR4Rights Team</p>
+}
+else
+{
+    <p>Sorry we couldn't verify your email - an hour or more has passed since you registered, or the code is wrong. Please register again"</p>
+}
+
+
+
+

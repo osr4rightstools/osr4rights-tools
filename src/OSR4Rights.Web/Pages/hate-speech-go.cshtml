@@ -1,0 +1,14 @@
+﻿@page
+@model OSR4Rights.Web.Pages.HateSpeechGoModel
+@{
+    ViewData["Title"] = "Hate Speech";
+}
+
+<h1 class="text-danger">Problem</h1>
+
+@if (Model.ErrorMessage != null)
+{
+    <p class="text-danger">@Model.ErrorMessage</p>
+}
+
+<p>Please check the file and <a href="/hate-speech">upload again</a></p>

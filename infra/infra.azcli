@@ -1,0 +1,219 @@
+#!/bin/bash
+
+# File to build OSR4Rights Webserver
+
+# For dev purposes only
+cd ..
+git add .
+git commit -m "auto"
+git push
+cd infra
+
+set -x
+
+image=Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest
+
+# Generate a random suffix between 1 and 1000
+int=$(shuf -i 1-1000 -n 1)
+
+# If we are using passwords in the vm create below (default is to use SSH keys)
+# Password must have the 3 of the following: 1 lower case character, 1 upper case character, 1 number and 1 special character
+# generate a 34 character password (normal, capitals and numbers)
+password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c34)
+
+rgprefix=osr4RightsTools
+rg=${rgprefix}${int}
+
+# Don't put capitals in dns name below and it needs to be unique (ie not used in azure at the moment)
+dnsname=osr4rightstools${int}
+
+adminusername=dave
+adminpassword=${password}
+
+region=westeurope
+vmname=${dnsname}vm
+vnet=vnet${int}
+subnet=subnet${int}
+publicIPName=publicIP${int}
+nsgname=nsg${int}
+nicName=nic${int}
+
+echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
+
+# resource group
+az group create \
+   --name ${rg} \
+   --location ${region}
+
+# virtual network
+az network vnet create \
+    --resource-group ${rg} \
+    --name ${vnet} \
+    --subnet-name ${subnet}
+
+# nework security group
+az network nsg create \
+    --resource-group ${rg} \
+    --name ${nsgname}
+
+# public IP and associate with the given DNS name
+# Basic or Standard for the ip-sku
+az network public-ip create \
+    --resource-group ${rg} \
+    --name ${publicIPName} \
+    --sku Standard \
+    --zone 1 \
+    --dns-name ${dnsname}
+
+# nic and associate with vnet, publicip
+az network nic create \
+    --resource-group ${rg} \
+    --name ${nicName} \
+    --vnet-name ${vnet} \
+    --subnet ${subnet} \
+    --public-ip-address ${publicIPName} \
+    --network-security-group ${nsgname}
+
+# Create vm which runs the cloud init script to provision 
+
+# If one of my keys exist 
+# uncomment line below to get ssh keys working
+filename="../secrets/sshkey-homelenovo.pub"
+if [ -f "$filename" ]; then
+az vm create \
+    --resource-group ${rg} \
+    --name ${vmname} \
+    --location ${region} \
+    --nics ${nicName} \
+    --image ${image} \
+    --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub \
+    --size Standard_B1ms
+else
+ echo "ping"
+# az vm create \
+#     --resource-group ${rg} \
+#     --name ${vmname} \
+#     --location ${region} \
+#     --nics ${nicName} \
+#     --image ${image} \
+#     --custom-data create_webserver.sh \
+#     --admin-username ${adminusername} \
+#     --admin-password ${adminpassword} \
+#     --size Standard_B1s 
+
+    # --size Standard_B1LS  # £2.82
+    # --size Standard_B1s # £6.5pm (1GB and 1CPU)
+    # --size Standard_B1ms # £13 (2GB and 1CPU)
+    # --size Standard_B2s # £26.63 (4GB)
+    # --size Standard_B2ms # £45 (8GB)
+fi
+
+# allow port 22 ssh (so that scp will work below)
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleSSH22 \
+    --protocol tcp \
+    --priority 998 \
+    --destination-port-range 22 \
+    --access allow
+
+# creates /etc/systemd/system/kestrel-osr.service
+az vm run-command invoke \
+    -g ${rg} \
+    -n ${vmname} \
+    --command-id RunShellScript \
+    --scripts @../secrets/create-kestrel-osr-with-secrets.sh
+
+# /certs directory has been created above
+
+# I have seen this timeout so retry until it works
+# https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times
+n=0
+until [ "$n" -ge 5 ]
+do
+   scp -o StrictHostKeyChecking=no ../secrets/www_osr4rightstools_org.pem dave@${dnsname}.westeurope.cloudapp.azure.com:/certs/ && break
+   n=$((n+1)) 
+   sleep 15
+done
+
+scp -o StrictHostKeyChecking=no ../secrets/www_osr4rightstools_org.key dave@${dnsname}.westeurope.cloudapp.azure.com:/certs/
+
+# gets .NET, clones source code, does a release build, starts systemd kestrel service
+# systemd reads from file created on the vm above
+# and sets environmental variables and starts kestrel webserver
+az vm run-command invoke \
+    -g ${rg} \
+    -n ${vmname} \
+    --command-id RunShellScript \
+    --scripts @create_webserver.sh
+
+# delete old resource groups
+groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
+
+for rgtodel in $groupstodel
+do
+    if [ "$rgtodel" = "$rg" ]; then  
+    echo "not deleting $rgtodel as have just created it"
+    else
+	az group delete \
+            --name $rgtodel \
+            --no-wait \
+            --yes
+    fi
+done
+
+
+
+# allow port 80
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleWeb80 \
+    --protocol tcp \
+    --priority 1001 \
+    --destination-port-range 80 \
+    --access allow
+
+# allow port 443
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleWeb443 \
+    --protocol tcp \
+    --priority 1002 \
+    --destination-port-range 443 \
+    --access allow
+
+# generate dns here.. had trouble doing inside next if statement
+generate_post_data()
+{
+  cat <<EOF
+{
+  "content": "${dnsname}.westeurope.cloudapp.azure.com",
+  "ttl": 60
+}
+EOF
+}
+### patch DNS through to the new VM only if the token file exist
+filename=../secrets/dnsimpletoken.txt
+if [ -f "$filename" ]; then
+    echo "dnsimpletoken.txt file found"
+
+    # get the first and only line
+    token=$(head -n 1 $filename)
+    echo "token is $token"
+
+    # update DNS
+    # osr4rightstools.org
+    curl https://api.dnsimple.com/v2/63829/zones/osr4rightstools.org/records/25185791 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+
+    # www.osr4rightstools.org
+    curl https://api.dnsimple.com/v2/63829/zones/osr4rightstools.org/records/25185798 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+fi
+
+echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n" > sshCurrentVm.sh
+
+# echo -e "password is ${adminpassword}" > password.txt
+
+echo -e "http://${dnsname}.westeurope.cloudapp.azure.com"

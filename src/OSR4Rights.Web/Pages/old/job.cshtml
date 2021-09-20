@@ -1,0 +1,52 @@
+﻿@page "{jobId:int}"
+@model OSR4Rights.Web.Pages.JobModel
+@{
+    var zipFile = $"results{Model.JobId}.zip";
+}
+
+@*<p>JobStatusId: @Model.JobStatus (@Model.JobStatusId}</p>*@
+<p>Job started: @DateTime.Now.ToShortTimeString()</p>
+
+<p>We will email you when the job is finished. You can safely close this page.</p>
+
+<p><a href="/result/@Model.JobId">Results will be here</a></p>
+
+@*<p><a href="/downloads/@Model.JobId/matches.html">Html results</a> click when the job is finished</p>
+<p><a href="/downloads/@zipFile">Zip results</a> click when the job is finished</p>*@
+
+@*<input type="hidden" id="urlToCrawlHidden" value="@Model.UrlToCrawl" />*@
+<input type="hidden" id="jobIdHidden" value="@Model.JobId" />
+
+<!--<div class="text-center">
+    <h1 class="display-4">Job Running</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-2"> <input type="button" id="stopCrawlButton" value="Cancel" /> </div>-->
+
+        <!-- a hidden button that js will click, to start the stream-->
+        <!--<div class="col-2"> <input type="hidden" id="crawlButton" value="Crawl" /> </div>
+    </div>
+</div>-->
+
+@*<h3>DB Logs</h3>
+<ul>
+    @foreach (var log in Model.Logs)
+    {
+        <li>@log.Text</li>
+    }
+</ul>*@
+
+
+
+@*<h3>Live output</h3>
+<div id="streamList">
+    <ul class="tabs"> </ul>
+</div>*@
+
+@section Scripts
+{
+    <script src="~/js/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+    <script src="~/js/osr.js" asp-append-version="true"></script>
+}

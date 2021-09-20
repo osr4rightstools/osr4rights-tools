@@ -1,0 +1,139 @@
+#!/bin/bash
+
+# creates GPU so can make an image
+# Make a VM from this image
+# Which is made from the Azure SDK called from C#
+
+set -x
+
+# get the only image
+# resourceGroup=myGalleryRG
+# gallery=myGallery
+
+# turn on image to create from scratch and remember to patch in the simple_bash build script in the vm
+# lists the name and imageid of the only image
+# image=$(az sig image-definition list --resource-group $resourceGroup --gallery-name $gallery --query "[].[id]" --output tsv)
+
+# turn on this image if want to build from scrath
+# Ubuntu 20.04 LTS “Focal Fossa,” which was released on April 23, 2020 (LTS is every 2 years)
+# az vm image list --publisher Canonical --sku 20_04-lts-gen2 --output table --all
+image=Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest
+
+# generate a random suffix between 1 and 1000
+int=$(shuf -i 1-1000 -n 1)
+# Password must have the 3 of the following: 1 lower case character, 1 upper case character, 1 number and 1 special character
+# generate a 34 character password (normal, capitals and numbers)
+password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c34)
+
+rgprefix=xFaceSearchGPU
+rg=${rgprefix}${int}
+
+# don't put capitals in dns name below and it needs to be unique (ie not used in azure at the moment)
+dnsname=osrfacesearchgpu${int}
+
+# adminusername=azureuser${int}
+adminusername=dave
+adminpassword=${password}
+
+# 8 GPU cores in westeurope
+region=westeurope
+# 4 GPU cores in eastus
+# region=eastus
+vmname=${dnsname}vm
+vnet=vnet${int}
+subnet=subnet${int}
+publicIPName=publicIP${int}
+nsgname=nsg${int}
+nicName=nic${int}
+
+# Create a resource group
+az group create \
+   --name ${rg} \
+   --location ${region}
+
+# Create a virtual network
+az network vnet create \
+    --resource-group ${rg} \
+    --name ${vnet} \
+    --subnet-name ${subnet}
+
+# Create a nework security group
+az network nsg create \
+    --resource-group ${rg} \
+    --name ${nsgname}
+
+# Create a network with a public IP and associate with the given DNS name
+az network public-ip create \
+    --resource-group ${rg} \
+    --sku Standard \
+    --zone 1 \
+    --name ${publicIPName} \
+    --dns-name ${dnsname}
+
+# Create a virtual network card and associate with publicIP address and NSG
+az network nic create \
+    --resource-group ${rg} \
+    --name ${nicName} \
+    --vnet-name ${vnet} \
+    --subnet ${subnet} \
+    --public-ip-address ${publicIPName} \
+    --network-security-group ${nsgname}
+
+# If one of my keys exist 
+# uncomment line below to get ssh keys working
+# filename="../secrets/sshkey-homelenovo.pub"
+# using cloud-init so can ssh onto vm more easily and see in real time
+if [ -f "$filename" ]; then
+az vm create \
+    --resource-group ${rg} \
+    --name ${vmname} \
+    --location ${region} \
+    --nics ${nicName} \
+    --image ${image} \
+    --custom-data create_facesearch_gpu.sh \
+    --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub \
+    --size Standard_NC4as_T4_v3 
+else
+# echo ""
+az vm create \
+    --resource-group ${rg} \
+    --name ${vmname} \
+    --location ${region} \
+    --nics ${nicName} \
+    --image ${image} \
+    --custom-data create_facesearch_gpu.sh \
+    --admin-username ${adminusername} \
+    --admin-password ${adminpassword} \
+    --size Standard_NC4as_T4_v3 
+fi
+
+# delete old resource groups
+groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
+
+for rgtodel in $groupstodel
+do
+    if [ "$rgtodel" = "$rg" ]; then  
+    echo "not deleting $rgtodel as have just created it"
+    else
+	az group delete \
+            --name $rgtodel \
+            --no-wait \
+            --yes
+    fi
+done
+
+# allow port 22 ssh
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleSSH \
+    --protocol tcp \
+    --priority 1000 \
+    --destination-port-range 22 \
+    --access allow
+
+echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n" > sshCurrentVm.sh
+
+echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
+
+echo -e "password is ${adminpassword}" > password.txt

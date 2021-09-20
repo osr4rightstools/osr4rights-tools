@@ -1,0 +1,12 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Sorry.</h1>
+<h2 class="text-danger">An error occurred.</h2>
+
+<p>
+    Something has gone wrong (Status code: @Model.CustomStatusCode)
+</p>

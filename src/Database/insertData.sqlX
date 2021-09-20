@@ -1,0 +1,21 @@
+﻿
+INSERT [dbo].[LoginState] ([LoginStateId], [Name]) VALUES (1, N'WaitingToBeInitiallyVerifiedByEmail')
+GO
+INSERT [dbo].[LoginState] ([LoginStateId], [Name]) VALUES (2, N'InUse')
+GO
+INSERT [dbo].[LoginState] ([LoginStateId], [Name]) VALUES (3, N'PasswordResetCodeSent')
+GO
+INSERT [dbo].[LoginState] ([LoginStateId], [Name]) VALUES (4, N'LockedOutDueTo3WrongPasswords')
+GO
+INSERT [dbo].[LoginState] ([LoginStateId], [Name]) VALUES (99, N'Disabled')
+GO
+SET IDENTITY_INSERT [dbo].[Role] ON 
+GO
+INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (1, N'Tier1')
+GO
+INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (2, N'Tier2')
+GO
+INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (3, N'Admin')
+GO
+SET IDENTITY_INSERT [dbo].[Role] OFF
+GO

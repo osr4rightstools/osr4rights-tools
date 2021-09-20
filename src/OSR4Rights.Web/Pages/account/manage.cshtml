@@ -1,0 +1,21 @@
+﻿@page
+@model ManageLoginModel
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<h4>Hello @Model.Email</h4>
+<br />
+<p>You are on access level: @Model.RoleLevel</p>
+<p>If you want to change your password please <a href="/account/forgot-password">Do a forgot password reset</a>. </p>
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
