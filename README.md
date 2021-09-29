@@ -174,7 +174,7 @@ Copy the /secretsRedacted directory to /secrets. This is ignored in source contr
 
 We are using Let's Encrypt, and manually requesting it through [https://dnsimple.com/a/63829/domains/osr4rightstools.org/ssl_certificates](DNSimple).
 
-Then putting the .key and .pem files in /secrets folder (which is not checked into source control)
+Then putting the .pem (which contains the primary certificate and the intermediate certificates) and .key (private key) files in /secrets folder (which is not checked into source control)
 
 The [/infra/infra.azcli](/infra/infra.azcli) file scp's these files onto the newly created VM. The [infra/nginx.conf](infra/nginx.conf) then picks up these files.
 
