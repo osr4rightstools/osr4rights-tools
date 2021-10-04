@@ -150,15 +150,19 @@ Once we have a command prompt, we sftp back the results to the webserver
 
 ### HateSpeech Worker VM
 
+Very similar process to FaceSearch, and the source is stored here:
+
+[https://github.com/khered20/Prepared_HateSpeech_Models](https://github.com/khered20/Prepared_HateSpeech_Models)
 
 
-### Creating or Updating Working VM Images
+
+### Building or Updating Working VM Images
 
 Conceptually we create a specific build script for a VM to do the processing, take a snapshot of it, then spin up that snapshot whenever we need it.
 
-[infra.azcli](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
+[1faceSearchInfraGPU/infra.azcli](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
 
-[create_facesearch_gpu.sh](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
+[1faceSearchInfraGPU/create_facesearch_gpu.sh](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
 
 You can see in this file that FaceSearch needed some specific versions of libraries to get the Python/C GPU running as expected.  
 
