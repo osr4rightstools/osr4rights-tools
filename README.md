@@ -6,15 +6,15 @@ OSR4Rights Tools is a website providing open source tools for human rights inves
 
 There are 2 tools currently in production
 
-- Face Search which looks for a target face in an image, in many other images. eg give the tool a .jpg with a single face in it, and many other .jpgs, and it will find that person in the other .jpgs
+- FaceSearch which looks for a target face in an image, in many other images. eg give the tool a .jpg with a single face in it, and many other .jpgs, and it will find that person in the other .jpgs
 
-- Hate Speech which given a csv of text will classify how much hate speech the text contains
+- HateSpeech which given a csv of text will classify how much hate speech the text contains
 
 Both of these tools, and the website are Open Source.  There are no paid for libraries used in any of this code.
 
 ![Face Search](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
 
-Screenshot of the Face Search page showing upload, samples and sample output.
+Screenshot of the FaceSearch page showing upload, samples and sample output.
 
 ## Context
 
@@ -71,7 +71,7 @@ Tus files are stored in
 -rw-r--r--  1 www-data www-data         9 Sep 20 09:46 1a89dc2e28ac46d7bcc9b0906405d269.uploadlength
 ```
 
-Once the file has been successfully uploaded via `face-serach.cshtml`, control flow passes to `face-search-go.cshtml`
+Once the file has been successfully uploaded via `face-search.cshtml`, control flow passes to `face-search-go.cshtml`
 
 Validation happens now by unzipping the file to `/osrFileStore/123456789`
 
@@ -82,13 +82,9 @@ Validation happens now by unzipping the file to `/osrFileStore/123456789`
 File has not passed validation (the unzip check failed). There is a further check that the unzipped file contains the correct directories.
 
 
-Only after validation of the file is complete is it copied to `/osrFileStore` as `job123.tmp`
+Only after validation of the file is complete is it copied to `/osrFileStore` as `job123.tmp` which for example is the uploaded wedding.zip file at 200MB
 
-All tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day).
-
-/osrFileStore (or c:\osrFileStore)
-
-job123.tmp - this would be the renamed 216MB file from /tusFileStore above
+All tus files for this upload are then deleted. So no complete file is ever saved in `/tusFileStore` (and partial is only saved for 1 day).
 
 This full path and filename is then passed to the queue (Channel) which is picked up by `FaceSearchFileProcessingService`
 
@@ -98,7 +94,7 @@ Control is then passed to `\result\123` where 123 is the job number.
 
 The result page queries the database for any updates whilst the ProcessingService is doing the work of communicating to the VM.
 
-This ProcessingService deletes the /osrFileStore file when it is finished
+This ProcessingService deletes the `/osrFileStore` file when it is finished
 
 Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 
