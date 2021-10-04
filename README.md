@@ -84,8 +84,7 @@ File has not passed validation (the unzip check failed). There is a further chec
 
 Only after validation of the file is complete is it copied to `/osrFileStore` as `job123.tmp`
 
-All tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day)
-
+All tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day).
 
 /osrFileStore (or c:\osrFileStore)
 
@@ -93,7 +92,13 @@ job123.tmp - this would be the renamed 216MB file from /tusFileStore above
 
 This full path and filename is then passed to the queue (Channel) which is picked up by `FaceSearchFileProcessingService`
 
-This service deletes the /osrFileStore file when it is finished
+Control is then passed to `\result\123` where 123 is the job number.
+
+![Running](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/running.jpg?raw=true)
+
+The result page queries the database for any updates whilst the ProcessingService is doing the work of communicating to the VM.
+
+This ProcessingService deletes the /osrFileStore file when it is finished
 
 Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 
@@ -112,6 +117,10 @@ Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 ```
 
 All references to these files are handled through the `/downloads.cshtml` page which ensures authentication and authorisation.
+
+![completed](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/target.jpg?raw=true)
+
+For example `https://osr4rightstools.org/downloads/264/target__MG_5442.JPG` is the first image you see above
 
 Username and password for this file share are handled like all secrets in this solution - in the build scripts. See `/secretsRedacted` folder for the template.
   
