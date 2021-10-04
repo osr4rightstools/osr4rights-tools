@@ -170,13 +170,16 @@ You can see in this file that FaceSearch needed some specific versions of librar
 ## Software Architecture
 
 Razor pages website using .NET5
-Integration testing using xunit
+
+Integration testing using [xunit](https://xunit.net/)
+
 DB Project to hold the db schema
 
 Database orm is [https://github.com/DapperLib/Dapper](https://github.com/DapperLib/Dapper)
-SQL Retry's are handled by [](Polly)
 
-Async all the way up, is used throughout the app to alleviate resource consumption
+SQL Retry's are handled by [https://github.com/App-vNext/Polly](https://github.com/App-vNext/Polly)
+
+[Async all the way up](https://stackoverflow.com/questions/29808915/why-use-async-await-all-the-way-down), is used throughout the app to alleviate resource consumption
 
 Configuration is in App.Configuration
 
@@ -203,7 +206,6 @@ The entire website can be deployment with 1 command
 /infra/infra.azcli
 ```
 
-
 ### Secrets
 
 Copy the /secretsRedacted directory to /secrets. This is ignored in source control (.gitignore)
@@ -216,8 +218,7 @@ Then putting the .pem (which contains the primary certificate and the intermedia
 
 The [/infra/infra.azcli](/infra/infra.azcli) file scp's these files onto the newly created VM. The [infra/nginx.conf](infra/nginx.conf) then picks up these files.
 
-
-### Cloud
+### Azure Login
 
 The Azure login that controls this is dave@hmsoftware.co.uk
 
@@ -235,20 +236,22 @@ Use the Database project inside /src to get the correct schema
 New users need to be manually approved to go from Tier1 (only allowed to run the samples) to Tier2 (allowed to upload their own files)
 
 
-Admins (which is another Role) have an /admin page to change the users Roles.
+- Admins (which is another Role) have an /admin page to change the users Roles.
 
-Admins can also change the User to Disabled for users who are not real, or we don't want on the system
+- Admins can also change the User to Disabled for users who are not real, or we don't want on the system
 
-Admins can unlock a Users account (if LoginStateId = 4 LockedOutDueTO3WrongPasswords)
+- Admins can unlock a Users account (if LoginStateId = 4 LockedOutDueTO3WrongPasswords)
 
 
 If the VM is rebooted or the process unexpectely restarts (it is using systemctl). See [/infra/create_webserver.sh](/infra/create_webserver.sh). Then the internal queue will disappear. It is not resilient of a process restart
 
 ## Backups
 
-DB has a diff backup of every 12 hours and a 7 day.
+DB has a diff backup at least every 12 hours and over a 7 day period
 
 Azure File Share is on the LRS (Locally Redundant) system.
+
+There is no state/data stored anywhere else..
 
 
 ## Debugging and Log Files
@@ -277,11 +280,20 @@ Logon to the webserver using sshkeys (from the machine where site was deployed f
 
 ## Development Environment
 
-To get this code working locally on your dev machine, clone this repo. I use [VS2019 Community]() and make sure it is fully up to date.
+To get this code working locally on your dev machine, clone this repo. I use [VS2019 Community](https://visualstudio.microsoft.com/vs/community/) and make sure it is fully up to date.
 
-You'll need to create a local version of the db, so install MSSQL.
+You'll need to create a local version of the db, so install [Microsoft SQL Server developer](https://www.microsoft.com/en-gb/sql-server/sql-server-downloads).
 
 You'll need an Azure account with access to the appropriate VM's - specifically my Azure Developer Account wouldn't give me any quota on the NC4as_T4_v3 GPU machine which we use for FaceSearch. So you'll need a paid account.
+
+## Results
+
+![Results](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/results.jpg?raw=true)
+
+Showing 3 FaceSearch jobs and 1 HateSpeech job that this user has ran.
+
+
+## Future
 
 ### MFA
 
@@ -293,13 +305,10 @@ Then code would have to be written that said.. perhaps.. if the user starts comi
 
 MFA is hard to get right, and not get in the way of users.
 
-## Results
-
-![Results](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/results.jpg?raw=true)
-
-Showing 3 FaceSearch jobs and 1 HateSpeech job that this user has ran.
 
 ## Conclusion
+
+We have a working environment now to show customers, and to take this project forward.
 
 I focussed efforts on the implementation of these tools and getting the site working well. Design decisions reflect the desire to get it working quickly, and in the simplest manner. A good example of this is why we chose not to use Docker, resilient queues, an API layer, and a pleathora of other nice to haves. It also reflects what I knew well and could get working quickly.
 
