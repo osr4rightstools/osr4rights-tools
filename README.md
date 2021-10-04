@@ -54,7 +54,7 @@ The queues allow the website to remain responsive all the time, as work is 'queu
 
 User uploads a file using the tus.io protocol (see below). The webserver listens on the route `/files`
 
-![Upload](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/upload.jpg?raw=true)
+![Upload](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/upload2.jpg?raw=true)
 
 Can pause the upload and it will resume. If you connection is interrupted (eg machine reboot), it will resume.
 
