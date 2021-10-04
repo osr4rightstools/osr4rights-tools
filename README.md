@@ -118,7 +118,7 @@ Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 
 All references to these files are handled through the `/downloads.cshtml` page which ensures authentication and authorisation.
 
-![completed](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/target.jpg?raw=true)
+![completed](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/target2.jpg?raw=true)
 
 For example `https://osr4rightstools.org/downloads/264/target__MG_5442.JPG` is the first image you see above
 
