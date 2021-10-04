@@ -12,7 +12,7 @@ There are 2 tools currently in production
 
 Both of these tools, and the website are Open Source.  There are no paid for libraries used in any of this code.
 
-![Face Search](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
+![FaceSearch](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
 
 Screenshot of the FaceSearch page showing upload, samples and sample output.
 
@@ -147,6 +147,10 @@ Then we transfer the input data (zip file) to the VM using [https://github.com/s
 Then we communicate with the vm by using the same ssh.net library to start the python program, and listen for stoutput.
 
 Once we have a command prompt, we sftp back the results to the webserver
+
+### HateSpeech Worker VM
+
+
 
 ### Creating or Updating Working VM Images
 
@@ -285,8 +289,14 @@ Then code would have to be written that said.. perhaps.. if the user starts comi
 
 MFA is hard to get right, and not get in the way of users.
 
+## Results
+
+![Results](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/results.jpg?raw=true)
+
+Showing 3 FaceSearch jobs and 1 HateSpeech job that this user has ran.
+
 ## Conclusion
 
-As the budget was limited, I focussed efforts on the implementation of the tools. Design decisions reflect the desire to get it working quickly, and in the simplest manner. A good example of this is why we chose not to use Docker, resilient queues, an API layer, and a pleathora of other nice to haves. It also reflects what I knew well and could get working quickly.
+I focussed efforts on the implementation of these tools and getting the site working well. Design decisions reflect the desire to get it working quickly, and in the simplest manner. A good example of this is why we chose not to use Docker, resilient queues, an API layer, and a pleathora of other nice to haves. It also reflects what I knew well and could get working quickly.
 
 Phase 1 of the project was a success with it being delivered on budget, and phase 2 (July 2021 - July 2022) is now happening.
