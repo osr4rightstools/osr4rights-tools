@@ -241,7 +241,11 @@ In order of priority:
 
 Users can see more information from the 'Show Logs' button on a result page eg [https://osr4rightstools.org/result/146](https://osr4rightstools.org/result/146)
 
-Logon to the webserver using sshkeys (from the machine where site was deployed from). I've got SSHKeys enabled - desktop machine and laptop machine.
+![logs](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/logs.jpg?raw=true)
+
+Debug logs that the user can see. These are stored in the database and are a subset of the application logs stored on the webserver.
+
+Logon to the webserver using sshkeys (from the machine where site was deployed from). I've got SSHKeys enabled for desktop machine and laptop machine.
 
 ```bash
 # application logs
