@@ -135,6 +135,29 @@ The worker VM spins up when needed, then spins down according to rules (each too
 
 Using raw VM's it is much easier to debug. Initially when getting the GPU code working on nVidia based machines, this was very complex, so having a raw VM was invaluable. In essence negating a layer of complexity (if we used Docker). As the client was not concerned on the startup times on the VM, we chose to run raw VM's.
 
+### FaceSearch Worker VM
+
+The Azure SDK is used from the FaceSearchProcessingService to spin up the required infrastructure eg network interface, VM
+
+Once the VM is ready, we connect to it, then clone this repository on it 
+[https://github.com/spatial-intelligence/OSR4Rights](https://github.com/spatial-intelligence/OSR4Rights) so this makes updating the FaceSearch code easy if needed (ie the next time a VM is run, it picks it up automatically)
+
+Then we transfer the input data (zip file) to the VM using [https://github.com/sshnet/SSH.NET](https://github.com/sshnet/SSH.NET) which has an SFTP component.
+
+Then we communicate with the vm by using the same ssh.net library to start the python program, and listen for stoutput.
+
+Once we have a command prompt, we sftp back the results to the webserver
+
+### Creating or Updating Working VM Images
+
+Conceptually we create a specific build script for a VM to do the processing, take a snapshot of it, then spin up that snapshot whenever we need it.
+
+[infra.azcli](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
+
+[create_facesearch_gpu.sh](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
+
+You can see in this file that FaceSearch needed some specific versions of libraries to get the Python/C GPU running as expected.  
+
 
 ## Software Architecture
 
@@ -191,17 +214,6 @@ The [/infra/infra.azcli](/infra/infra.azcli) file scp's these files onto the new
 The Azure login that controls this is dave@hmsoftware.co.uk
 
 To manually see all VM's use [https://portal.azure.con](portal.azure.com)
-
-### Creating or Updating Working VM Images
-
-Conceptually we create a build script for a VM to do the processing, take a snapshot of it, then spin up that snapshot whenever we need it.
-
-[Infra.azcli](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
-
-[create_facesearch_gpu.sh](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
-
-You can see in this file that FaceSearch needed some specific versions of libraries to get the Python/C GPU running as expected.  
-
 
 ### DB Updates
 
