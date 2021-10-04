@@ -292,6 +292,8 @@ You'll need an Azure account with access to the appropriate VM's - specifically 
 
 Showing 3 FaceSearch jobs and 1 HateSpeech job that this user has ran.
 
+The queue lengths can be seen here (both 0)
+
 
 ## Future
 
