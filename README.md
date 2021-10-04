@@ -6,25 +6,24 @@ OSR4Rights Tools is a website providing open source tools for human rights inves
 
 There are 2 tools currently in production
 
-- FaceSearch which looks for a target face in an image, in many other images. eg give the tool a .jpg with a single face in it, and many other .jpgs, and it will find that person in the other .jpgs
+- Face Search which looks for a target face in an image, in many other images. eg give the tool a .jpg with a single face in it, and many other .jpgs, and it will find that person in the other .jpgs
 
-- HateSpeech which given a csv of text will classify how much hate speech the text contains
+- Hate Speech which given a csv of text will classify how much hate speech the text contains
 
 Both of these tools, and the website are Open Source.  There are no paid for libraries used in any of this code.
 
-![FaceSearch](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
+![Face Search](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
 
-Screenshot of the FaceSearch page showing upload, samples, and sample output.
-
+Screenshot of the Face Search page showing upload, samples and sample output.
 
 ## Context
 
 The team is:
 
-- [Prof Yvonne McDermott Rees](https://osr4rights.org/team/), Swansea University
-- [Dr Phil Bartie](https://osr4rights.org/team/), Heriot-Watt University. Developed the FaceSearch part of the system.
-- [Dr Riza Batista-Navarro](https://osr4rights.org/team/), University of Manchester. Develop
-- [Dave Mateer](https://davemateer.com), [hmsoftware.co.uk](https://hmsoftware.co.uk) - Developer
+- [Prof Yvonne McDermott Rees](https://osr4rights.org/team/), Swansea University. Team lead.
+- [Dr Phil Bartie](https://osr4rights.org/team/), Heriot-Watt University. Developed the FaceSearch tool 
+- [Dr Riza Batista-Navarro](https://osr4rights.org/team/), University of Manchester. Developed the HateSpeech tool
+- [Dave Mateer](https://davemateer.com), [hmsoftware.co.uk](https://hmsoftware.co.uk) - Develop the website (this repository)
 
 The initial budget of the website was approx £12k.
 
@@ -142,16 +141,6 @@ Slimmer version of MS Identity.
 
 3 wrong passwords allowed before lockout
 
-### MFA
-
-Email MFA is ready to go - there are columns in Login for this: MfaFailedAttempts, MfaCode, MfaSendDateTimeUtc
-
-Email2FAWhiteList table could be implemented: Email2FAWhiteListId, LoginId, IPAddress, LastAccessedDateTimeUtc.
-
-Then code would have to be written that said.. perhaps.. if the user starts coming from a different country then do an Mfa check.
-
-MFA is hard to get right, and not get in the way of users.
-
 ### Tus Resumable File Uploader
 
 [https://tus.io](tus.io) is a resumable file uploader to help large files be uploaded successfully. We are using [https://github.com/tusdotnet/tusdotnet](https://github.com/tusdotnet/tusdotnet) for the server implementation.
@@ -253,6 +242,16 @@ To get this code working locally on your dev machine, clone this repo. I use [VS
 You'll need to create a local version of the db, so install MSSQL.
 
 You'll need an Azure account with access to the appropriate VM's - specifically my Azure Developer Account wouldn't give me any quota on the NC4as_T4_v3 GPU machine which we use for FaceSearch. So you'll need a paid account.
+
+### MFA
+
+Email MFA is ready to go - there are columns in Login for this: MfaFailedAttempts, MfaCode, MfaSendDateTimeUtc
+
+Email2FAWhiteList table could be implemented: Email2FAWhiteListId, LoginId, IPAddress, LastAccessedDateTimeUtc.
+
+Then code would have to be written that said.. perhaps.. if the user starts coming from a different country then do an Mfa check.
+
+MFA is hard to get right, and not get in the way of users.
 
 ## Conclusion
 
