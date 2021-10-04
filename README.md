@@ -77,6 +77,11 @@ Validation happens now by unzipping the file to `/osrFileStore/123456789`
 
 `123456789` - a temp unixtime directory that the tusFile would be unzipped into by face-search-go which will guard against bad files. It checks zip is okay, and directories are okay.
 
+![Problem](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/problem.jpg?raw=true)
+
+File has not passed validation (the unzip check failed). There is a further check that the unzipped file contains the correct directories.
+
+
 Only after validation of the file is complete is it copied to `/osrFileStore` as `job123.tmp`
 
 All tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day)
