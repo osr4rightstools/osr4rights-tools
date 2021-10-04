@@ -35,6 +35,7 @@ The budget to keep the website going for 3 years is approx £5k, which is not en
 
 Evergreen browsers are supported only. Javascript is required for file uploading.
 
+
 ## Principles
 
 The [ASP.NET Core](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core) website is deployed onto an Ubuntu 20.04 LTS VM on Microsoft Azure Europe West (Holland)
@@ -47,14 +48,14 @@ Data Persistence is [SQL Azure](https://azure.microsoft.com/en-gb/products/azure
 
 The website runs [Background Services](https://www.pluralsight.com/courses/building-aspnet-core-hosted-services-net-core-worker-services) which monitor internal queues (Channels) which in turn spin up other VM's in Azure when needed.
 
-The queues allow the website to remain responsive all the time (and to allow). The queues are not resilient to a restart. They are in memory only.
+The queues allow the website to remain responsive all the time, as work is 'queued'. The queues are not resilient to a server and process restart. They are in memory only.
 
 
 ### Data Security and Flow
 
-User uploads a file via tus. The webserver listens on the route `/files`
+User uploads a file using the tus.io protocol (see below). The webserver listens on the route `/files`
 
-/tusFileStore (or c:\tusFileStore on dev - set in AppConfiguration.cs)
+`/tusFileStore` (or `c:\tusFileStore` on dev) - set in AppConfiguration.cs
 
 ```bash
 -rw-r--r--  1 www-data www-data         1 Sep 20 09:48 1a89dc2e28ac46d7bcc9b0906405d269.chunkcomplete
@@ -67,11 +68,11 @@ User uploads a file via tus. The webserver listens on the route `/files`
 
 Once the file has been successfully uploaded via `face-serach.cshtml`, control flow passes to `face-search-go.cshtml`
 
-Validation happens now by unzipping file to /osrFileStore/123456789
+Validation happens now by unzipping the file to `/osrFileStore/123456789`
 
-123456789 - a temp unixtime directory that the tusFile would be unzipped into by face-search-go which will guard against bad files. It checks zip is okay, and directories are okay.
+`123456789` - a temp unixtime directory that the tusFile would be unzipped into by face-search-go which will guard against bad files. It checks zip is okay, and directories are okay.
 
-Only after validation of the file is complete is it copied to /osrFileStore as job123.tmp
+Only after validation of the file is complete is it copied to `/osrFileStore` as `job123.tmp`
 
 All tus files for this upload are then deleted. So no complete file is every saved in /tusFileStore (and partial is only saved for 1 day)
 
@@ -87,20 +88,22 @@ This service deletes the /osrFileStore file when it is finished
 Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 
 ```bash
+# facesearch output
 /mnt/osrshare/downloads/214
   results.html
   results214.zip
   match_face2.jpg etc..
   target_target.jpg
 
+# hatespeech output
 /mnt/osrshare/downloads/210
   results.html
   results210.csv
 ```
 
-All references to these files are handled through the /downloads.cshtml page which ensures authentication and authorisation.
+All references to these files are handled through the `/downloads.cshtml` page which ensures authentication and authorisation.
 
-Username and password for this file share are handled like all secrets in this solution - in the build scripts. See /secretsRedacted folder for the template.
+Username and password for this file share are handled like all secrets in this solution - in the build scripts. See `/secretsRedacted` folder for the template.
   
 ### Cookie Keys
 
@@ -115,8 +118,7 @@ Each tool has its queue which feeds jobs onto a worker VM.
 
 The worker VM spins up when needed, then spins down according to rules (each tool has its own rules)
 
-
-Using raw VM's it is much easier to debug. Initially when getting the GPU code working on nVidia based machines, this was very complex, so having a raw VM was invaluable. In essence negating a layer of complexity. As the client was not concerned on the startup times on the VM, we chose to run raw VM's.
+Using raw VM's it is much easier to debug. Initially when getting the GPU code working on nVidia based machines, this was very complex, so having a raw VM was invaluable. In essence negating a layer of complexity (if we used Docker). As the client was not concerned on the startup times on the VM, we chose to run raw VM's.
 
 
 ## Software Architecture
@@ -251,3 +253,9 @@ To get this code working locally on your dev machine, clone this repo. I use [VS
 You'll need to create a local version of the db, so install MSSQL.
 
 You'll need an Azure account with access to the appropriate VM's - specifically my Azure Developer Account wouldn't give me any quota on the NC4as_T4_v3 GPU machine which we use for FaceSearch. So you'll need a paid account.
+
+## Conclusion
+
+As the budget was limited, I focussed efforts on the implementation of the tools. Design decisions reflect the desire to get it working quickly, and in the simplest manner. A good example of this is why we chose not to use Docker, resilient queues, an API layer, and a pleathora of other nice to haves. It also reflects what I knew well and could get working quickly.
+
+Phase 1 of the project was a success with it being delivered on budget, and phase 2 (July 2021 - July 2022) is now happening.
