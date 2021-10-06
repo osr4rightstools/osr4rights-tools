@@ -8,12 +8,16 @@
 
   <ItemGroup>
     <Compile Remove="hubs\**" />
+    <Compile Remove="old\**" />
     <Compile Remove="wwwroot\js2\**" />
     <Content Remove="hubs\**" />
+    <Content Remove="old\**" />
     <Content Remove="wwwroot\js2\**" />
     <EmbeddedResource Remove="hubs\**" />
+    <EmbeddedResource Remove="old\**" />
     <EmbeddedResource Remove="wwwroot\js2\**" />
     <None Remove="hubs\**" />
+    <None Remove="old\**" />
     <None Remove="wwwroot\js2\**" />
   </ItemGroup>
 

@@ -105,12 +105,10 @@ namespace OSR4Rights.Web
             // Middleware
             // set request size limit for tus
             // log all requests for custom logging
-            //   need requests here so that nothing else will affect it eg don't want error handling to redirect before we log
             app.Use(async (context, next) =>
             {
                 // Default limit was changed some time ago. Should work by setting MaxRequestBodySize to null using ConfigureKestrel but this does not seem to work for IISExpress.
                 // Source: https://github.com/aspnet/Announcements/issues/267
-
                 context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = null;
 
                 // how long the request takes
@@ -118,7 +116,9 @@ namespace OSR4Rights.Web
 
                 await next.Invoke();
 
-                // Need to worry about try catch here???
+                // This is the last in the pipeline
+
+                // Custom Logging
                 var message = "";
 
                 // connection
@@ -137,14 +137,22 @@ namespace OSR4Rights.Web
                 // verb
                 message += $"Method:  {context.Request.Method} ";
                 // page requested
+                // eg http:
+                //message += $"Scheme:  {context.Request.Scheme} ";
+                // eg osr4rightstools.org
+                //message += $"Host:  {context.Request.Host} ";
+
+                // eg /hate-speech
                 message += $"Path:  {context.Request.Path} ";
+                // eg ?123456
+                message += $"QueryString:  {context.Request.QueryString} ";
+
                 // response
                 message += $"StatusCode:  {context.Response.StatusCode} ";
 
                 watch.Stop();
 
                 message += $"Time:  {watch.ElapsedMilliseconds}ms ";
-
 
                 // Request header: referer null if no referer
                 // refered ie previous page
@@ -157,12 +165,25 @@ namespace OSR4Rights.Web
                 // eg HTTP/2
                 message += $"Protocol: {context.Request.Protocol} ";
 
-                message += $"TraceIdentifier: {context.TraceIdentifier} ";
-
-                // do I have access to the authentication and auth yet?
-                // Probably not, but can use the TraceIdentifier
+                //message += $"TraceIdentifier: {context.TraceIdentifier} ";
 
 
+                // loginId, email, role of logged in user if logged in
+                // TraceIdentifier to correlate with initial log entry at the top
+                // Had issues with iPhone Chrome not working on Strict
+
+                // custom claim Type for LoginId eg 37
+                var loginIdString = context.User.Claims.FirstOrDefault(x => x.Type == "LoginId")?.Value;
+
+                // name eg davemateer@gmail.com 
+                var claimName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+
+                // role eg Admin
+                var claimRole = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+                message += $"loginId: {loginIdString} email: {claimName} role: {claimRole} traceIdentifier: {context.TraceIdentifier}";
+
+                //Console.WriteLine(message);
                 Log.Information(message);
 
                 // pump data into a queue?
@@ -211,24 +232,6 @@ namespace OSR4Rights.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // loginId, email, role of logged in user if logged in
-            // TraceIdentifier to correlate with initial log entry at the top
-            app.Use(async (context, next) =>
-            {
-                // custom claim Type for LoginId eg 37
-                var loginIdString = context.User.Claims.FirstOrDefault(x => x.Type == "LoginId")?.Value;
-
-                // name eg davemateer@gmail.com 
-                var claimName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-
-                // role eg Admin
-                var claimRole = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-
-                Log.Information($"loginId: {loginIdString} email: {claimName} role: {claimRole} traceIdentifier: {context.TraceIdentifier}");
-                await next.Invoke();
-            } );
-
-            // Had issues with iPhone Chrome not working on Strict
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
 
             app.UseEndpoints(endpoints =>

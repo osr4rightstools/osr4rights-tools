@@ -30,20 +30,24 @@ namespace OSR4Rights.Web
                 //.WriteTo.File($@"logs/debug.txt", rollingInterval: RollingInterval.Day)
 
                 // x-info-with-framework (useful for debugging)
+                // stuff like: [14:27:19 INF] Executing handler method OSR4Rights.Web.Pages.IndexModel.OnGet - ModelState is Valid
                 //.WriteTo.Logger(lc => lc
                 //    .MinimumLevel.Information()
-                //    // todo put back in when in prod
                 //    .Filter.ByExcluding("RequestPath in ['/health-check', '/health-check-db']")
                 //    .WriteTo.File("logs/x-info-with-framework.txt", rollingInterval: RollingInterval.Day)
-                ////.WriteTo.Console()
+                //.WriteTo.Console()
                 //)
 
                 // info
                 // framework minimum level is Warning (normal everyday looking at logs)
                 .WriteTo.Logger(lc => lc
                     .MinimumLevel.Information()
-                    .Filter.ByExcluding("RequestPath in ['/health-check', '/health-check-db']")
+                    // don't want out health check pages logged every 5 minutes
+                    //.Filter.ByExcluding("RequestPath in ['/health-check', '/health-check-db']")
+                    // getting rid of duplicates log entries when a 500
                     .Filter.ByExcluding("SourceContext = 'Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware'")
+
+                    // don't want: [14:29:57 INF] Executing handler method OSR4Rights.Web.Pages.IndexModel.OnGet - ModelState is Valid
                     .Filter.ByExcluding(logEvent =>
                         logEvent.Level < LogEventLevel.Warning &&
                         Matching.FromSource("Microsoft.AspNetCore").Invoke(logEvent))
