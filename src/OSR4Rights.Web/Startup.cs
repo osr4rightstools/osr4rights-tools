@@ -105,14 +105,20 @@ namespace OSR4Rights.Web
             {
                 // Default limit was changed some time ago. Should work by setting MaxRequestBodySize to null using ConfigureKestrel but this does not seem to work for IISExpress.
                 // Source: https://github.com/aspnet/Announcements/issues/267
-                await next.Invoke();
+
                 context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = null;
 
-                // connection
-                //var asdf = context.Connection;
-                var remoteIpAddress = context.Connection.RemoteIpAddress;
-                var message = $"Remote IP address: {remoteIpAddress} ";
+                await next.Invoke();
 
+                // Log everything
+                var message = "";
+
+                // connection
+                //var remoteIpAddress = context.Connection.RemoteIpAddress;
+                //var message = $"Remote IP address: {remoteIpAddress} ";
+
+                // both of these seem to give the same correct IP
+                // leave in for now.
                 var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
                 message += $"xForwardedFor: {xForwardedFor} ";
 
