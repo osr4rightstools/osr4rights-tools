@@ -111,8 +111,13 @@ namespace OSR4Rights.Web
                 // connection
                 //var asdf = context.Connection;
                 var remoteIpAddress = context.Connection.RemoteIpAddress;
-                var message = $"Remote IP address: {remoteIpAddress}";
+                var message = $"Remote IP address: {remoteIpAddress} ";
 
+                var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
+                message += $"xForwardedFor: {xForwardedFor} ";
+
+                var xRealIP = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Real-IP");
+                message += $"xRealIP: {xRealIP} ";
                 // request
 
                 // verb
