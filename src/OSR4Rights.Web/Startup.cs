@@ -127,8 +127,8 @@ namespace OSR4Rights.Web
 
                 // both of these seem to give the same correct IP
                 // leave in for now.
-                var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
-                message += $"xForwardedFor: {xForwardedFor} ";
+                //var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
+                //message += $"xForwardedFor: {xForwardedFor} ";
 
                 var xRealIP = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Real-IP");
                 message += $"xRealIP: {xRealIP} ";
