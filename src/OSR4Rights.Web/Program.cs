@@ -42,7 +42,6 @@ namespace OSR4Rights.Web
                 // framework minimum level is Warning (normal everyday looking at logs)
                 .WriteTo.Logger(lc => lc
                     .MinimumLevel.Information()
-                    // todo put back in
                     .Filter.ByExcluding("RequestPath in ['/health-check', '/health-check-db']")
                     .Filter.ByExcluding("SourceContext = 'Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware'")
                     .Filter.ByExcluding(logEvent =>

@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Azure.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -90,13 +92,53 @@ namespace OSR4Rights.Web
         {
             // For Tus otherwise it will not resume
             // need to comment this block out to get tests to run - fix this
-            app.Use((context, next) =>
+            //app.Use((context, next) =>
+            //{
+            //    // Default limit was changed some time ago. Should work by setting MaxRequestBodySize to null using ConfigureKestrel but this does not seem to work for IISExpress.
+            //    // Source: https://github.com/aspnet/Announcements/issues/267
+            //    context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = null;
+            //    return next.Invoke();
+            //});
+
+
+            app.Use(async (context, next) =>
             {
                 // Default limit was changed some time ago. Should work by setting MaxRequestBodySize to null using ConfigureKestrel but this does not seem to work for IISExpress.
                 // Source: https://github.com/aspnet/Announcements/issues/267
+                await next.Invoke();
                 context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = null;
-                return next.Invoke();
+
+                // connection
+                //var asdf = context.Connection;
+                var remoteIpAddress = context.Connection.RemoteIpAddress;
+                var message = $"Remote IP address: {remoteIpAddress}";
+
+                // request
+
+                // verb
+                message += $"Method:  {context.Request.Method} ";
+                // page requested
+                message += $"Path:  {context.Request.Path} ";
+                // response
+                message += $"StatusCode:  {context.Response.StatusCode} ";
+
+
+                // Request header: referer null if no referer
+                // refered ie previous page
+                message += $"Referer: {context.Request.GetTypedHeaders().Referer} ";
+
+                // request header: User Agent
+                var requestUserAgent = context.Request.Headers.FirstOrDefault(x => x.Key == "User-Agent");
+                message += $"UserAgent: {requestUserAgent}";
+
+                // eg HTTP/2
+                message += $"Protocol: {context.Request.Protocol} ";
+
+
+                Log.Information(message);
             });
+
+
 
             if (env.IsDevelopment())
             {
