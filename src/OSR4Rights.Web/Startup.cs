@@ -97,10 +97,10 @@ namespace OSR4Rights.Web
 
             // https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0#configure-a-reverse-proxy-server
             // will this give me the prtocol?
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            //app.UseForwardedHeaders(new ForwardedHeadersOptions
+            //{
+            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            //})j;
             // For Tus otherwise it will not resume
             // need to comment this block out to get tests to run - fix this
             //app.Use((context, next) =>
@@ -142,6 +142,17 @@ namespace OSR4Rights.Web
                     }
                     Log.Information(" --end request headers--");
                     StringValues xforwardprotocol = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-Proto").Value;
+
+                    // HTTP version
+
+                    var xDMRequest = context.Request.Headers.FirstOrDefault(x => x.Key == "X-DM-Request").Value;
+                    string httpVersion = "x";
+                    if (xDMRequest != StringValues.Empty)
+                    {
+                        // get final HTTP/1.0 or 1.1 or 2
+                        var asdf = xDMRequest.ToString().Split(new[] { "HTTP" }, StringSplitOptions.None).Last();
+                        httpVersion = $"HTTP{asdf}";
+                    }
 
                     // connection
                     //var remoteIpAddress = context.Connection.RemoteIpAddress;
@@ -212,14 +223,14 @@ namespace OSR4Rights.Web
 
                     // eg HTTP/2
                     // local
-                    string protocol = context.Request.Protocol;
-                    Log.Information($"protocol is {protocol}");
-                    Log.Information($"xforwardedprotocol is {xforwardprotocol}");
+                    //string protocol = context.Request.Protocol;
+                    //Log.Information($"protocol is {protocol}");
+                    //Log.Information($"xforwardedprotocol is {xforwardprotocol}");
                     // prod as nginx should forward on the originating protocol
-                    if (xforwardprotocol != StringValues.Empty)
-                        protocol = xforwardprotocol + " (xforwarded)";
+                    //if (xforwardprotocol != StringValues.Empty)
+                        //protocol = xforwardprotocol + " (xforwarded)";
 
-                    message += $"Protocol: {protocol} ";
+                    message += $"HttpVersion (old protocol): {httpVersion} ";
 
                     //message += $"TraceIdentifier: {context.TraceIdentifier} ";
 
@@ -295,7 +306,7 @@ namespace OSR4Rights.Web
                         elapsedTimeInMs,
                         referer,
                         userAgent,
-                        protocol,
+                        httpVersion,
                         loginId,
                         email,
                         roleName
