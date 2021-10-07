@@ -178,24 +178,28 @@ namespace OSR4Rights.Web
                     // Request header: referer null if no referer
 
                     //var referer = context.Request.GetTypedHeaders().Referer?.ToString();
-                    var referer = context.Request.GetTypedHeaders().Referer;
+                    Uri? referer = context.Request.GetTypedHeaders().Referer;
                     // is the referer another page on this site?
                     //var host = request?.Host;
 
                     var currentBase = context.Request?.Host.Host;
 
-                    string? refererS;
-                    if (referer.Host.Contains("https://osr4rightstools.org/"))
-                        refererS = referer?.ToString().Replace("https://osr4rightstools.org/", "");
-                    else
-                        refererS = referer?.ToString();
-                    
-                    message += $"Referer: {refererS} ";
+                    string? refererS = null;
+                    if (referer is { })
+                    {
+                        if (referer.Host.Contains("https://osr4rightstools.org/"))
+                            refererS = referer.ToString().Replace("https://osr4rightstools.org/", "");
+                        else
+                            refererS = referer.ToString();
+
+                        message += $"Referer: {refererS} ";
+                    }
+
 
                     // request header: User Agent
-                    StringValues ua = context.Request.Headers.FirstOrDefault(x => x.Key == "User-Agent").Value;
+                    var ua = context.Request.Headers.FirstOrDefault(x => x.Key == "User-Agent").Value;
                     string? userAgent;
-                    if (ua == StringValues.Empty)
+                    if (string.IsNullOrEmpty(ua))
                         userAgent = null;
                     else
                         userAgent = ua.ToString();
@@ -262,6 +266,8 @@ namespace OSR4Rights.Web
                         webLogTypeId = Db.WebLogTypeId.FaviconIco;
                     else if (path.ToString().StartsWith("/files"))
                         webLogTypeId = Db.WebLogTypeId.TusFiles;
+                    else if (path.ToString().StartsWith("/downloads"))
+                        webLogTypeId = Db.WebLogTypeId.Downloads;
 
                     await Db.InsertWebLog(connectionString,
                         webLogTypeId,

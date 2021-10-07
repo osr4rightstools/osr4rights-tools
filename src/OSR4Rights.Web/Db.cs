@@ -828,6 +828,7 @@ namespace OSR4Rights.Web
             public const int SitemapXml = 5;
             public const int FaviconIco = 6;
             public const int TusFiles = 7;
+            public const int Downloads = 8;
 
         }
 

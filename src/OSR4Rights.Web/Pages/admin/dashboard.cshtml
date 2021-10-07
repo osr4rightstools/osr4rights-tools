@@ -1,0 +1,107 @@
+﻿@page
+@model DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Dashboard</p>
+
+
+
+
+<h4>All Logins</h4>
+
+
+
+<p>When a user initially regisers they will be in LoginState  WaitingToBeInitiallyVerifiedByEmail and will have no RoleId</p>
+<p>Once verified they are in LoginState InUse, and will be automatically given a RoleId of Tier1. They can only run the samples on Tier1, and cannot upload their own files</p>
+
+<p>To get to Tier2 an Admin has to grant them this Role by pressing edit and promoting them to Tier2.</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col"> Email </div>
+        <div class="col"> LoginState </div>
+        <div class="col"> Role </div>
+        <div class="col"> </div>
+
+    </div>
+
+    @foreach (var login in Model.Logins)
+    {
+        <div class="row">
+            <div class="col"> @login.Email </div>
+            <div class="col"> @login.LoginStateName </div>
+            <div class="col"> @login.RoleName </div>
+            <div class="col"><a href="/admin/logins/edit/@login.LoginId">edit</a> </div>
+        </div>
+    }
+</div>
+
+<br />
+
+<h4>FaceSearch</h4>
+
+<p>NC4as_T4_v3 GPU at £0.47 per hour (4vcpu and 28GB )</p>
+@*<p>DM blog post <a href="https://davemateer.com/2021/05/22/azure-gpu">here</a></p>*@
+
+<p>Rule 1 - after 15 minutes of no log entries (ie there are no jobs running, and we are waiting for another job) the rg will be deleted</p>
+<p>Rule 2 - after 2 hours of a job running the rg will be deleted</p>
+@*<p>Or you can manually delete it here.</p>*@
+
+<p>rg's active currently are:</p>
+<div class="container">
+
+    @foreach (var rg in Model.FaceSearchRgs)
+    {
+        <div class="row">
+            <div class="col">
+                @rg
+            </div>
+        </div>
+    }
+</div>
+
+@*<form method="post">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Delete FaceSearch GPU VMs from Azure</button>
+        </div>
+    </form>*@
+
+<br />
+
+<h4>HateSpeech</h4>
+
+<p>D4s_v4 VM at £0.17 per hour (4vcpu and 16GB) About 3 minutes cold startup time. </p>
+<p>D8s_v4 VM at £0.34 per hour (8vcpu and 32GB). Same cold start. Using this one.</p>
+
+<p>Rule 1 - after 30 minutes of no log entries (ie there are no jobs running and we are waiting for another job, or a job takes longer than 30minutes) the rg will be deleted</p>
+
+<p>rg's active currently are:</p>
+
+<div class="container">
+
+    @foreach (var rg in Model.HateSpeechRgs)
+    {
+        <div class="row">
+            <div class="col">
+                @rg
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+
+<h4>Info</h4>
+
+<p>Don't worry if a RG stays here for a while - it happens that the vm is deleted but it takes overnight for the the other (cheap) things to be deleted in the Rg. See portal.azure.com for more info</p>
+
+@*<form method="post">
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Delete FaceSearch GPU VMs from Azure</button>
+        </div>
+    </form>*@
+
