@@ -133,6 +133,9 @@ namespace OSR4Rights.Web
 
                 try
                 {
+
+                    StringValues xforwardprotocol = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-Proto").Value;
+
                     // connection
                     //var remoteIpAddress = context.Connection.RemoteIpAddress;
                     //var message = $"Remote IP address: {remoteIpAddress} ";
@@ -201,7 +204,12 @@ namespace OSR4Rights.Web
                     message += $"UserAgent: {userAgent}";
 
                     // eg HTTP/2
+                    // local
                     string protocol = context.Request.Protocol;
+                    // prod as nginx should forward on the originating protocol
+                    if (xforwardprotocol != StringValues.Empty)
+                        protocol = xforwardprotocol.ToString();
+
                     message += $"Protocol: {protocol} ";
 
                     //message += $"TraceIdentifier: {context.TraceIdentifier} ";
