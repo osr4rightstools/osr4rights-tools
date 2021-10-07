@@ -94,24 +94,6 @@ namespace OSR4Rights.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            // https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0#configure-a-reverse-proxy-server
-            // will this give me the prtocol?
-            //app.UseForwardedHeaders(new ForwardedHeadersOptions
-            //{
-            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            //})j;
-            // For Tus otherwise it will not resume
-            // need to comment this block out to get tests to run - fix this
-            //app.Use((context, next) =>
-            //{
-            //    // Default limit was changed some time ago. Should work by setting MaxRequestBodySize to null using ConfigureKestrel but this does not seem to work for IISExpress.
-            //    // Source: https://github.com/aspnet/Announcements/issues/267
-            //    context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = null;
-            //    return next.Invoke();
-            //});
-
-
             // Middleware
             // set request size limit for tus
             // log all requests for custom logging
@@ -134,14 +116,14 @@ namespace OSR4Rights.Web
                 try
                 {
 
-                    var headers = context.Request.Headers;
-                    Log.Information(" --start request headers--");
-                    foreach (var header in headers)
-                    {
-                        Log.Information(header.Key + " : " + header.Value);
-                    }
-                    Log.Information(" --end request headers--");
-                    StringValues xforwardprotocol = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-Proto").Value;
+                    //var headers = context.Request.Headers;
+                    //Log.Information(" --start request headers--");
+                    //foreach (var header in headers)
+                    //{
+                    //    Log.Information(header.Key + " : " + header.Value);
+                    //}
+                    //Log.Information(" --end request headers--");
+                    //StringValues xforwardprotocol = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-Proto").Value;
 
                     // HTTP version
 
