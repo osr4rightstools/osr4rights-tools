@@ -193,8 +193,8 @@ namespace OSR4Rights.Web
                     message += $"UserAgent: {userAgent}";
 
                     // eg HTTP/2
-                    string protocol = context.Request.Protocol;
-                    message += $"Protocol: {protocol} ";
+                    //string protocol = context.Request.Protocol;
+                    //message += $"Protocol: {protocol} ";
 
                     //message += $"TraceIdentifier: {context.TraceIdentifier} ";
 
@@ -270,7 +270,6 @@ namespace OSR4Rights.Web
                         elapsedTimeInMs,
                         referer,
                         userAgent,
-                        protocol,
                         loginId,
                         email,
                         roleName
