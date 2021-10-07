@@ -134,6 +134,13 @@ namespace OSR4Rights.Web
                 try
                 {
 
+                    var headers = context.Request.Headers;
+                    Log.Information(" --start request headers--");
+                    foreach (var header in headers)
+                    {
+                        Log.Information(header.Key + " : " + header.Value);
+                    }
+                    Log.Information(" --end request headers--");
                     StringValues xforwardprotocol = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-Proto").Value;
 
                     // connection
