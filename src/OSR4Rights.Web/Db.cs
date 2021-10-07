@@ -772,6 +772,7 @@ namespace OSR4Rights.Web
             int elapsedTimeInMs,
             string? referer,
             string? userAgent,
+            string protocol,
             int? loginId,
             string? email,
             string? roleName)
@@ -790,6 +791,7 @@ namespace OSR4Rights.Web
                        ,[ElapsedTimeInMs]
                        ,[Referer]
                        ,[UserAgent]
+                       ,[Protocol]
                        ,[LoginId]
                        ,[Email]
                        ,[RoleName])
@@ -804,6 +806,7 @@ namespace OSR4Rights.Web
                        ,@ElapsedTimeInMs
                        ,@Referer
                        ,@UserAgent
+                       ,@Protocol
                        ,@LoginId
                        ,@Email
                        ,@RoleName)
@@ -811,7 +814,7 @@ namespace OSR4Rights.Web
             {
                 webLogTypeId, ipAddress, verb, path, queryString, statusCode,
                 elapsedTimeInMs, referer,
-                userAgent, loginId, email, roleName
+                userAgent, protocol, loginId, email, roleName
             });
         }
 

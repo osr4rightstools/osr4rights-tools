@@ -77,5 +77,14 @@ sudo systemctl enable kestrel-osr.service
 # start the Kestrel web app using systemd using kestrel-blc.service text files
 sudo systemctl start kestrel-osr.service
 
+# https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0#configure-the-firewall
+sudo apt-get install ufw
+
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+sudo ufw enable
+
 # sudo snap install bpytop
 

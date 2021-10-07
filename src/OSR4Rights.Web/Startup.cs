@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -93,6 +94,13 @@ namespace OSR4Rights.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            // https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0#configure-a-reverse-proxy-server
+            // will this give me the prtocol?
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             // For Tus otherwise it will not resume
             // need to comment this block out to get tests to run - fix this
             //app.Use((context, next) =>
@@ -193,8 +201,8 @@ namespace OSR4Rights.Web
                     message += $"UserAgent: {userAgent}";
 
                     // eg HTTP/2
-                    //string protocol = context.Request.Protocol;
-                    //message += $"Protocol: {protocol} ";
+                    string protocol = context.Request.Protocol;
+                    message += $"Protocol: {protocol} ";
 
                     //message += $"TraceIdentifier: {context.TraceIdentifier} ";
 
@@ -270,6 +278,7 @@ namespace OSR4Rights.Web
                         elapsedTimeInMs,
                         referer,
                         userAgent,
+                        protocol,
                         loginId,
                         email,
                         roleName
