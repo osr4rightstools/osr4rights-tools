@@ -206,9 +206,11 @@ namespace OSR4Rights.Web
                     // eg HTTP/2
                     // local
                     string protocol = context.Request.Protocol;
+                    Log.Information($"protocol is {protocol}");
+                    Log.Information($"xforwardedprotocol is {xforwardprotocol}");
                     // prod as nginx should forward on the originating protocol
                     if (xforwardprotocol != StringValues.Empty)
-                        protocol = xforwardprotocol.ToString();
+                        protocol = xforwardprotocol + " (xforwarded)";
 
                     message += $"Protocol: {protocol} ";
 
