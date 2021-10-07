@@ -177,8 +177,20 @@ namespace OSR4Rights.Web
 
                     // Request header: referer null if no referer
 
-                    var referer = context.Request.GetTypedHeaders().Referer?.ToString();
-                    message += $"Referer: {referer} ";
+                    //var referer = context.Request.GetTypedHeaders().Referer?.ToString();
+                    var referer = context.Request.GetTypedHeaders().Referer;
+                    // is the referer another page on this site?
+                    //var host = request?.Host;
+
+                    var currentBase = context.Request?.Host.Host;
+
+                    string? refererS;
+                    if (referer.Host.Contains("https://osr4rightstools.org/"))
+                        refererS = referer?.ToString().Replace("https://osr4rightstools.org/", "");
+                    else
+                        refererS = referer?.ToString();
+                    
+                    message += $"Referer: {refererS} ";
 
                     // request header: User Agent
                     StringValues ua = context.Request.Headers.FirstOrDefault(x => x.Key == "User-Agent").Value;
@@ -209,7 +221,6 @@ namespace OSR4Rights.Web
                         if (result)
                             loginId = loginIdFoo;
                     }
-
 
                     // name eg davemateer@gmail.com 
                     string? email = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -260,7 +271,7 @@ namespace OSR4Rights.Web
                         queryString,
                         statusCode,
                         elapsedTimeInMs,
-                        referer,
+                        refererS,
                         userAgent,
                         httpVersion,
                         loginId,
