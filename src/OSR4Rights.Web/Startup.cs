@@ -185,12 +185,19 @@ namespace OSR4Rights.Web
                     var currentBase = context.Request?.Host.Host;
 
                     string? refererS = null;
+                    Log.Information($"referer is {referer}");
                     if (referer is { })
                     {
-                        if (referer.Host.Contains("https://osr4rightstools.org/"))
-                            refererS = referer.ToString().Replace("https://osr4rightstools.org/", "");
+                        if (referer.Host.Contains(@"https://osr4rightstools.org/"))
+                        {
+                            Log.Information($"**contains!");
+                            refererS = referer.ToString().Replace(@"https://osr4rightstools.org/", "");
+                        }
                         else
+                        {
+                            Log.Information($"**does not contain!");
                             refererS = referer.ToString();
+                        }
 
                         message += $"Referer: {refererS} ";
                     }
