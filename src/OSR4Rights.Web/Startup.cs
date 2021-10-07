@@ -115,28 +115,19 @@ namespace OSR4Rights.Web
 
                 try
                 {
-
-                    //var headers = context.Request.Headers;
-                    //Log.Information(" --start request headers--");
-                    //foreach (var header in headers)
-                    //{
-                    //    Log.Information(header.Key + " : " + header.Value);
-                    //}
-                    //Log.Information(" --end request headers--");
-                    //StringValues xforwardprotocol = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-Proto").Value;
-
-                    // HTTP version
-
+                    // HTTP version passed from nginx
                     var xDMRequest = context.Request.Headers.FirstOrDefault(x => x.Key == "X-DM-Request").Value;
-                    string httpVersion = "x";
+                    string httpVersion = "none";
                     if (xDMRequest != StringValues.Empty)
                     {
                         // get final HTTP/1.0 or 1.1 or 2
-                        var asdf = xDMRequest.ToString().Split(new[] { "HTTP" }, StringSplitOptions.None).Last();
-                        httpVersion = $"HTTP{asdf}";
+                        var bar = xDMRequest.ToString().Split(new[] { "HTTP" }, StringSplitOptions.None).Last();
+                        httpVersion = $"HTTP{bar}";
                     }
 
                     // connection
+
+                    // this wont work as behind nginx
                     //var remoteIpAddress = context.Connection.RemoteIpAddress;
                     //var message = $"Remote IP address: {remoteIpAddress} ";
 
@@ -145,14 +136,11 @@ namespace OSR4Rights.Web
                     //var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
                     //message += $"xForwardedFor: {xForwardedFor} ";
 
-                    StringValues ipFoo = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Real-IP").Value;
-
+                    var ipFoo = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Real-IP").Value;
                     string? ipAddress = null;
                     if (ipFoo != StringValues.Empty)
                         ipAddress = ipFoo;
-
                     message += $"xRealIP: {ipAddress} ";
-                    // request
 
                     // eg GET
                     string verb = context.Request.Method;
@@ -179,7 +167,7 @@ namespace OSR4Rights.Web
                     message += $"QueryString:  {queryString} ";
 
                     // response
-                    int statusCode = context.Response.StatusCode;
+                    var statusCode = context.Response.StatusCode;
                     message += $"StatusCode:  {context.Response.StatusCode} ";
 
                     watch.Stop();
@@ -188,10 +176,8 @@ namespace OSR4Rights.Web
                     message += $"Time:  {watch.ElapsedMilliseconds}ms ";
 
                     // Request header: referer null if no referer
-                    // refered ie previous page
-                    var foo = context.Request.GetTypedHeaders();
 
-                    string? referer = context.Request.GetTypedHeaders().Referer?.ToString();
+                    var referer = context.Request.GetTypedHeaders().Referer?.ToString();
                     message += $"Referer: {referer} ";
 
                     // request header: User Agent
@@ -203,16 +189,7 @@ namespace OSR4Rights.Web
                         userAgent = ua.ToString();
                     message += $"UserAgent: {userAgent}";
 
-                    // eg HTTP/2
-                    // local
-                    //string protocol = context.Request.Protocol;
-                    //Log.Information($"protocol is {protocol}");
-                    //Log.Information($"xforwardedprotocol is {xforwardprotocol}");
-                    // prod as nginx should forward on the originating protocol
-                    //if (xforwardprotocol != StringValues.Empty)
-                        //protocol = xforwardprotocol + " (xforwarded)";
-
-                    message += $"HttpVersion (old protocol): {httpVersion} ";
+                    message += $"HttpVersion: {httpVersion} ";
 
                     //message += $"TraceIdentifier: {context.TraceIdentifier} ";
 
@@ -240,11 +217,9 @@ namespace OSR4Rights.Web
                     // role eg Admin
                     var roleName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 
-                    message +=
-                        $"loginId: {loginIdString} email: {email} role: {roleName} traceIdentifier: {context.TraceIdentifier}";
+                    message += $"loginId: {loginIdString} email: {email} role: {roleName} traceIdentifier: {context.TraceIdentifier}";
 
-                    //Console.WriteLine(message);
-                    Log.Information(message);
+                    Log.Debug(message);
 
                     // pump data into a queue?
                     // which will get written to a database
@@ -252,7 +227,6 @@ namespace OSR4Rights.Web
 
                     var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
-                    // defult to page
                     int webLogTypeId = Db.WebLogTypeId.Page;
 
                     if (path.ToString().StartsWith("/js"))

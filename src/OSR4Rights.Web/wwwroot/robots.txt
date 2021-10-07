@@ -1,5 +1,4 @@
 # Allow all 
 User-agent: *
 Allow: /
-
-Sitemap: /sitemap.xml
+Sitemap: https://osr4rightstools.org/sitemap.xml
