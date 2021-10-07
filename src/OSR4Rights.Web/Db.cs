@@ -16,6 +16,14 @@ namespace OSR4Rights.Web
         string? Email
     );
 
+    public record DashboardRealPage(
+           DateTime DateTimeUtc,
+           string IPAddress,
+           string Path,
+           string? UserAgent,
+           string? Email
+       );
+
     public record Login(
         int LoginId,
         string Email,
@@ -842,6 +850,20 @@ namespace OSR4Rights.Web
                 select DateTimeUtc, Path, Email 
                 from weblog
                 where StatusCode = 500
+                order by DateTimeUtc desc
+            ");
+
+            return result.ToList();
+        }
+
+        public static async Task<List<DashboardRealPage>> GetDashboardRealPages(string connectionString)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            var result = await conn.QueryAsyncWithRetry<DashboardRealPage>(@"
+                select DateTimeUtc, IPAddress, Path, UserAgent, Email
+                from weblog
+                where WebLogTypeId = 1
                 order by DateTimeUtc desc
             ");
 

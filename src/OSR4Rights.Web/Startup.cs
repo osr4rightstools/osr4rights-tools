@@ -116,13 +116,13 @@ namespace OSR4Rights.Web
                 try
                 {
                     // dump all the headers
-                    var headers = context.Request.Headers;
-                    Log.Information(" --start request headers--");
-                    foreach (var header in headers)
-                    {
-                        Log.Information(header.Key + " : " + header.Value);
-                    }
-                    Log.Information(" --end request headers--");
+                    //var headers = context.Request.Headers;
+                    //Log.Information(" --start request headers--");
+                    //foreach (var header in headers)
+                    //{
+                    //    Log.Information(header.Key + " : " + header.Value);
+                    //}
+                    //Log.Information(" --end request headers--");
 
                     // HTTP version passed from nginx
                     var xDMRequest = context.Request.Headers.FirstOrDefault(x => x.Key == "X-DM-Request").Value;
@@ -196,15 +196,9 @@ namespace OSR4Rights.Web
                     if (referer is { })
                     {
                         if (referer.ToString().Contains(@"https://osr4rightstools.org/"))
-                        {
-                            Log.Information($"**contains!");
                             refererS = referer.ToString().Replace(@"https://osr4rightstools.org/", "");
-                        }
                         else
-                        {
-                            Log.Information($"**does not contain!");
                             refererS = referer.ToString();
-                        }
 
                         message += $"Referer: {refererS} ";
                     }
