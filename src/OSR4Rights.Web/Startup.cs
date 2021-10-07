@@ -115,6 +115,15 @@ namespace OSR4Rights.Web
 
                 try
                 {
+                    // dump all the headers
+                    var headers = context.Request.Headers;
+                    Log.Information(" --start request headers--");
+                    foreach (var header in headers)
+                    {
+                        Log.Information(header.Key + " : " + header.Value);
+                    }
+                    Log.Information(" --end request headers--");
+
                     // HTTP version passed from nginx
                     var xDMRequest = context.Request.Headers.FirstOrDefault(x => x.Key == "X-DM-Request").Value;
                     string httpVersion = "none";

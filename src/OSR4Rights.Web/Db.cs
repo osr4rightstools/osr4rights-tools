@@ -5,12 +5,17 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Serilog;
 
 namespace OSR4Rights.Web
 {
+
+    public record Dashboard500VM(
+        DateTime DateTimeUtc,
+        string Path,
+        string? Email
+    );
+
     public record Login(
         int LoginId,
         string Email,
@@ -762,8 +767,8 @@ namespace OSR4Rights.Web
         }
 
         // used by startup.cs to insert into custom weblog table
-        public static async Task InsertWebLog(string connectionString, 
-            int webLogTypeId, 
+        public static async Task InsertWebLog(string connectionString,
+            int webLogTypeId,
             string? ipAddress,
             string verb,
             string path,
@@ -812,12 +817,37 @@ namespace OSR4Rights.Web
                        ,@RoleName)
             ", new
             {
-                webLogTypeId, ipAddress, verb, path, queryString, statusCode,
-                elapsedTimeInMs, referer,
+                webLogTypeId,
+                ipAddress,
+                verb,
+                path,
+                queryString,
+                statusCode,
+                elapsedTimeInMs,
+                referer,
                 userAgent,
-                httpVersion, loginId, email, roleName
+                httpVersion,
+                loginId,
+                email,
+                roleName
             });
         }
+
+
+        public static async Task<List<Dashboard500VM>> GetDashboard500VMs(string connectionString)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            var result = await conn.QueryAsyncWithRetry<Dashboard500VM>(@"
+                select DateTimeUtc, Path, Email 
+                from weblog
+                where StatusCode = 500
+                order by DateTimeUtc desc
+            ");
+
+            return result.ToList();
+        }
+
 
         public static class WebLogTypeId
         {
