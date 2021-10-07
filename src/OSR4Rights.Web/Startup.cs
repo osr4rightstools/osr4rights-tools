@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Primitives;
 using OSR4Rights.Web.BackgroundServices;
 using Serilog;
 using tusdotnet;
@@ -121,73 +123,166 @@ namespace OSR4Rights.Web
                 // Custom Logging
                 var message = "";
 
-                // connection
-                //var remoteIpAddress = context.Connection.RemoteIpAddress;
-                //var message = $"Remote IP address: {remoteIpAddress} ";
+                try
+                {
+                    // connection
+                    //var remoteIpAddress = context.Connection.RemoteIpAddress;
+                    //var message = $"Remote IP address: {remoteIpAddress} ";
 
-                // both of these seem to give the same correct IP
-                // leave in for now.
-                //var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
-                //message += $"xForwardedFor: {xForwardedFor} ";
+                    // both of these seem to give the same correct IP
+                    // leave in for now.
+                    //var xForwardedFor = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Forwarded-For");
+                    //message += $"xForwardedFor: {xForwardedFor} ";
 
-                var xRealIP = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Real-IP");
-                message += $"xRealIP: {xRealIP} ";
-                // request
+                    StringValues ipFoo = context.Request.Headers.FirstOrDefault(x => x.Key == "X-Real-IP").Value;
 
-                // verb
-                message += $"Method:  {context.Request.Method} ";
-                // page requested
-                // eg http:
-                //message += $"Scheme:  {context.Request.Scheme} ";
-                // eg osr4rightstools.org
-                //message += $"Host:  {context.Request.Host} ";
+                    string? ipAddress = null;
+                    if (ipFoo != StringValues.Empty)
+                        ipAddress = ipFoo;
 
-                // eg /hate-speech
-                message += $"Path:  {context.Request.Path} ";
-                // eg ?123456
-                message += $"QueryString:  {context.Request.QueryString} ";
+                    message += $"xRealIP: {ipAddress} ";
+                    // request
 
-                // response
-                message += $"StatusCode:  {context.Response.StatusCode} ";
+                    // eg GET
+                    string verb = context.Request.Method;
+                    message += $"Method:  {verb} ";
+                    // page requested
+                    // eg http:
+                    //message += $"Scheme:  {context.Request.Scheme} ";
+                    // eg osr4rightstools.org
+                    //message += $"Host:  {context.Request.Host} ";
 
-                watch.Stop();
+                    // eg /hate-speech
+                    PathString path = context.Request.Path;
+                    message += $"Path:  {path} ";
 
-                message += $"Time:  {watch.ElapsedMilliseconds}ms ";
+                    // eg ?123456
+                    QueryString qs = context.Request.QueryString;
 
-                // Request header: referer null if no referer
-                // refered ie previous page
-                message += $"Referer: {context.Request.GetTypedHeaders().Referer} ";
+                    // converting to a nullable string for database
+                    string? queryString;
+                    if (qs == QueryString.Empty)
+                        queryString = null;
+                    else
+                        queryString = qs.ToString();
+                    message += $"QueryString:  {queryString} ";
 
-                // request header: User Agent
-                var requestUserAgent = context.Request.Headers.FirstOrDefault(x => x.Key == "User-Agent");
-                message += $"UserAgent: {requestUserAgent}";
+                    // response
+                    int statusCode = context.Response.StatusCode;
+                    message += $"StatusCode:  {context.Response.StatusCode} ";
 
-                // eg HTTP/2
-                message += $"Protocol: {context.Request.Protocol} ";
+                    watch.Stop();
 
-                //message += $"TraceIdentifier: {context.TraceIdentifier} ";
+                    var elapsedTimeInMs = (int)watch.ElapsedMilliseconds;
+                    message += $"Time:  {watch.ElapsedMilliseconds}ms ";
+
+                    // Request header: referer null if no referer
+                    // refered ie previous page
+                    var foo = context.Request.GetTypedHeaders();
+
+                    string? referer = context.Request.GetTypedHeaders().Referer?.ToString();
+                    message += $"Referer: {referer} ";
+
+                    // request header: User Agent
+                    StringValues ua = context.Request.Headers.FirstOrDefault(x => x.Key == "User-Agent").Value;
+                    string? userAgent;
+                    if (ua == StringValues.Empty)
+                        userAgent = null;
+                    else
+                        userAgent = ua.ToString();
+                    message += $"UserAgent: {userAgent}";
+
+                    // eg HTTP/2
+                    string protocol = context.Request.Protocol;
+                    message += $"Protocol: {protocol} ";
+
+                    //message += $"TraceIdentifier: {context.TraceIdentifier} ";
 
 
-                // loginId, email, role of logged in user if logged in
-                // TraceIdentifier to correlate with initial log entry at the top
-                // Had issues with iPhone Chrome not working on Strict
+                    // loginId, email, role of logged in user if logged in
+                    // TraceIdentifier to correlate with initial log entry at the top
+                    // Had issues with iPhone Chrome not working on Strict
 
-                // custom claim Type for LoginId eg 37
-                var loginIdString = context.User.Claims.FirstOrDefault(x => x.Type == "LoginId")?.Value;
+                    // custom claim Type for LoginId eg 37
+                    string? loginIdString = context.User.Claims.FirstOrDefault(x => x.Type == "LoginId")?.Value;
 
-                // name eg davemateer@gmail.com 
-                var claimName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                    int? loginId = null;
 
-                // role eg Admin
-                var claimRole = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+                    if (loginIdString != null)
+                    {
+                        var result = int.TryParse(loginIdString, out int loginIdFoo);
+                        if (result)
+                            loginId = loginIdFoo;
+                    }
 
-                message += $"loginId: {loginIdString} email: {claimName} role: {claimRole} traceIdentifier: {context.TraceIdentifier}";
 
-                //Console.WriteLine(message);
-                Log.Information(message);
+                    // name eg davemateer@gmail.com 
+                    string? email = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
-                // pump data into a queue?
-                // which will get written to a database
+                    // role eg Admin
+                    var roleName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+                    message +=
+                        $"loginId: {loginIdString} email: {email} role: {roleName} traceIdentifier: {context.TraceIdentifier}";
+
+                    //Console.WriteLine(message);
+                    Log.Information(message);
+
+                    // pump data into a queue?
+                    // which will get written to a database
+                    // as we're async all the way up, try using straight db query
+
+                    var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
+
+                    // defult to page
+                    int webLogTypeId = Db.WebLogTypeId.Page;
+
+                    if (path.ToString().StartsWith("/js"))
+                        webLogTypeId = Db.WebLogTypeId.Asset;
+                    else if (path.ToString().StartsWith("/lib"))
+                        webLogTypeId = Db.WebLogTypeId.Asset;
+                    else if (path.ToString().StartsWith("/css"))
+                        webLogTypeId = Db.WebLogTypeId.Asset;
+                    else if (path.ToString().StartsWith("/images"))
+                        webLogTypeId = Db.WebLogTypeId.Asset;
+                    else if (path.ToString().StartsWith("/sample-data"))
+                        webLogTypeId = Db.WebLogTypeId.Asset;
+                    else if (path.ToString().StartsWith("/screenshots"))
+                        webLogTypeId = Db.WebLogTypeId.Asset;
+                    else if (path.ToString().StartsWith("/health-check"))
+                        webLogTypeId = Db.WebLogTypeId.HealthCheckPage;
+                    else if (path.ToString().StartsWith("/robots.txt"))
+                        webLogTypeId = Db.WebLogTypeId.RobotsTxt;
+                    else if (path.ToString().StartsWith("/sitemap.xml"))
+                        webLogTypeId = Db.WebLogTypeId.SitemapXml;
+                    else if (path.ToString().StartsWith("/favicon.ico"))
+                        webLogTypeId = Db.WebLogTypeId.FaviconIco;
+                    else if (path.ToString().StartsWith("/files"))
+                        webLogTypeId = Db.WebLogTypeId.TusFiles;
+
+                    await Db.InsertWebLog(connectionString,
+                        webLogTypeId,
+                        ipAddress,
+                        verb,
+                        path.ToString(),
+                        queryString,
+                        statusCode,
+                        elapsedTimeInMs,
+                        referer,
+                        userAgent,
+                        protocol,
+                        loginId,
+                        email,
+                        roleName
+                    );
+
+
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Exception in Startup Web Log");
+                    // swallow
+                }
             });
 
 

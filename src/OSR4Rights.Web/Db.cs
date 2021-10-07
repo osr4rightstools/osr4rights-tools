@@ -760,5 +760,75 @@ namespace OSR4Rights.Web
                 where loginId = @LoginId
                 ", new { loginId, loginStateId, roleId });
         }
+
+        // used by startup.cs to insert into custom weblog table
+        public static async Task InsertWebLog(string connectionString, 
+            int webLogTypeId, 
+            string? ipAddress,
+            string verb,
+            string path,
+            string? queryString,
+            int statusCode,
+            int elapsedTimeInMs,
+            string? referer,
+            string? userAgent,
+            string protocol,
+            int? loginId,
+            string? email,
+            string? roleName)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            await conn.ExecuteAsyncWithRetry(@"
+                INSERT INTO [dbo].[WebLog]
+                       ([WebLogTypeId]
+                       ,[DateTimeUtc]
+                       ,[IPAddress]
+                       ,[Verb]
+                       ,[Path]
+                       ,[QueryString]
+                       ,[StatusCode]
+                       ,[ElapsedTimeInMs]
+                       ,[Referer]
+                       ,[UserAgent]
+                       ,[Protocol]
+                       ,[LoginId]
+                       ,[Email]
+                       ,[RoleName])
+                 VALUES
+                       (@WebLogTypeId
+                       ,GETUTCDATE()
+                       ,@IPAddress
+                       ,@Verb
+                       ,@Path
+                       ,@QueryString
+                       ,@StatusCode
+                       ,@ElapsedTimeInMs
+                       ,@Referer
+                       ,@UserAgent
+                       ,@Protocol
+                       ,@LoginId
+                       ,@Email
+                       ,@RoleName)
+            ", new
+            {
+                webLogTypeId, ipAddress, verb, path, queryString, statusCode,
+                elapsedTimeInMs, referer,
+                userAgent, protocol, loginId, email, roleName
+            });
+        }
+
+        public static class WebLogTypeId
+        {
+            public const int Page = 1;
+            public const int Asset = 2;
+            public const int HealthCheckPage = 3;
+            public const int RobotsTxt = 4;
+            public const int SitemapXml = 5;
+            public const int FaviconIco = 6;
+            public const int TusFiles = 7;
+
+        }
+
     }
 }
