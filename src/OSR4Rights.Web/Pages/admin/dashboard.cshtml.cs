@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,8 +12,11 @@ namespace OSR4Rights.Web.Pages.Admin
     {
         public List<Dashboard500VM> Dashboard500Vms { get; set; } = null!;
         public List<Dashboard404VM> Dashboard404VMs { get; set; } = null!;
+        public List<DashboardLoginAndJob> DashboardLoginsAndJobs { get; set; } = null!;
         public List<DashboardRealPage> DashboardRealPages { get; set; } = null!;
         public List<DashboardRequest> DashboardAllRequests { get; set; } = null!;
+
+        public string TotalFaceSearchVMProcessingTimeInHHMMSS { get; set; }
 
         public async Task OnGet()
         {
@@ -22,6 +27,18 @@ namespace OSR4Rights.Web.Pages.Admin
 
             var dashboard404VMs = await Db.GetDashboard404VMs(connectionString);
             Dashboard404VMs = dashboard404VMs;
+
+
+            var dashboardLoginAndJob = await Db.GetDashboardLoginsAndJobs(connectionString);
+            DashboardLoginsAndJobs = dashboardLoginAndJob;
+
+            var totalTimeTakenForFaceSearchJobs = dashboardLoginAndJob
+                .Where(x => x.JobTypeId == 1)
+                .Select(x => x.TimeTakenInS)
+                .Sum();
+            TimeSpan time = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
+            TotalFaceSearchVMProcessingTimeInHHMMSS = time.ToString(@"hh\:mm\:ss");
+
 
             var dashboardRealPages = await Db.GetDashboardRealPages(connectionString);
             DashboardRealPages = dashboardRealPages;

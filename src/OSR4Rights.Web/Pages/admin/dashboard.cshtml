@@ -5,15 +5,21 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Total page views: @Model.DashboardRealPages.Count</p>
+<p>All dates are in DD/MM/YYYY and times <a href="https://www.google.com/search?q=what+is+current+time+vs+utc">are displayed in UTC</a></p>
 
-<p>Total FaceSearch Jobs: </p>
-<p>Total FaceSearch Images processed: </p>
-<p>Total FaceSearch VM Hours:</p>
+<h4>Totals</h4>
+<p>Page views: @Model.DashboardRealPages.Count</p>
 
-<p>Total HateSpeech Jobs: </p>
-<p>Total HateSpeech words scanned: </p>
-<p>Total HS VM Hours:</p>
+<p>FaceSearch Jobs: </p>
+<p>FaceSearch Images processed: </p>
+
+<p>FaceSearch Jobs Processing GPU time (hh:mm:ss): @Model.TotalFaceSearchVMProcessingTimeInHHMMSS</p>
+
+<p>HateSpeech Jobs: </p>
+<p>HateSpeech words scanned: </p>
+<p>HS VM Hours:</p>
+
+<p>Total Emails sent to Users:</p>
 
 
 <h4>500 Exceptions</h4>
@@ -31,7 +37,7 @@
             @foreach (var d in Model.Dashboard500Vms.ToList())
             {
                 <tr>
-                    <td>@d.DateTimeUtc</td>
+                    <td>@d.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     <td>@d.Path</td>
                     <td>@d.Email</td>
                 </tr>
@@ -43,6 +49,7 @@
 </div>
 
 <h4>404 Not Found</h4>
+<p>Usually spurious attempts and not a problem</p>
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
@@ -58,7 +65,7 @@
             @foreach (var d in Model.Dashboard404VMs.ToList())
             {
                 <tr>
-                    <td>@d.DateTimeUtc</td>
+                    <td>@d.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     <td>@d.IPAddress</td>
                     <td>@d.Path</td>
                     <td>@d.UserAgent</td>
@@ -71,36 +78,37 @@
     </table>
 </div>
 
-<h4>Users and Jobs</h4>
-<p>Daily usage by user - showing total FaceSearch and HateSpeech jobs per day</p>
+<h4>Jobs (successful)</h4>
+<p>Daily usage by login - showing all FaceSearch and HateSpeech jobs</p>
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
             <tr>
                 <th>Email</th>
                 <th>Date</th>
-                <th>Total FaceSearch Jobs</th>
-                <th>Total HateSpeech Jobs</th>
+                <th>JobType</th>
+                <th>OrigFileName</th>
+                <th>TimeTaken (s)</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var d in Model.Dashboard404VMs.ToList())
+            @foreach (var d in Model.DashboardLoginsAndJobs.ToList())
             {
                 <tr>
-                    <td>@d.DateTimeUtc</td>
-                    <td>@d.IPAddress</td>
-                    <td>@d.Path</td>
-                    <td>@d.UserAgent</td>
                     <td>@d.Email</td>
+                    <td>@d.DateTimeUtcJobStartedOnVM.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    <td>@d.JobTypeId</td>
+                    <td>@d.OrigFileName</td>
+                    <td>@d.TimeTakenInS s</td>
                 </tr>
-
             }
-
         </tbody>
     </table>
 </div>
 
-
+<h4>Unsuccessful Jobs</h4>
+<p>JobStatusId of Exception, or Jobs which are marked as running (but probably have stopped and will never finish)</p>
+<p>Wont include tus upload guard of wrong file type, or missing directories, as the job isn't created until that passes</p>
 
 <h4>200 - Real Pages</h4>
 <p>Line graph showing page views by day/week/month/year</p>
@@ -121,7 +129,7 @@
             @foreach (var d in Model.DashboardRealPages.ToList())
             {
                 <tr>
-                    <td>@d.DateTimeUtc</td>
+                    <td>@d.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     <td>@d.IPAddress</td>
                     <td>@d.Path</td>
                     <td>@d.UserAgent</td>
@@ -176,7 +184,7 @@
                 <tr>
                     <td>@d.WebLogId</td>
                     <td>@d.WebLogTypeId</td>
-                    <td>@d.DateTimeUtc</td>
+                    <td>@d.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss")</td>
                     <td>@d.IpAddress</td>
                     <td>@d.Verb</td>
                     <td>@d.Path</td>

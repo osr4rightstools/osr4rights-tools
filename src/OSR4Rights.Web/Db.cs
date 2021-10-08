@@ -24,6 +24,16 @@ namespace OSR4Rights.Web
         string? Email
     );
 
+
+    public record DashboardLoginAndJob(
+           string? Email, // make mapping easier by keeping this nullable
+           DateTime DateTimeUtcJobStartedOnVM,
+           int JobTypeId,
+           string OrigFileName,
+           int TimeTakenInS
+       );
+
+
     public record DashboardRealPage(
            DateTime DateTimeUtc,
            string IPAddress,
@@ -890,6 +900,20 @@ namespace OSR4Rights.Web
                 from weblog
                 where StatusCode = 404
                 order by DateTimeUtc desc");
+
+            return result.ToList();
+        }
+
+        public static async Task<List<DashboardLoginAndJob>> GetDashboardLoginsAndJobs(string connectionString)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            var result = await conn.QueryAsyncWithRetry<DashboardLoginAndJob>(@"
+                select l.Email, j.DateTimeUtcJobStartedOnVM, j.JobTypeId, OrigFileName,
+                datediff(second,j.DateTimeUtcJobStartedOnVM,j.DateTimeUtcJobEndedOnVM)  as TimeTakenInS
+                from job j
+                join login l on l.LoginId = j.LoginId
+                order by DateTimeUtcJobStartedOnVM desc");
 
             return result.ToList();
         }
