@@ -16,7 +16,11 @@ namespace OSR4Rights.Web.Pages.Admin
         public List<DashboardRealPage> DashboardRealPages { get; set; } = null!;
         public List<DashboardRequest> DashboardAllRequests { get; set; } = null!;
 
-        public string TotalFaceSearchVMProcessingTimeInHHMMSS { get; set; }
+        public int TotalFaceSearchJobs { get; set; }
+        public string TotalFaceSearchVMProcessingTimeInHHMMSS { get; set; } = null!;
+
+        public int TotalHateSpeechJobs { get; set; }
+        public string TotalHateSpeechVMProcessingTimeInHHMMSS { get; set; } = null!;
 
         public async Task OnGet()
         {
@@ -28,9 +32,12 @@ namespace OSR4Rights.Web.Pages.Admin
             var dashboard404VMs = await Db.GetDashboard404VMs(connectionString);
             Dashboard404VMs = dashboard404VMs;
 
-
             var dashboardLoginAndJob = await Db.GetDashboardLoginsAndJobs(connectionString);
             DashboardLoginsAndJobs = dashboardLoginAndJob;
+
+            var totalFaceSearchJobs = dashboardLoginAndJob
+                .Count(x => x.JobTypeId == 1);
+            TotalFaceSearchJobs = totalFaceSearchJobs;
 
             var totalTimeTakenForFaceSearchJobs = dashboardLoginAndJob
                 .Where(x => x.JobTypeId == 1)
@@ -38,6 +45,18 @@ namespace OSR4Rights.Web.Pages.Admin
                 .Sum();
             TimeSpan time = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
             TotalFaceSearchVMProcessingTimeInHHMMSS = time.ToString(@"hh\:mm\:ss");
+
+
+            var totalHateSpeechJobs = dashboardLoginAndJob
+                            .Count(x => x.JobTypeId == 2);
+            TotalHateSpeechJobs = totalHateSpeechJobs;
+
+            var totalTimeTakenForHateSpeechJobs = dashboardLoginAndJob
+                .Where(x => x.JobTypeId == 2)
+                .Select(x => x.TimeTakenInS)
+                .Sum();
+            TimeSpan time2 = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
+            TotalHateSpeechVMProcessingTimeInHHMMSS = time2.ToString(@"hh\:mm\:ss");
 
 
             var dashboardRealPages = await Db.GetDashboardRealPages(connectionString);
