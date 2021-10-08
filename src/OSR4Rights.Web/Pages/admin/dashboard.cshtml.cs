@@ -48,14 +48,14 @@ namespace OSR4Rights.Web.Pages.Admin
 
 
             var totalHateSpeechJobs = dashboardLoginAndJob
-                            .Count(x => x.JobTypeId == 2);
+                 .Count(x => x.JobTypeId == 2);
             TotalHateSpeechJobs = totalHateSpeechJobs;
 
             var totalTimeTakenForHateSpeechJobs = dashboardLoginAndJob
                 .Where(x => x.JobTypeId == 2)
                 .Select(x => x.TimeTakenInS)
                 .Sum();
-            TimeSpan time2 = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
+            TimeSpan time2 = TimeSpan.FromSeconds(totalTimeTakenForHateSpeechJobs);
             TotalHateSpeechVMProcessingTimeInHHMMSS = time2.ToString(@"hh\:mm\:ss");
 
 
