@@ -11,6 +11,7 @@ namespace OSR4Rights.Web.Pages.Admin
         public List<Dashboard500VM> Dashboard500Vms { get; set; } = null!;
         public List<Dashboard404VM> Dashboard404VMs { get; set; } = null!;
         public List<DashboardRealPage> DashboardRealPages { get; set; } = null!;
+        public List<DashboardRequest> DashboardAllRequests { get; set; } = null!;
 
         public async Task OnGet()
         {
@@ -25,6 +26,8 @@ namespace OSR4Rights.Web.Pages.Admin
             var dashboardRealPages = await Db.GetDashboardRealPages(connectionString);
             DashboardRealPages = dashboardRealPages;
 
+            var dashboardAllRequests = await Db.GetDashboardAllRequests(connectionString);
+            DashboardAllRequests = dashboardAllRequests;
             //Options = loginStates.Select(x =>
             //    new SelectListItem
             //    {

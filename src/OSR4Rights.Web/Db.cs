@@ -32,6 +32,24 @@ namespace OSR4Rights.Web
            string? Email
     );
 
+    public record DashboardRequest(
+        int WebLogId,
+        int WebLogTypeId,
+        DateTime DateTimeUtc,
+        string? IpAddress,
+        string Verb,
+        string Path,
+        string? QueryString,
+        int StatusCode,
+        int ElapsedTimeInMs,
+        string? Referer,
+        string? UserAgent,
+        string HttpVersion,
+        int? LoginId,
+        string? Email,
+        string? RoleName
+    );
+
     public record Login(
         int LoginId,
         string Email,
@@ -884,6 +902,18 @@ namespace OSR4Rights.Web
                 select DateTimeUtc, IPAddress, Path, UserAgent, Email
                 from weblog
                 where WebLogTypeId = 1
+                order by DateTimeUtc desc");
+
+            return result.ToList();
+        }
+
+        public static async Task<List<DashboardRequest>> GetDashboardAllRequests(string connectionString)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            var result = await conn.QueryAsyncWithRetry<DashboardRequest>(@"
+                select *
+                from weblog
                 order by DateTimeUtc desc");
 
             return result.ToList();

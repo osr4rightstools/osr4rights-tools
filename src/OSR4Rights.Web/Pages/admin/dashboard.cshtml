@@ -5,7 +5,16 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Dashboard</p>
+<p>Total page views: @Model.DashboardRealPages.Count</p>
+
+<p>Total FaceSearch Jobs: </p>
+<p>Total FaceSearch Images processed: </p>
+<p>Total FaceSearch VM Hours:</p>
+
+<p>Total HateSpeech Jobs: </p>
+<p>Total HateSpeech words scanned: </p>
+<p>Total HS VM Hours:</p>
+
 
 <h4>500 Exceptions</h4>
 <p>If there is a logged in user and an exception is throw this is the most serious.</p>
@@ -62,32 +71,64 @@
     </table>
 </div>
 
-
-<h4>200 - Real Pages</h4>
-<p>Does not include assets (js, css, images), health-check, robots.txt, sitemap.xml, favicon.ico, /files (tus uploader), and custom image downloads through downloads</p>
+<h4>Users and Jobs</h4>
+<p>Daily usage by user - showing total FaceSearch and HateSpeech jobs per day</p>
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
-        <tr>
-            <th>DateTimeUtc</th>
-            <th>IPAddress</th>
-            <th>Path</th>
-            <th>UserAgent</th>
-            <th>Email</th>
-        </tr>
+            <tr>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Total FaceSearch Jobs</th>
+                <th>Total HateSpeech Jobs</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var d in Model.DashboardRealPages.ToList())
-        {
-            <tr>
-                <td>@d.DateTimeUtc</td>
-                <td>@d.IPAddress</td>
-                <td>@d.Path</td>
-                <td>@d.UserAgent</td>
-                <td>@d.Email</td>
-            </tr>
+            @foreach (var d in Model.Dashboard404VMs.ToList())
+            {
+                <tr>
+                    <td>@d.DateTimeUtc</td>
+                    <td>@d.IPAddress</td>
+                    <td>@d.Path</td>
+                    <td>@d.UserAgent</td>
+                    <td>@d.Email</td>
+                </tr>
 
-        }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<h4>200 - Real Pages</h4>
+<p>Line graph showing page views by day/week/month/year</p>
+<p>Does not include assets (js, css, images), health-check, robots.txt, sitemap.xml, favicon.ico, /files (tus uploader), and custom image downloads through /downloads</p>
+<p>Check that user IP address/Agent is not dramatically changing - ie coming from another country</p>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>DateTimeUtc</th>
+                <th>IPAddress</th>
+                <th>Path</th>
+                <th>UserAgent</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.DashboardRealPages.ToList())
+            {
+                <tr>
+                    <td>@d.DateTimeUtc</td>
+                    <td>@d.IPAddress</td>
+                    <td>@d.Path</td>
+                    <td>@d.UserAgent</td>
+                    <td>@d.Email</td>
+                </tr>
+
+            }
 
         </tbody>
     </table>
@@ -96,5 +137,63 @@
 <h4>All User Logins</h4>
 
 <h4>Referers</h4>
-
 <p>https://stackoverflow.com/questions/45011324/in-what-cases-http-referer-will-be-truncated Chrome will only show the base url by default now rather than the specific page</p>
+
+<h4>Queues Size over time</h4>
+
+<h4>DB Polly Retries over time</h4>
+<p>Would show performance problems</p>
+
+<h4>Page response times over time</h4>
+<p>Would show performance problems</p>
+
+<h4>200 - All Requests</h4>
+<p>Shows assets, http versions, page response times</p>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>WebLogId</th>
+                <th>WebLogTypeId</th>
+                <th>DateTimeUtc</th>
+                <th>IpAddress</th>
+                <th>Verb</th>
+                <th>Path</th>
+                <th>QueryString</th>
+                <th>StatusCode</th>
+                <th>ElapsedTimeInMs</th>
+                <th>Referer</th>
+                <th>UserAgent</th>
+                <th>HttpVersion</th>
+                <th>LoginId</th>
+                <th>Email</th>
+                <th>RoleName</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.DashboardAllRequests.ToList())
+            {
+                <tr>
+                    <td>@d.WebLogId</td>
+                    <td>@d.WebLogTypeId</td>
+                    <td>@d.DateTimeUtc</td>
+                    <td>@d.IpAddress</td>
+                    <td>@d.Verb</td>
+                    <td>@d.Path</td>
+                    <td>@d.QueryString</td>
+                    <td>@d.StatusCode</td>
+                    <td>@d.ElapsedTimeInMs</td>
+                    <td>@d.Referer</td>
+                    <td>@d.UserAgent</td>
+                    <td>@d.HttpVersion</td>
+                    <td>@d.LoginId</td>
+                    <td>@d.Email</td>
+                    <td>@d.RoleName</td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+</div>
+
