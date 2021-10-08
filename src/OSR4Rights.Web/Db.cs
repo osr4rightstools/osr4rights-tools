@@ -16,13 +16,21 @@ namespace OSR4Rights.Web
         string? Email
     );
 
+    public record Dashboard404VM(
+        DateTime DateTimeUtc,
+        string IPAddress,
+        string Path,
+        string? UserAgent,
+        string? Email
+    );
+
     public record DashboardRealPage(
            DateTime DateTimeUtc,
            string IPAddress,
            string Path,
            string? UserAgent,
            string? Email
-       );
+    );
 
     public record Login(
         int LoginId,
@@ -850,8 +858,20 @@ namespace OSR4Rights.Web
                 select DateTimeUtc, Path, Email 
                 from weblog
                 where StatusCode = 500
-                order by DateTimeUtc desc
-            ");
+                order by DateTimeUtc desc");
+
+            return result.ToList();
+        }
+
+        public static async Task<List<Dashboard404VM>> GetDashboard404VMs(string connectionString)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            var result = await conn.QueryAsyncWithRetry<Dashboard404VM>(@"
+                select DateTimeUtc, IPAddress, Path, UserAgent, Email
+                from weblog
+                where StatusCode = 404
+                order by DateTimeUtc desc");
 
             return result.ToList();
         }
@@ -864,8 +884,7 @@ namespace OSR4Rights.Web
                 select DateTimeUtc, IPAddress, Path, UserAgent, Email
                 from weblog
                 where WebLogTypeId = 1
-                order by DateTimeUtc desc
-            ");
+                order by DateTimeUtc desc");
 
             return result.ToList();
         }

@@ -9,6 +9,7 @@ namespace OSR4Rights.Web.Pages.Admin
     public class DashboardModel : PageModel
     {
         public List<Dashboard500VM> Dashboard500Vms { get; set; } = null!;
+        public List<Dashboard404VM> Dashboard404VMs { get; set; } = null!;
         public List<DashboardRealPage> DashboardRealPages { get; set; } = null!;
 
         public async Task OnGet()
@@ -17,6 +18,9 @@ namespace OSR4Rights.Web.Pages.Admin
 
             var dashboard500VMs = await Db.GetDashboard500VMs(connectionString);
             Dashboard500Vms = dashboard500VMs;
+
+            var dashboard404VMs = await Db.GetDashboard404VMs(connectionString);
+            Dashboard404VMs = dashboard404VMs;
 
             var dashboardRealPages = await Db.GetDashboardRealPages(connectionString);
             DashboardRealPages = dashboardRealPages;
