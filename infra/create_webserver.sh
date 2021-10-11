@@ -12,7 +12,8 @@ APT::Periodic::AutocleanInterval "0";
 APT::Periodic::Unattended-Upgrade "1";
 EOT
 
-sudo cp /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
+# sudo cp /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
+sudo mv /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
 # go with newer apt which gets dependency updates too (like linux-azure)
 sudo apt update -y
@@ -21,6 +22,7 @@ sudo apt upgrade -y
 # Install .NET 5 on Ubutu 20.04 LTS
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
 
 # nginx
 sudo apt-get install nginx -y
@@ -85,6 +87,10 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 
 sudo ufw enable
+
+  # a nice shortcut sym link
+# sudo ln -s /usr/local/openresty/nginx/ /home/dave/nginx
+sudo ln -s /var/www/logs/ /home/dave/logs
 
 # sudo snap install bpytop
 
