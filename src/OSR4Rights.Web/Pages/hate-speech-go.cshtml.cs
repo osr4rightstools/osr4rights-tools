@@ -87,7 +87,19 @@ namespace OSR4Rights.Web.Pages
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
                     PrepareHeaderForMatch = args => args.Header.ToLower(),
+                    // We're only checking that there is a header column called Text or text
+                    // letting everything else past
+                    // as "1", "hate speech, here", "a comment"
+                    // wont pass as am not mapping unknown columns
+                    BadDataFound = context =>
+                    {
+                        shouldContinue = true;
+                        //malformedRow = true;
+                        // Do what you need to do with the malformed row. For example:
+                        //errorRecsCollection.Add(context.Parser.RawRecord);
+                    }
                 };
+
                 using (var reader = new StreamReader(uploadedTusFileAndPath))
                 using (var csv = new CsvReader(reader, config))
                 {
