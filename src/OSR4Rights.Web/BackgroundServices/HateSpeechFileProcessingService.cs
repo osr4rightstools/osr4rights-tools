@@ -234,8 +234,8 @@ namespace OSR4Rights.Web.BackgroundServices
                             //DataDisks = new List<DataDisk>()
                         },
                         HardwareProfile = new HardwareProfile()
-                        //{ VmSize = new VirtualMachineSizeTypes("Standard_D4s_v4") }
-                        { VmSize = new VirtualMachineSizeTypes("Standard_D8s_v4") }
+                        { VmSize = new VirtualMachineSizeTypes("Standard_D4s_v4") }
+                        //{ VmSize = new VirtualMachineSizeTypes("Standard_D8s_v4") }
                     };
 
                     var operation = await virtualMachinesClient.StartCreateOrUpdateAsync(resourceGroupName, "vm", vm);

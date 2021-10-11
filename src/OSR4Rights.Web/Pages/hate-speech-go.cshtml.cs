@@ -91,13 +91,13 @@ namespace OSR4Rights.Web.Pages
                     // letting everything else past
                     // as "1", "hate speech, here", "a comment"
                     // wont pass as am not mapping unknown columns
-                    BadDataFound = context =>
-                    {
-                        shouldContinue = true;
-                        //malformedRow = true;
-                        // Do what you need to do with the malformed row. For example:
-                        //errorRecsCollection.Add(context.Parser.RawRecord);
-                    }
+                    //BadDataFound = context =>
+                    //{
+                    //    shouldContinue = true;
+                    //    //malformedRow = true;
+                    //    // Do what you need to do with the malformed row. For example:
+                    //    //errorRecsCollection.Add(context.Parser.RawRecord);
+                    //}
                 };
 
                 using (var reader = new StreamReader(uploadedTusFileAndPath))
@@ -105,14 +105,20 @@ namespace OSR4Rights.Web.Pages
                 {
                     var records = csv.GetRecords<Foo>();
                     var foo = records.Count();
-                    if (foo > 0)
+                    if (foo > 1)
                     {
                         Log.Information($"HS found {foo} records in the csv");
                         shouldContinue = true;
                     }
+                    else if (foo == 1)
+                        ErrorMessage = "Please have more than 1 line of text to test";
                     else
                         ErrorMessage = "Found correct header but no records";
                 }
+            }
+            catch (BadDataException ex)
+            {
+                ErrorMessage = $"Problem parsing the csv file with this row: {Environment.NewLine} {ex}";
             }
             catch (HeaderValidationException ex)
             {
