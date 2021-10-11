@@ -6,7 +6,26 @@
 
 <h1>Hate Speech</h1>
 
-<p>Please upload a CSV file (comma-separated values format which spreadsheet tools such as Microsoft Excel generate) containing the text to be analysed, one sample per row. The CSV file can have any number of rows and any number of columns, as long as at least one of the columns has a header named Text (case-insensitive). Any text containing commas within needs to be enclosed in double quotes (e.g., "Brexit, Covid-19 and climate change are only a few of the issues that need to be discussed"). If you are using a spreadsheet tool to create the CSV file, double quotes are automatically added so you do not need to add them yourself. However, if you are using a text editor to create your CSV file, please make sure that any text containing commas is enclosed in double quotes.</p>
+<p>Please upload a CSV file (comma-separated values format which spreadsheet tools such as Microsoft Excel generate) containing the text to be analysed, one sample per row. The CSV file can have any number of rows and any number of columns, as long as at least one of the columns has a header named Text (case-insensitive). </p>
+
+<p><a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a> is the accepted standard, however a lot of systems generate bad CSV data that is impossible to parse. We recommend the following style:</p>
+
+<h4>1 column</h4>
+Text<br />
+"Here is line 1 and all surrounded by double quotes"<br />
+"Here is line 2, with a comma"<br />
+"Here is line 3 with an apostrophy coppied from Word’s text editor which is different from ' this one"<br />
+<br />
+
+<h4>Multi column</h4>
+Identity,Text,comment<br />
+1,"Here is line 1 and all surrounded by double quotes. Notice the first column isn't surrounded - it works, however we suggest for safety you do'"<br />
+"2","Here is line 2, with a comma, and the identity is surrounded for safety too"<br />
+"3","Here is line 3 with an apostrophy coppied from Word’s text editor which is different from ' this one"<br />
+<br />
+
+@*<p>Any text containing commas within needs to be enclosed in double quotes (e.g., "Brexit, Covid-19 and climate change are only a few of the issues that need to be discussed"). If you are using a spreadsheet tool to create the CSV file, double quotes are automatically added so you do not need to add them yourself. However, if you are using a text editor to create your CSV file, please make sure that any text containing commas is enclosed in double quotes.</p>*@
+<p>If you are using a spreadsheet tool to create the CSV file, double quotes are automatically added so you do not need to add them yourself. However, if you are using a text editor to create your CSV file, please make sure that any text containing commas is enclosed in double quotes.</p>
 
 <p>We define "hate speech" as text that contains hateful, offensive and toxic language. The tool will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text. The languages currently supported by this tool are English, Arabic and Russian, although the language does not need to be specified together with the input text. </p>
 
