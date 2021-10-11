@@ -138,7 +138,7 @@ namespace OSR4Rights.Web.Pages
 
             // add the job to the processing queue // eg job-17.tmp // so we know the jobId
             // **TODO put back in**
-            //await _boundedMessageChannel.AddFileAsync(newOsrFileNameAndPath);
+            await _boundedMessageChannel.AddFileAsync(newOsrFileNameAndPath);
 
             Log.Information($"FS added {newOsrFileNameAndPath} to queue");
 
