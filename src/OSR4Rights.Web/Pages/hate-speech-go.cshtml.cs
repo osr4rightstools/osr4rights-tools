@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CliWrap.EventStream;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
@@ -84,41 +86,57 @@ namespace OSR4Rights.Web.Pages
             bool shouldContinue = false;
             try
             {
+                var bad = new List<string>();
+                var isRecordBad = false;
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
                     PrepareHeaderForMatch = args => args.Header.ToLower(),
-                    // We're only checking that there is a header column called Text or text
-                    // letting everything else past
-                    // as "1", "hate speech, here", "a comment"
-                    // wont pass as am not mapping unknown columns
-                    //BadDataFound = context =>
-                    //{
-                    //    shouldContinue = true;
-                    //    //malformedRow = true;
-                    //    // Do what you need to do with the malformed row. For example:
-                    //    //errorRecsCollection.Add(context.Parser.RawRecord);
-                    //}
+
+                    // parsing and getting bad data out
+                    // https://github.com/JoshClose/CsvHelper/issues/803
+                    BadDataFound = context =>
+                    {
+                        isRecordBad = true;
+                        bad.Add(context.RawRecord);
+                    }
                 };
 
                 using (var reader = new StreamReader(uploadedTusFileAndPath))
                 using (var csv = new CsvReader(reader, config))
                 {
-                    var records = csv.GetRecords<Foo>();
-                    var foo = records.Count();
-                    if (foo > 1)
+                    //var records = csv.GetRecords<Foo>();
+
+                    var records = new List<Foo>();
+                    while (csv.Read())
                     {
-                        Log.Information($"HS found {foo} records in the csv");
-                        shouldContinue = true;
+                        var record = csv.GetRecord<Foo>();
+                        if (!isRecordBad)
+                        {
+                            records.Add(record);
+                        }
                     }
-                    else if (foo == 1)
-                        ErrorMessage = "Please have more than 1 line of text to test";
+
+                    // are any of the records bad?
+                    if (bad.Any())
+                    {
+                        // only care about the first error
+                        // getting confusing duplicates with 1 error too
+                        ErrorMessage = $"Problem with row: {bad[0]}";
+                    }
                     else
-                        ErrorMessage = "Found correct header but no records";
+                    {
+                        var foo = records.Count();
+                        if (foo > 1)
+                        {
+                            Log.Information($"HS found {foo} records in the csv");
+                            shouldContinue = true;
+                        }
+                        else if (foo == 1)
+                            ErrorMessage = "Please have more than 1 line of text to test";
+                        else
+                            ErrorMessage = "Found correct header but no records";
+                    }
                 }
-            }
-            catch (BadDataException ex)
-            {
-                ErrorMessage = $"Problem parsing the csv file with this row: {Environment.NewLine} {ex}";
             }
             catch (HeaderValidationException ex)
             {
