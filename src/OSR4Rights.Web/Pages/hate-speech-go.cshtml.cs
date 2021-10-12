@@ -94,6 +94,10 @@ namespace OSR4Rights.Web.Pages
 
                     // parsing and getting bad data out
                     // https://github.com/JoshClose/CsvHelper/issues/803
+                    // we are only checking for the existence of Text (or text) column
+                    // and that the rest of the csv is valid
+                    // ie the correct number of columns
+                    // escaping (which may look like more columns) eg no " when using a ,
                     BadDataFound = context =>
                     {
                         isRecordBad = true;
@@ -116,12 +120,13 @@ namespace OSR4Rights.Web.Pages
                         }
                     }
 
-                    // are any of the records bad?
+                    // are any of the records bad
                     if (bad.Any())
                     {
                         // only care about the first error
                         // getting confusing duplicates with 1 error too
-                        ErrorMessage = $"Problem with row: {bad[0]}";
+                        ErrorMessage = $"Problem around: {bad[0]}";
+                        Log.Warning($"User having csv parse errors {bad[0]} for file {uploadedTusFileAndPath}");
                     }
                     else
                     {
@@ -131,8 +136,6 @@ namespace OSR4Rights.Web.Pages
                             Log.Information($"HS found {foo} records in the csv");
                             shouldContinue = true;
                         }
-                        //else if (foo == 1)
-                        //    ErrorMessage = "Please have more than 1 line of text to test";
                         else
                             ErrorMessage = "Found correct header but no records";
                     }
@@ -141,12 +144,12 @@ namespace OSR4Rights.Web.Pages
             catch (HeaderValidationException ex)
             {
                 ErrorMessage = "Problem parsing the csv file - can't find Text or text column";
-                Log.Information(ex, $"HS couldn't parse csv");
+                Log.Information(ex, "HS couldn't parse csv");
             }
             catch (Exception ex)
             {
-                ErrorMessage = "Unknown problem with the csv file";
-                Log.Warning(ex, $"HS unknown problem with csv file");
+                ErrorMessage = "Unknown problem with the csv file - check Logs";
+                Log.Warning(ex, "HS unknown problem with csv file");
             }
 
 

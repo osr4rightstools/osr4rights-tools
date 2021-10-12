@@ -97,14 +97,27 @@ namespace OSR4Rights.Web.Pages
             }
 
             // does the results file exist?
+            // which means is the length > 0 bytes, as we're not gracefully deleting 0 bytes on creation
             // if it doesn't it can mean there was a problem on the remote VM eg HateSpeech csv parser failed
-            var pathLocalDestinationDirectory = Path.Combine("/mnt/osrshare/", $"downloads/{jobId}");
-            var htmlFileName = "results.html";
-            var pathLocalFile = Path.Combine(pathLocalDestinationDirectory, htmlFileName);
-            if (System.IO.File.Exists(pathLocalFile))
-                ResultsFileExists = true;
-            else
-                ResultsFileExists = false;
+            ResultsFileExists = false;
+            try
+            {
+                var pathLocalDestinationDirectory = Path.Combine("/mnt/osrshare/", $"downloads/{jobId}");
+                var htmlFileName = "results.html";
+                var pathLocalFile = Path.Combine(pathLocalDestinationDirectory, htmlFileName);
+                if (System.IO.File.Exists(pathLocalFile))
+                {
+                    var file = new FileInfo(pathLocalFile);
+
+                    ResultsFileExists = file.Length > 0;
+                }
+                else
+                    ResultsFileExists = false;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex,"ResultsFileExists trapped and swallowed exception - should never happen");
+            }
 
             return Page();
         }
