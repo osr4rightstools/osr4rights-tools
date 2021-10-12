@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,8 @@ namespace OSR4Rights.Web.Pages
         public List<LogSmall> Logs { get; set; } = null!;
 
         public string? WarningMessage { get; set; }
+
+        public bool ResultsFileExists { get; set; }
 
         public ResultModel(FaceSearchFileProcessingChannel faceSearchFileMessageChannel, HateSpeechFileProcessingChannel hateSpeechFileProcessingChannel)
         {
@@ -84,9 +87,7 @@ namespace OSR4Rights.Web.Pages
             if (job.JobTypeId == Db.JobTypeId.FaceSearch) QueueLength = _faceSearchFileMessageChannel.CountOfFileProcessingChannel();
             if (job.JobTypeId == Db.JobTypeId.HateSpeech) QueueLength = _hateSpeechFileProcessingChannel.CountOfFileProcessingChannel();
 
-            //if (job.JobTypeId == Db.JobTypeId.HateSpeech)
-            //{
-            // unusual situation where something has gone wrong.. 
+            // unusual situation - well not really. Timing issue? 
             // do prompt the user
             if (job.JobStatusId == Db.JobStatusId.WaitingToStart && QueueLength == 0)
             {
@@ -94,7 +95,16 @@ namespace OSR4Rights.Web.Pages
 
                 Log.Information("Please refresh this page as it looks like the job is waiting to start, and is not in the queue. If this continues, please try submitting the job again, and otherwise contact us.");
             }
-            //}
+
+            // does the results file exist?
+            // if it doesn't it can mean there was a problem on the remote VM eg HateSpeech csv parser failed
+            var pathLocalDestinationDirectory = Path.Combine("/mnt/osrshare/", $"downloads/{jobId}");
+            var htmlFileName = "results.html";
+            var pathLocalFile = Path.Combine(pathLocalDestinationDirectory, htmlFileName);
+            if (System.IO.File.Exists(pathLocalFile))
+                ResultsFileExists = true;
+            else
+                ResultsFileExists = false;
 
             return Page();
         }
