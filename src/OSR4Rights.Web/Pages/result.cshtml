@@ -57,8 +57,9 @@ else
     <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width:100%;height:100vh;"> </object>
 }
 
-@if (Model.Job.JobStatusId != Db.JobStatusId.WaitingToStart)
-{
+<!-- always show logs so can debug empty result sets from VM-->
+@*@if (Model.Job.JobStatusId != Db.JobStatusId.WaitingToStart)
+{*@
     <p>
         <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Show logs
@@ -74,7 +75,7 @@ else
         </ul>
         @*</div>*@
     </div>
-}
+@*}*@
 
 @if (Model.WarningMessage is { })
 {
