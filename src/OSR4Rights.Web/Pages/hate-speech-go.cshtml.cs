@@ -126,13 +126,13 @@ namespace OSR4Rights.Web.Pages
                     else
                     {
                         var foo = records.Count();
-                        if (foo > 1)
+                        if (foo > 0)
                         {
                             Log.Information($"HS found {foo} records in the csv");
                             shouldContinue = true;
                         }
-                        else if (foo == 1)
-                            ErrorMessage = "Please have more than 1 line of text to test";
+                        //else if (foo == 1)
+                        //    ErrorMessage = "Please have more than 1 line of text to test";
                         else
                             ErrorMessage = "Found correct header but no records";
                     }
