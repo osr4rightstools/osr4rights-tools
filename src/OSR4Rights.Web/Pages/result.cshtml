@@ -55,6 +55,8 @@ else
     }
 
     <!-- show the html results in the same page-->
+    <!-- https://stackoverflow.com/questions/16584237/how-to-get-height-100-on-object-embed  -->
+
     @if (Model.ResultsFileExists)
     {
         <div>
@@ -63,7 +65,7 @@ else
     }
     else
     {
-        <p>Results file not returned - press the logs button to investigate. Look for issues such as Parser errors</p>
+        <p class="text-danger">Results file not returned - press Show Logs to investigate. Look for issues such as Parser errors</p>
     }
 }
 
@@ -99,7 +101,7 @@ else
 
 @if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
 {
-    <p>The VM will remain 30 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/face-search">add them</a> to the queue</p>
+    <p>The VM will remain 30 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/hate-speech">add them</a> to the queue</p>
     <p>We have a maximum 30 minute processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
 }
 
