@@ -39,6 +39,21 @@ else
     <p class="text-danger">Sorry - the job returned an exception which we couldn't handle. Please try again, see the Logs (click button below) for any more information, and finally contact us to look at server logs.</p>
 }
 
+<!-- test -->
+<p>
+    <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Show logs
+    </button>
+</p>
+<div class="collapse" id="collapseExample">
+    <ul class="list-group list-group-flush">
+        <!-- todo put in css instead of inline styling-->
+        @foreach (var log in Model.Logs)
+        {
+            <li class="list-group-item-light" style="border: none; list-style-type: none;">@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
+        }
+    </ul>
+</div>
 
 @if (Model.Job.JobStatusId == Db.JobStatusId.Completed)
 {
@@ -54,27 +69,28 @@ else
     }
 
     <!-- show the html results in the same page-->
-    <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width:100%;height:100vh;"> </object>
+    <div>
+        <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width:100%;height:100vh;"> </object>
+    </div>
 }
 
 <!-- always show logs so can debug empty result sets from VM-->
 @*@if (Model.Job.JobStatusId != Db.JobStatusId.WaitingToStart)
-{*@
-    <p>
-        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Show logs
-        </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-        <ul class="list-group list-group-flush">
-            <!-- todo put in css instead of inline styling-->
-            @foreach (var log in Model.Logs)
-            {
+    {*@
+<p>
+    <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Show logs
+    </button>
+</p>
+<div class="collapse" id="collapseExample">
+    <ul class="list-group list-group-flush">
+        <!-- todo put in css instead of inline styling-->
+        @foreach (var log in Model.Logs)
+        {
             <li class="list-group-item-light" style="border: none; list-style-type: none;">@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
-            }
-        </ul>
-        @*</div>*@
-    </div>
+        }
+    </ul>
+</div>
 @*}*@
 
 @if (Model.WarningMessage is { })

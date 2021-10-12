@@ -24,9 +24,14 @@ ID,Text<br />
 1,"Here is line 1 and Text column surrounded by quotation marks. Notice the first column isn't surrounded"<br />
 2,"Here is line 2, with a comma which would cause an error without quotation marks"<br />
 3,"Here is line 3 with an apostrophe copied from Word’s text editor which is different from '"<br />
-4,"Here is line 4 with ""a quote"" surround all text. """<br />
-5,"""Here is line 5 with triple quotation marks surround all text. """<br />
-6,"""Here is line 6 with ""a quote"".  """<br />
+<br />
+
+<h4>Advanced</h4>
+
+Text<br />
+1,"""Triple quotation marks surround all text, which parses as single Quotation Marks surrounding all text"""<br />
+2,"""Quotation marks surrounding all text, and ""an inner quote"". """<br />
+3x,"Notice the missing column name - our parser will render this as 1,2,3x, which could be useful for your own numbering scheme"<br />
 <br />
 
 @*<p>Any text containing commas within needs to be enclosed in double quotes (e.g., "Brexit, Covid-19 and climate change are only a few of the issues that need to be discussed"). If you are using a spreadsheet tool to create the CSV file, double quotes are automatically added so you do not need to add them yourself. However, if you are using a text editor to create your CSV file, please make sure that any text containing commas is enclosed in double quotes.</p>*@
