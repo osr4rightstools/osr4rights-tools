@@ -48,12 +48,8 @@ User=www-data
 WantedBy=multi-user.target
 EOT
 
-# environmental variable secrets
-sudo cp /home/dave/kestrel-osr.service /etc/systemd/system/kestrel-osr.service
-# sudo mv /home/dave/kestrel-osr.service /etc/systemd/system/kestrel-osr.service
-
-# for some reason mv didn't move, only copied
-sudo rm -f /home/dave/kestrel-osr.service
+# environmental variable secrets created above
+sudo mv /home/dave/kestrel-osr.service /etc/systemd/system/kestrel-osr.service
 
 # Fileshare
 sudo mkdir /mnt/osrshare
