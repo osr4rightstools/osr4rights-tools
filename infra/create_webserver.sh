@@ -38,7 +38,7 @@ sudo mkdir /var/www
 # create gitsource folder and clone
 sudo mkdir /gitsource
 cd /gitsource
-sudo git clone https://github.com/djhmateer/osr4rights-tools .
+sudo git clone https://github.com/osr4rightstools/osr4rights-tools .
 
 # nginx config
 # ssl certs will already be in /certs

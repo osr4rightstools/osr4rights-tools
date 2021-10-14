@@ -12,7 +12,7 @@ There are 2 tools currently in production
 
 Both of these tools, and the website are Open Source.  There are no paid for libraries used in any of this code.
 
-![FaceSearch](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
+![FaceSearch](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/overall.jpg?raw=true)
 
 Screenshot of the FaceSearch page showing upload, samples and sample output.
 
@@ -54,7 +54,7 @@ The queues allow the website to remain responsive all the time, as work is 'queu
 
 User uploads a file using the tus.io protocol (see below). The webserver listens on the route `/files`
 
-![Upload](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/upload2.jpg?raw=true)
+![Upload](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/upload2.jpg?raw=true)
 
 Can pause the upload and it will resume. If you connection is interrupted (eg machine reboot), it will resume.
 
@@ -77,7 +77,7 @@ Validation happens now by unzipping the file to `/osrFileStore/123456789`
 
 `123456789` - a temp unixtime directory that the tusFile would be unzipped into by face-search-go which will guard against bad files. It checks zip is okay, and directories are okay.
 
-![Problem](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/problem.jpg?raw=true)
+![Problem](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/problem.jpg?raw=true)
 
 File has not passed validation (the unzip check failed). There is a further check that the unzipped file contains the correct directories.
 
@@ -90,7 +90,7 @@ This full path and filename is then passed to the queue (Channel) which is picke
 
 Control is then passed to `\result\123` where 123 is the job number.
 
-![Running](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/running.jpg?raw=true)
+![Running](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/running.jpg?raw=true)
 
 The result page queries the database for any updates whilst the ProcessingService is doing the work of communicating to the VM.
 
@@ -114,7 +114,7 @@ Results are saved into an Azure File Share which is mounted on `/mnt/osrshare`
 
 All references to these files are handled through the `/downloads.cshtml` page which ensures authentication and authorisation.
 
-![completed](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/target2.jpg?raw=true)
+![completed](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/target2.jpg?raw=true)
 
 For example `https://osr4rightstools.org/downloads/264/target__MG_5442.JPG` is the first image you see above
 
@@ -160,9 +160,9 @@ Very similar process to FaceSearch, and the source is stored here:
 
 Conceptually we create a specific build script for a VM to do the processing, take a snapshot of it, then spin up that snapshot whenever we need it.
 
-[1faceSearchInfraGPU/infra.azcli](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
+[1faceSearchInfraGPU/infra.azcli](https://github.com/osr4rightstools/osr4rights-tools/blob/main/1faceSearchInfraGPU/infra.azcli) for facesearch shows the build script for the VM.
 
-[1faceSearchInfraGPU/create_facesearch_gpu.sh](https://github.com/djhmateer/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
+[1faceSearchInfraGPU/create_facesearch_gpu.sh](https://github.com/osr4rightstools/osr4rights-tools/blob/main/1faceSearchInfraGPU/create_facesearch_gpu.sh) is where the main work is - bash script detailing the dependencies of the VM.
 
 You can see in this file that FaceSearch needed some specific versions of libraries to get the Python/C GPU running as expected.  
 
@@ -228,7 +228,7 @@ To manually see all VM's use [https://portal.azure.con](portal.azure.com)
 
 Use the Database project inside /src to get the correct schema
 
-[insertData.sql](https://github.com/djhmateer/osr4rights-tools/blob/main/src/Database/insertData.sqlX) inserts the needed data for the workflows.
+[insertData.sql](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/Database/insertData.sqlX) inserts the needed data for the workflows.
 
 
 ## Operation and Support
@@ -260,7 +260,7 @@ In order of priority:
 
 Users can see more information from the 'Show Logs' button on a result page eg [https://osr4rightstools.org/result/146](https://osr4rightstools.org/result/146)
 
-![logs](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/logs.jpg?raw=true)
+![logs](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/logs.jpg?raw=true)
 
 Debug logs that the user can see. These are stored in the database and are a subset of the application logs stored on the webserver.
 
@@ -288,7 +288,7 @@ You'll need an Azure account with access to the appropriate VM's - specifically 
 
 ## Results
 
-![Results](https://github.com/djhmateer/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/results.jpg?raw=true)
+![Results](https://github.com/osr4rightstools/osr4rights-tools/blob/main/src/OSR4Rights.Web/wwwroot/screenshots/results.jpg?raw=true)
 
 Showing 3 FaceSearch jobs and 1 HateSpeech job that this user has ran.
 
