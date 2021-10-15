@@ -15,8 +15,16 @@ namespace OSR4Rights.Web.Pages.Account
         public async Task<IActionResult> OnGet(Guid emailAddressConfirmationCode)
         {
             // Has a logged in user somehow got to this page?
-            if (User.Identity is { IsAuthenticated: true }) return LocalRedirect("/logout");
+            if (User.Identity is { IsAuthenticated: true }) return LocalRedirect("/account/logout");
 
+            // We have a button on the page so that spam filters such as barracuda
+            // which come and look at the email, and do requests on the page
+            // get stopped
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(Guid emailAddressConfirmationCode)
+        {
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
             // get the guid and check whether it is a valid guid
@@ -27,10 +35,11 @@ namespace OSR4Rights.Web.Pages.Account
                 Log.Warning($"Email address confirmation fail on guid {emailAddressConfirmationCode}");
 
                 await Task.Delay(3000);
+                return LocalRedirect("/account/email-address-confirmation-fail");
 
-                EmailConfirmationSuccess = false;
+                //EmailConfirmationSuccess = false;
 
-                return Page();
+                //return Page();
             }
 
             EmailConfirmationSuccess = true;
@@ -40,11 +49,12 @@ namespace OSR4Rights.Web.Pages.Account
             // This only happens when user registers for the first time
             // so am happy to set RoleId to Tier1
             await Db.UpdateLoginIdWithRoleId(connectionString, login.LoginId, RoleId.Tier1);
-            
+
             // Don't need the Confirmation Code Guid any more.
             await Db.UpdateLoginIdSetEmailAddressConfirmationCodeToNull(connectionString, login.LoginId);
 
-            return Page();
+            return LocalRedirect("/account/email-address-confirmation-success");
+            //return Page();
         }
     }
 }

@@ -3,7 +3,18 @@
 
 <h1>Email Address Confirmation</h1>
 
-<p>@Model.Message</p>
+<p>Please press to confirm your email address</p>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Confirm Email</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<p>@Model.Message</p>
 
 @if (Model.EmailConfirmationSuccess)
 {
@@ -17,7 +28,7 @@
 else
 {
     <p>Sorry we couldn't verify your email - an hour or more has passed since you registered, or the code is wrong. Please register again"</p>
-}
+}*@
 
 
 
