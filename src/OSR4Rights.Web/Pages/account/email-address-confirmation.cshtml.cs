@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Serilog;
@@ -15,7 +17,12 @@ namespace OSR4Rights.Web.Pages.Account
         public async Task<IActionResult> OnGet(Guid emailAddressConfirmationCode)
         {
             // Has a logged in user somehow got to this page?
-            if (User.Identity is { IsAuthenticated: true }) return LocalRedirect("/account/logout");
+            if (User.Identity is { IsAuthenticated: true })
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                // hopefully this would log them out seamlessly
+                return LocalRedirect($"/account/email-address-confirmation/{emailAddressConfirmationCode}");
+            }
 
             // We have a button on the page so that spam filters such as barracuda
             // which come and look at the email, and do requests on the page
