@@ -1,0 +1,14 @@
+﻿@page
+@model EmailTestModel
+@{
+    ViewData["Title"] = "Email Test";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>email test</p>
+
+<form method="post">
+    <input asp-for="Email" style="width: 300px;" value="">
+
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>

@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Serilog;
@@ -16,13 +18,18 @@ namespace OSR4Rights.Web.Pages.Account
         public string NewPassword { get; set; } = null!;
 
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
             // Has a logged in user somehow got to this reset-password page?
-            if (User.Identity is { IsAuthenticated: true }) return LocalRedirect("/");
+            // this can happen if they want to change their password
+            // so log them out
+            if (User.Identity is { IsAuthenticated: true })
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Page();
+            }
 
             // we don't check the guid is valid to stop people guessing guids
-
             return Page();
         }
 
