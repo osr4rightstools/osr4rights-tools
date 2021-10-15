@@ -133,7 +133,9 @@ namespace OSR4Rights.Web.Pages.Account
 
                 var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, Email),
+                        //new Claim(ClaimTypes.Name, Email),
+                        // using login from Db so can get canonical Email ie maybe PascalCase
+                        new Claim(ClaimTypes.Name, login.Email),
                         new Claim(ClaimTypes.Role,  cdRole),
                         // custom claim type - so we can have our loginId available on every page via a Claim 
                         new Claim("LoginId", login.LoginId.ToString())

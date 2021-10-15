@@ -32,7 +32,7 @@ namespace OSR4Rights.Web.Pages.Account
 
                 if (login == null)
                 {
-                    Log.Information("Forgot-password email not found in our db was entered, but we won't tell the user that");
+                    Log.Information($"Forgot-password email {Email} not found in our db was entered, but we won't tell the user that");
                     return LocalRedirect("/account/forgot-password-confirmation");
                 }
 
@@ -68,7 +68,8 @@ Please click this link within 1 hour from now
                     ";
 
                 var osrEmail = new OSREmail(
-                    ToEmailAddress: Email,
+                    //ToEmailAddress: Email,
+                    ToEmailAddress: login.Email,
                     Subject: "OSR4RightsTools Password Reset",
                     TextBody: textBody,
                     HtmlBody: htmlText
