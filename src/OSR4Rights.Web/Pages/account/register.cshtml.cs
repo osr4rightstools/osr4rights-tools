@@ -90,7 +90,12 @@ namespace OSR4Rights.Web.Pages.Account
                 var request = HttpContextAccessor.HttpContext?.Request;
 
                 // eg https
-                var scheme = request?.Scheme;
+                // we are using a reverse proxy, which is communicating over http
+                // so this will always give http
+                //var scheme = request?.Scheme;
+
+                // we are forcing redirect to https on nginx, so can safely specify http here
+                var scheme = "https";
 
                 // eg localhost:5001
                 var host = request?.Host.ToUriComponent();

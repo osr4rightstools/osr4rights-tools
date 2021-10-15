@@ -45,7 +45,10 @@ namespace OSR4Rights.Web.Pages.Account
                 var request = HttpContextAccessor.HttpContext?.Request;
 
                 // eg https
-                var scheme = request?.Scheme;
+                //var scheme = request?.Scheme;
+                // force as we are using reverse proxy communicating over http
+
+                var scheme = "https";
 
                 // eg localhost:5001
                 var host = request?.Host.ToUriComponent();
