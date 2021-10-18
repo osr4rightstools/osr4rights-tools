@@ -215,8 +215,8 @@ namespace OSR4Rights.Web
             {
                 var m = new MimeMessage();
 
-                var fromAddress = "davemateer@gmail.com";
-                m.From.Add(new MailboxAddress("Dave (osr4rightstools)", fromAddress));
+                var fromAddress = "dave@osr4rightstools.org";
+                m.From.Add(new MailboxAddress("Dave Mateer", fromAddress));
                 //m.To.Add(new MailboxAddress("Dave (Gmail)", toEmailAddress));
                 // todo a to name?
                 m.To.Add(MailboxAddress.Parse(toEmailAddress));
@@ -239,7 +239,7 @@ namespace OSR4Rights.Web
                     c.AuthenticationMechanisms.Remove("XOAUTH2");
 
                     // Note: only needed if the SMTP server requires authentication
-                    await c.AuthenticateAsync("dave@hmsoftware.co.uk", gmailPassword);
+                    await c.AuthenticateAsync("dave@osr4rightstools.org", gmailPassword);
                     await c.SendAsync(m);
                     await c.DisconnectAsync(true);
 
