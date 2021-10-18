@@ -86,11 +86,10 @@ namespace OSR4Rights.Web
                     osrFileStorePath = @"/osrFileStore";
 
                     cookieKeyPath = @"/mnt/osrshare/osr-cookie-keys";
+
                     gmailPassword = Environment.GetEnvironmentVariable("GMAIL_PASSWORD")
                                                            ?? throw new ApplicationException(
                                                                "Can't read GMAIL_PASSWORD environment variable. It should be set when building the webserver specifically when creating the kestrel service which is in /etc/systemd/system/kestrel-osr.service");
-
-
                     break;
 
                 default:
