@@ -39,6 +39,8 @@
     <PackageReference Include="CliWrap" Version="3.3.3" />
     <PackageReference Include="CsvHelper" Version="27.1.1" />
     <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.55.0" />
+    <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
     <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />

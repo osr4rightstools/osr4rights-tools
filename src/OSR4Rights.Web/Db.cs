@@ -883,7 +883,8 @@ namespace OSR4Rights.Web
             using var conn = GetOpenConnection(connectionString);
 
             var result = await conn.QueryAsyncWithRetry<Dashboard500VM>(@"
-                select DateTimeUtc, Path, Email 
+                select top 10 
+                DateTimeUtc, Path, Email 
                 from weblog
                 where StatusCode = 500
                 order by DateTimeUtc desc");
@@ -896,7 +897,8 @@ namespace OSR4Rights.Web
             using var conn = GetOpenConnection(connectionString);
 
             var result = await conn.QueryAsyncWithRetry<Dashboard404VM>(@"
-                select DateTimeUtc, IPAddress, Path, UserAgent, Email
+                select top 30 
+                DateTimeUtc, IPAddress, Path, UserAgent, Email
                 from weblog
                 where StatusCode = 404
                 order by DateTimeUtc desc");
@@ -909,7 +911,8 @@ namespace OSR4Rights.Web
             using var conn = GetOpenConnection(connectionString);
 
             var result = await conn.QueryAsyncWithRetry<DashboardLoginAndJob>(@"
-                select l.Email, j.DateTimeUtcJobStartedOnVM, j.JobTypeId, OrigFileName,
+                select top 10
+                l.Email, j.DateTimeUtcJobStartedOnVM, j.JobTypeId, OrigFileName,
                 datediff(second,j.DateTimeUtcJobStartedOnVM,j.DateTimeUtcJobEndedOnVM)  as TimeTakenInS
                 from job j
                 join login l on l.LoginId = j.LoginId
@@ -923,7 +926,8 @@ namespace OSR4Rights.Web
             using var conn = GetOpenConnection(connectionString);
 
             var result = await conn.QueryAsyncWithRetry<DashboardRealPage>(@"
-                select DateTimeUtc, IPAddress, Path, UserAgent, Email
+                select top 20
+                DateTimeUtc, IPAddress, Path, UserAgent, Email
                 from weblog
                 where WebLogTypeId = 1
                 order by DateTimeUtc desc");
@@ -936,7 +940,8 @@ namespace OSR4Rights.Web
             using var conn = GetOpenConnection(connectionString);
 
             var result = await conn.QueryAsyncWithRetry<DashboardRequest>(@"
-                select *
+                select top 30
+                *
                 from weblog
                 order by DateTimeUtc desc");
 

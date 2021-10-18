@@ -26,103 +26,38 @@ namespace OSR4Rights.Web.Pages.Admin
         {
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
-            var dashboard500VMs = await Db.GetDashboard500VMs(connectionString);
-            Dashboard500Vms = dashboard500VMs;
+            Dashboard500Vms = await Db.GetDashboard500VMs(connectionString);
 
-            var dashboard404VMs = await Db.GetDashboard404VMs(connectionString);
-            Dashboard404VMs = dashboard404VMs;
+            Dashboard404VMs = await Db.GetDashboard404VMs(connectionString);
 
-            var dashboardLoginAndJob = await Db.GetDashboardLoginsAndJobs(connectionString);
-            DashboardLoginsAndJobs = dashboardLoginAndJob;
+            DashboardLoginsAndJobs = await Db.GetDashboardLoginsAndJobs(connectionString);
 
-            var totalFaceSearchJobs = dashboardLoginAndJob
+            TotalFaceSearchJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
                 .Count(x => x.JobTypeId == 1);
-            TotalFaceSearchJobs = totalFaceSearchJobs;
 
-            var totalTimeTakenForFaceSearchJobs = dashboardLoginAndJob
+            var totalTimeTakenForFaceSearchJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
                 .Where(x => x.JobTypeId == 1)
                 .Select(x => x.TimeTakenInS)
                 .Sum();
-            TimeSpan time = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
+            var time = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
             TotalFaceSearchVMProcessingTimeInHHMMSS = time.ToString(@"hh\:mm\:ss");
 
 
-            var totalHateSpeechJobs = dashboardLoginAndJob
+            var totalHateSpeechJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
                  .Count(x => x.JobTypeId == 2);
             TotalHateSpeechJobs = totalHateSpeechJobs;
 
-            var totalTimeTakenForHateSpeechJobs = dashboardLoginAndJob
+            var totalTimeTakenForHateSpeechJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
                 .Where(x => x.JobTypeId == 2)
                 .Select(x => x.TimeTakenInS)
                 .Sum();
-            TimeSpan time2 = TimeSpan.FromSeconds(totalTimeTakenForHateSpeechJobs);
+            var time2 = TimeSpan.FromSeconds(totalTimeTakenForHateSpeechJobs);
             TotalHateSpeechVMProcessingTimeInHHMMSS = time2.ToString(@"hh\:mm\:ss");
 
 
-            var dashboardRealPages = await Db.GetDashboardRealPages(connectionString);
-            DashboardRealPages = dashboardRealPages;
+            DashboardRealPages = await Db.GetDashboardRealPages(connectionString);
 
-            var dashboardAllRequests = await Db.GetDashboardAllRequests(connectionString);
-            DashboardAllRequests = dashboardAllRequests;
-            //Options = loginStates.Select(x =>
-            //    new SelectListItem
-            //    {
-            //        Value = x.LoginStateId.ToString(),
-            //        Text = x.Name
-            //    }).ToList();
-            //SelectedTag = 2;
-
-            // make collection with SelectListItem inside it
-            //var logins = await Db.GetAllLogins(connectionString);
-            //var loginAdminViewModels = new List<LoginAdminViewModel>();
-            //foreach (var x in logins)
-            //{
-            //    string roleName = x.RoleId switch
-            //    {
-            //        null => "none",
-            //        1 => "Tier1",
-            //        2 => "Tier2",
-            //        9 => "Admin",
-            //        _ => "unknown - problem"
-            //    };
-
-            //    string loginStateName = loginStates.First(a => a.LoginStateId == x.LoginStateId).Name.ToString();
-            //    var foo2 = new LoginAdminViewModel(
-            //        LoginId: x.LoginId,
-            //        x.Email,
-            //        x.PasswordHash,
-            //        x.LoginStateId,
-            //        LoginStateName: loginStateName, 
-            //        RoleName: roleName,
-            //        x.RoleId
-            //    );
-            //    loginAdminViewModels.Add(foo2);
-
-            //}
-            //Logins = loginAdminViewModels;
-
-
-            //var subscriptionId = Environment.GetEnvironmentVariable("AZURE_SUBSCRIPTION_ID");
-
-            //var resourcesClient = new ResourcesManagementClient(subscriptionId, new DefaultAzureCredential(),
-            //    new ResourcesManagementClientOptions() { Diagnostics = { IsLoggingContentEnabled = true } });
-
-            //var resourceGroupClient = resourcesClient.ResourceGroups;
-
-            //// how to get the resourcegroupname which look like
-            //// webfacesearchgpu47
-            //var foo = resourceGroupClient.List();
-            //foreach (var bar in foo)
-            //{
-            //    if (bar.Name.StartsWith("webfacesearchgpu")) FaceSearchRgs.Add(bar.Name);
-            //}
-
-
-            //foreach (var bar in foo)
-            //{
-            //    if (bar.Name.StartsWith("webhatespeechcpu")) HateSpeechRgs.Add(bar.Name);
-            //}
+            DashboardAllRequests = await Db.GetDashboardAllRequests(connectionString);
         }
-
     }
 }
