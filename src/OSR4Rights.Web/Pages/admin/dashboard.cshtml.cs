@@ -32,27 +32,28 @@ namespace OSR4Rights.Web.Pages.Admin
 
             DashboardLoginsAndJobs = await Db.GetDashboardLoginsAndJobs(connectionString);
 
-            TotalFaceSearchJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
-                .Count(x => x.JobTypeId == 1);
+            //TotalFaceSearchJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
+            //    .Count(x => x.JobTypeId == 1);
 
-            var totalTimeTakenForFaceSearchJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
-                .Where(x => x.JobTypeId == 1)
-                .Select(x => x.TimeTakenInS)
-                .Sum();
-            var time = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
-            TotalFaceSearchVMProcessingTimeInHHMMSS = time.ToString(@"hh\:mm\:ss");
+            // todo - do in sql
+            //var totalTimeTakenForFaceSearchJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
+            //    .Where(x => x.JobTypeId == 1)
+            //    .Select(x => x.TimeTakenInS)
+            //    .Sum();
+            //var time = TimeSpan.FromSeconds(totalTimeTakenForFaceSearchJobs);
+            //TotalFaceSearchVMProcessingTimeInHHMMSS = time.ToString(@"hh\:mm\:ss");
 
 
-            var totalHateSpeechJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
-                 .Count(x => x.JobTypeId == 2);
-            TotalHateSpeechJobs = totalHateSpeechJobs;
+            //var totalHateSpeechJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
+            //     .Count(x => x.JobTypeId == 2);
+            //TotalHateSpeechJobs = totalHateSpeechJobs;
 
-            var totalTimeTakenForHateSpeechJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
-                .Where(x => x.JobTypeId == 2)
-                .Select(x => x.TimeTakenInS)
-                .Sum();
-            var time2 = TimeSpan.FromSeconds(totalTimeTakenForHateSpeechJobs);
-            TotalHateSpeechVMProcessingTimeInHHMMSS = time2.ToString(@"hh\:mm\:ss");
+            //var totalTimeTakenForHateSpeechJobs = (await Db.GetDashboardLoginsAndJobs(connectionString))
+            //    .Where(x => x.JobTypeId == 2)
+            //    .Select(x => x.TimeTakenInS)
+            //    .Sum();
+            //var time2 = TimeSpan.FromSeconds(totalTimeTakenForHateSpeechJobs);
+            //TotalHateSpeechVMProcessingTimeInHHMMSS = time2.ToString(@"hh\:mm\:ss");
 
 
             DashboardRealPages = await Db.GetDashboardRealPages(connectionString);

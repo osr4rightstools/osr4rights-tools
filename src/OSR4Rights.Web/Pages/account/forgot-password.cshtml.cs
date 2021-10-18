@@ -76,31 +76,21 @@ Please click this link within 1 hour from now
                 );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
+                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-                var response = await Web.Email.Send(postmarkServerToken, osrEmail);
+                var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
 
-                if (response is null)
+                if (response == false)
                 {
-                    // Calls to the client can throw an exception 
-                    // if the request to the API times out.
-                    // or if the From address is not a Sender Signature 
                     ModelState.AddModelError("Password", "Sorry problem sending the confirmation email");
                     return Page();
                 }
-
-                if (response.Status != PostmarkStatus.Success)
-                {
-                    ModelState.AddModelError("Password", $"Problem sending email - status: {response.Status}");
-                    return Page();
-                }
-
 
                 return LocalRedirect("/account/forgot-password-confirmation");
             }
 
             return Page();
         }
-
     }
 }
 

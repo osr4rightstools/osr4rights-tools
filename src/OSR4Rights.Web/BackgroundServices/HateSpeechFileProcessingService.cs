@@ -576,20 +576,21 @@ namespace OSR4Rights.Web.BackgroundServices
                 );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
+                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-                var response = await Email.Send(postmarkServerToken, osrEmail);
+                var response = await Email.Send(osrEmail, postmarkServerToken, gmailPassword);
 
-                if (response is null)
+                if (response == false)
                 {
                     // Calls to the client can throw an exception which is handled in the helper
                     // lets give more information here so can recreate messages if need to from log files
                     Log.Warning($"{nameof(HateSpeechFileProcessingService)} Email send problem which probably didn't send for email: {toEmailAddress}, {textBody}, {subject}");
                 }
 
-                if (response?.Status != PostmarkStatus.Success)
-                {
-                    Log.Warning($"{nameof(HateSpeechFileProcessingService)} Email send response status error: {response?.Status}, {toEmailAddress}, {textBody}, {subject}");
-                }
+                //if (response?.Status != PostmarkStatus.Success)
+                //{
+                //    Log.Warning($"{nameof(HateSpeechFileProcessingService)} Email send response status error: {response?.Status}, {toEmailAddress}, {textBody}, {subject}");
+                //}
 
                 Log.Information($"HS End {nameof(HateSpeechFileProcessingService)}");
             }

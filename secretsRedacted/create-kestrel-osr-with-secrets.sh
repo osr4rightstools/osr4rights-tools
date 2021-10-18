@@ -15,6 +15,11 @@ cd /home/dave
 # To debug Env variables on live remember to login as www-data
 # sudo -u www-data bash
 
+# Would probably use the scp strategy rather than this again
+# like I do when putting on the .key and .pem files 
+# from infra.azcli
+# that is not however without its difficulties ie need retries
+
 # EOT is End of Transmission
 cat <<EOT >> kestrel-osr.service
 [Unit]
@@ -40,6 +45,10 @@ Environment=AZURE_CLIENT_SECRET=xxxxxxxxxx-xxxx-xxxxxxxxxxxxxxxxxx
 Environment=AZURE_SUBSCRIPTION_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Environment='DB_CONNECTION_STRING=Server=xxxxxxxxx.database.windows.net;Database=osr4rights;User Id=xxxx;Password=xxxxxxxxxxxxxxxxxxx;'
+
+Environment=POSTMARK_OSR4RIGHTSTOOLS=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Environment=GMAIL_PASSWORD=xxxxxxxxxxxxxxxxxxxxx
 
 SyslogIdentifier=dotnet-OSR4Rights.Web
 User=www-data

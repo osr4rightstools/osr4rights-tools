@@ -124,21 +124,16 @@ Or register again if you miss this time
                 );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
+                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-                var response = await Web.Email.Send(postmarkServerToken, osrEmail);
+                var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
 
-                if (response is null)
+                if (response == false)
                 {
                     // Calls to the client can throw an exception 
                     // if the request to the API times out.
                     // or if the From address is not a Sender Signature 
                     ModelState.AddModelError("Email", "Sorry problem sending the confirmation email");
-                    return Page();
-                }
-
-                if (response.Status != PostmarkStatus.Success)
-                {
-                    ModelState.AddModelError("Email", $"Problem sending email - status: {response.Status}");
                     return Page();
                 }
 
@@ -150,7 +145,7 @@ Or register again if you miss this time
                     HtmlBody: $"New User Registered on OSR {Email}"
                 );
 
-                var notifyEmailResponse = await Web.Email.Send(postmarkServerToken, notifyEmail);
+                var notifyEmailResponse = await Web.Email.Send(notifyEmail, postmarkServerToken, gmailPassword);
 
 
                 return LocalRedirect("/account/register-success");

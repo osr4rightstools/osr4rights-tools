@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MimeKit;
 using PostmarkDotNet;
 using Serilog;
 
@@ -7,17 +9,20 @@ namespace OSR4Rights.Web
 {
     public static class Email
     {
-        public static async Task<PostmarkResponse?> Send(string postmarkServerToken, OSREmail osrEmail)
+        //public static async Task<PostmarkResponse?> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
+        public static async Task<bool> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
         {
-            // emails will only be send to davemateer@gmail.com 
-            var inTestingMode = false;
+            var sendViaGmail = true;
+
+            // emails will only be sent to davemateer@gmail.com 
+            //var inTestingMode = false;
             //var inTestingMode = true;
 
             if (string.IsNullOrWhiteSpace(postmarkServerToken)) throw new ArgumentNullException(nameof(postmarkServerToken));
-
+            if (string.IsNullOrWhiteSpace(gmailPassword)) throw new ArgumentNullException(nameof(gmailPassword));
             if (osrEmail == null) throw new ArgumentNullException(nameof(osrEmail));
 
-            var client = new PostmarkClient(postmarkServerToken);
+
 
             // notice double ""
             // which is just an escaped "
@@ -144,7 +149,7 @@ namespace OSR4Rights.Web
                         
                         <p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;"">OSR4Rights Team.</p>
 
-                        <p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;""><a href=""https://osr4rights.org/contact-us/"">Contact Us</a> with any questions. Thank you for using OSR4Rights.</p>
+                        <!-- contact us link was here -->
 
                        <p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;""></p>
                       </td>
@@ -163,11 +168,6 @@ namespace OSR4Rights.Web
                   <td class=""content-block"" style=""font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"">
                     <span class=""apple-link"" style=""color: #999999; font-size: 12px; text-align: center;""HILLARY RODHAM CLINTON SCHOOL OF LAW, SWANSEA UNIVERSITY, SINGLETON PARK, SWANSEA. SA2 8PP</span>
                     <br><a href=""https://osr4rightstools.org"" style=""text-decoration: underline; color: #999999; font-size: 12px; text-align: center;"">osr4rightstools.org</a> </td> </tr>
-                <tr>
-                  <td class=""content-block powered-by"" style=""font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center;"">
-                    Powered by <a href=""http://htmlemail.io"" style=""color: #999999; font-size: 12px; text-align: center; text-decoration: none;"">HTMLemail</a>.
-                  </td>
-                </tr>
               </table>
             </div>
             <!-- END FOOTER -->
@@ -182,74 +182,128 @@ namespace OSR4Rights.Web
 </html>
 ";
 
+            //<p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;""><a href=""https://osr4rights.org/contact-us/"">Contact Us</a> with any questions. Thank you for using OSR4Rights.</p>
             string? textBodyTesting = null;
             string? htmlBodyTesting = null;
 
             var toEmailAddress = osrEmail.ToEmailAddress;
 
-            if (inTestingMode)
-            {
-                toEmailAddress = "davemateer@gmail.com";
+            // Testing mode
+            //if (inTestingMode)
+            //{
+            //    toEmailAddress = "davemateer@gmail.com";
 
-                Log.Information($"toEmailAddress: {toEmailAddress} but should be for: {osrEmail.ToEmailAddress}");
+            //    Log.Information($"toEmailAddress: {toEmailAddress} but should be for: {osrEmail.ToEmailAddress}");
 
-                textBodyTesting = $"** Testing Mode. Email should be sent to: {osrEmail.ToEmailAddress} **";
-                htmlBodyTesting = $"<p>** Testing Mode. Email should be sent to: {osrEmail.ToEmailAddress} **</p>";
-            }
-            else
-                Log.Information($"toEmailAddress: {toEmailAddress}");
+            //    textBodyTesting = $"** Testing Mode. Email should be sent to: {osrEmail.ToEmailAddress} **";
+            //    htmlBodyTesting = $"<p>** Testing Mode. Email should be sent to: {osrEmail.ToEmailAddress} **</p>";
+            //}
+            //else
+            //    Log.Information($"toEmailAddress: {toEmailAddress}");
 
             // Replace in template
             template = template.Replace("{{htmltext}}", osrEmail.HtmlBody);
 
             var textBody = osrEmail.TextBody + "Kind Regards, OSR4Rights Team" + textBodyTesting;
             var htmlBody = template + htmlBodyTesting;
-            
+
             Log.Information($"Subject: {osrEmail.Subject}");
             Log.Information($"TextBody {textBody}");
             Log.Debug($"HtmlBody {htmlBody}");
 
-            // Send email via PostMark
-            var postmarkMessage = new PostmarkMessage
+            if (sendViaGmail)
             {
-                To = toEmailAddress,
-                //From = "dave@hmsoftware.co.uk", // has to be a Sender Signature on postmark account
-                From = "help@osr4rightstools.org", // has to be a Sender Signature on postmark account
-                                                   //TrackOpens = true,
-                Subject = osrEmail.Subject,
-                TextBody = textBody,
-                //HtmlBody = "<html><body><img src=\"cid:embed_name.jpg\"/></body></html>",
-                HtmlBody = htmlBody
-                //Tag = "business-message",
-                //Headers = new HeaderCollection{
-                //    {"X-CUSTOM-HEADER", "Header content"}
-                //}
-            };
-            //var imageContent = System.IO.File.ReadAllBytes("test.jpg");
-            //message.AddAttachment(imageContent, "test.jpg", "image/jpg", "cid:embed_name.jpg");
+                var m = new MimeMessage();
 
-            PostmarkResponse? sendResult = null;
-            try
-            {
-                sendResult = await client.SendMessageAsync(postmarkMessage);
+                var fromAddress = "davemateer@gmail.com";
+                m.From.Add(new MailboxAddress("Dave (osr4rightstools)", fromAddress));
+                //m.To.Add(new MailboxAddress("Dave (Gmail)", toEmailAddress));
+                // todo a to name?
+                m.To.Add(MailboxAddress.Parse(toEmailAddress));
 
-                if (sendResult is { Status: PostmarkStatus.Success })
+                m.Subject = osrEmail.Subject;
+
+                var bodyBuilder = new BodyBuilder
                 {
-                    Log.Information("send email success");
-                    return sendResult;
-                }
-                Log.Warning($"Send fail Postmark {sendResult?.Status} {sendResult?.Message}");
-            }
-            catch (Exception ex)
-            {
-                // Calls to the client can throw an exception 
-                // if the request to the API times out.
-                // or if the From address is not a Sender Signature 
-                Log.Error(ex, $"{nameof(Email)} helper method - sending mail via Postmark error");
-                return sendResult;
-            }
+                    HtmlBody = htmlBody,
+                    TextBody = textBody
+                };
 
-            return sendResult;
+                m.Body = bodyBuilder.ToMessageBody();
+                try
+                {
+                    using var c = new SmtpClient();
+                    await c.ConnectAsync("smtp.gmail.com", 587);
+                    // Note: since we don't have an OAuth2 token, disable
+                    // the XOAUTH2 authentication mechanism.
+                    c.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    // Note: only needed if the SMTP server requires authentication
+                    await c.AuthenticateAsync("dave@hmsoftware.co.uk", gmailPassword);
+                    await c.SendAsync(m);
+                    await c.DisconnectAsync(true);
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Gmail Exception sending email - need to investigate! Dumping out salient points of email next into Error log for manual resend");
+
+                    Log.Error($"Trying to send email to final address of {osrEmail.ToEmailAddress}");
+                    Log.Error($"Subject {osrEmail.Subject}");
+                    Log.Error($"With body {osrEmail.HtmlBody}");
+                    return false;
+                }
+            }
+            else
+            {
+                // Send email via PostMark
+                var client = new PostmarkClient(postmarkServerToken);
+                var postmarkMessage = new PostmarkMessage
+                {
+                    To = toEmailAddress,
+                    //From = "dave@hmsoftware.co.uk", // has to be a Sender Signature on postmark account
+                    From = "help@osr4rightstools.org", // has to be a Sender Signature on postmark account
+                                                       //TrackOpens = true,
+                    Subject = osrEmail.Subject,
+                    TextBody = textBody,
+                    //HtmlBody = "<html><body><img src=\"cid:embed_name.jpg\"/></body></html>",
+                    HtmlBody = htmlBody
+                    //Tag = "business-message",
+                    //Headers = new HeaderCollection{
+                    //    {"X-CUSTOM-HEADER", "Header content"}
+                    //}
+                };
+                //var imageContent = System.IO.File.ReadAllBytes("test.jpg");
+                //message.AddAttachment(imageContent, "test.jpg", "image/jpg", "cid:embed_name.jpg");
+
+                //PostmarkResponse? sendResult = null;
+                try
+                {
+                    var sendResult = await client.SendMessageAsync(postmarkMessage);
+
+                    if (sendResult is { Status: PostmarkStatus.Success })
+                    {
+                        Log.Information("send email success");
+                        return true;
+                        //return sendResult;
+                    }
+                    Log.Warning($"Send fail Postmark {sendResult?.Status} {sendResult?.Message}");
+                }
+                catch (Exception ex)
+                {
+                    // Calls to the client can throw an exception 
+                    // if the request to the API times out.
+                    // or if the From address is not a Sender Signature 
+                    Log.Error(ex, $"{nameof(Email)} helper method - sending mail via Postmark error");
+                    return false;
+                    //return sendResult;
+                }
+
+                //return sendResult;
+                // unlikely to every get here (only if catch block throws)
+                return false;
+            }
         }
     }
 }

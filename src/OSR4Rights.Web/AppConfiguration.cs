@@ -12,14 +12,16 @@ namespace OSR4Rights.Web
         public string TusFileStorePath { get; }
         public string OsrFileStorePath { get; }
         public string CookieKeyPath { get; }
+        public string GmailPassword { get; }
 
-        private AppConfiguration(string connectionString, string postmarkServerToken, string tusFileStorePath, string osrFileStorePath, string cookieKeyPath)
+        private AppConfiguration(string connectionString, string postmarkServerToken, string tusFileStorePath, string osrFileStorePath, string cookieKeyPath, string gmailPassword)
         {
             ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             PostmarkServerToken = postmarkServerToken ?? throw new ArgumentNullException(nameof(postmarkServerToken));
             TusFileStorePath = tusFileStorePath;
             OsrFileStorePath = osrFileStorePath;
             CookieKeyPath = cookieKeyPath;
+            GmailPassword = gmailPassword;
         }
 
         public static AppConfiguration LoadFromEnvironment()
@@ -41,6 +43,7 @@ namespace OSR4Rights.Web
             string connectionString;
             string postmarkServerToken = "";
             string cookieKeyPath;
+            string gmailPassword = "";
 
             switch (env)
             {
@@ -51,8 +54,9 @@ namespace OSR4Rights.Web
                     try
                     {
                         postmarkServerToken = File.ReadAllText("../../secrets/postmark-osr4rightstools.txt");
+                        gmailPassword = File.ReadAllText("../../secrets/gmail-password.txt");
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         // swallow for integration tests
                     }
@@ -82,6 +86,11 @@ namespace OSR4Rights.Web
                     osrFileStorePath = @"/osrFileStore";
 
                     cookieKeyPath = @"/mnt/osrshare/osr-cookie-keys";
+                    gmailPassword = Environment.GetEnvironmentVariable("GMAIL_PASSWORD")
+                                                           ?? throw new ApplicationException(
+                                                               "Can't read GMAIL_PASSWORD environment variable. It should be set when building the webserver specifically when creating the kestrel service which is in /etc/systemd/system/kestrel-osr.service");
+
+
                     break;
 
                 default:
@@ -112,7 +121,7 @@ namespace OSR4Rights.Web
             //    postmarkServerToken = File.ReadAllText("../../secrets/postmark-osr4rightstools.txt");
             //}
 
-            return new AppConfiguration(connectionString, postmarkServerToken, tusFileStorePath, osrFileStorePath, cookieKeyPath);
+            return new AppConfiguration(connectionString, postmarkServerToken, tusFileStorePath, osrFileStorePath, cookieKeyPath, gmailPassword);
 
         }
     }

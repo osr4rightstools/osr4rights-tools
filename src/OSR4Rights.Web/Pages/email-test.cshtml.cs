@@ -21,6 +21,35 @@ namespace OSR4Rights.Web.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+
+            var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
+            var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
+
+            var textBody = $@"test - please disregard (text)";
+
+            var htmlText = $@"<p>test - please disregard (html)</p> ";
+
+            var osrEmail = new OSREmail(
+                ToEmailAddress: Email,
+                Subject: "Test Email - disregard",
+                TextBody: textBody,
+                HtmlBody: htmlText
+            );
+
+            var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+
+
+            if (response == false)
+            {
+                Log.Warning("Problem sending email");
+
+                return Page();
+            }
+
+
+
+
+
             //var mailMessage = new MimeMessage();
             //mailMessage.From.Add(new MailboxAddress("Dave Mateer", "davemateer@gmail.com"));
             //mailMessage.To.Add(new MailboxAddress("Dave Work Email ", "dave@hmsoftware.co.uk"));
