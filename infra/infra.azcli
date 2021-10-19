@@ -65,8 +65,8 @@ az network public-ip create \
     --name ${publicIPName} \
     --sku Standard \
     --zone 1 \
-    --dns-name ${dnsname} \
-    --reverse-fqdn osr4rightstools.org 
+    --dns-name ${dnsname}
+    # --reverse-fqdn osr4rightstools.org 
     # --reverse-fqdn ${dnsname}.westeurope.cloudapp.azure.com
 
 
