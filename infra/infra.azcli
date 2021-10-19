@@ -66,7 +66,8 @@ az network public-ip create \
     --sku Standard \
     --zone 1 \
     --dns-name ${dnsname} \
-    --reverse-fqdn ${dnsname}.westeurope.cloudapp.azure.com
+    --reverse-fqdn osr4rightstools.org 
+    # --reverse-fqdn ${dnsname}.westeurope.cloudapp.azure.com
 
 
 # nic and associate with vnet, publicip
