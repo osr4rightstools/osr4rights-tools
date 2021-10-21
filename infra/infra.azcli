@@ -58,17 +58,12 @@ az network nsg create \
 
 # public IP and associate with the given DNS name
 # Basic or Standard for the ip-sku
-# Reverse DNS to help with emails
-# https://docs.microsoft.com/en-us/azure/dns/dns-reverse-dns-for-azure-services
 az network public-ip create \
     --resource-group ${rg} \
     --name ${publicIPName} \
     --sku Standard \
     --zone 1 \
     --dns-name ${dnsname}
-    # --reverse-fqdn osr4rightstools.org 
-    # --reverse-fqdn ${dnsname}.westeurope.cloudapp.azure.com
-
 
 # nic and associate with vnet, publicip
 az network nic create \
