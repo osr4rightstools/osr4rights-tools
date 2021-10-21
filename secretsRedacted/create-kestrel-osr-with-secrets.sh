@@ -57,6 +57,8 @@ User=www-data
 WantedBy=multi-user.target
 EOT
 
+# gmail is unused currently
+
 # environmental variable secrets created above
 sudo mv /home/dave/kestrel-osr.service /etc/systemd/system/kestrel-osr.service
 

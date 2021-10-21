@@ -12,7 +12,7 @@ namespace OSR4Rights.Web
         //public static async Task<PostmarkResponse?> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
         public static async Task<bool> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
         {
-            var sendViaGmail = true;
+            var sendViaGmail = false;
 
             // emails will only be sent to davemateer@gmail.com 
             //var inTestingMode = false;
@@ -21,8 +21,6 @@ namespace OSR4Rights.Web
             if (string.IsNullOrWhiteSpace(postmarkServerToken)) throw new ArgumentNullException(nameof(postmarkServerToken));
             if (string.IsNullOrWhiteSpace(gmailPassword)) throw new ArgumentNullException(nameof(gmailPassword));
             if (osrEmail == null) throw new ArgumentNullException(nameof(osrEmail));
-
-
 
             // notice double ""
             // which is just an escaped "
