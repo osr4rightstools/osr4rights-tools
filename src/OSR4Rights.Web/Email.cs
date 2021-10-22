@@ -261,6 +261,7 @@ namespace OSR4Rights.Web
                 //    Log.Error($"With body {osrEmail.HtmlBody}");
                 //    return false;
                 //}
+                return false;
             }
             else
             {
