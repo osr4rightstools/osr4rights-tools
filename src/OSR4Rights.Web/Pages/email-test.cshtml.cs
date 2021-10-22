@@ -27,11 +27,11 @@ namespace OSR4Rights.Web.Pages
 
             var textBody = $@"test - please disregard (text)";
 
-            var htmlText = $@"<p>test - please disregard (html)</p> ";
+            var htmlText = "";
 
             var osrEmail = new OSREmail(
                 ToEmailAddress: Email,
-                Subject: "Test Email - disregard",
+                Subject: "Please confirm email address for registration with OSR4RightsTools",
                 TextBody: textBody,
                 HtmlBody: htmlText
             );

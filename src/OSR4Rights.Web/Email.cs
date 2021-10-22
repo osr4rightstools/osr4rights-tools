@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -180,6 +181,9 @@ namespace OSR4Rights.Web
 </html>
 ";
 
+            // read template from file so don't have to worry about double escaping ""
+            //var template2 = await File.ReadAllTextAsync("template.html");
+
             //<p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;""><a href=""https://osr4rights.org/contact-us/"">Contact Us</a> with any questions. Thank you for using OSR4Rights.</p>
             string? textBodyTesting = null;
             string? htmlBodyTesting = null;
@@ -202,8 +206,12 @@ namespace OSR4Rights.Web
             // Replace in template
             template = template.Replace("{{htmltext}}", osrEmail.HtmlBody);
 
+
             var textBody = osrEmail.TextBody + "Kind Regards, OSR4Rights Team" + textBodyTesting;
             var htmlBody = template + htmlBodyTesting;
+
+            // hack
+            //htmlBody = template2;
 
             Log.Information($"Subject: {osrEmail.Subject}");
             Log.Information($"TextBody {textBody}");
