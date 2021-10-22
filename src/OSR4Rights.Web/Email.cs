@@ -182,7 +182,7 @@ namespace OSR4Rights.Web
 ";
 
             // read template from file so don't have to worry about double escaping ""
-            var template2 = await File.ReadAllTextAsync("template.html");
+            var template2 = await File.ReadAllTextAsync("template-email.html");
 
             //<p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;""><a href=""https://osr4rights.org/contact-us/"">Contact Us</a> with any questions. Thank you for using OSR4Rights.</p>
             string? textBodyTesting = null;
@@ -219,47 +219,48 @@ namespace OSR4Rights.Web
 
             if (sendViaGmail)
             {
-                var m = new MimeMessage();
+                // comment back in to send via gmail
+                //var m = new MimeMessage();
 
-                var fromAddress = "dave@osr4rightstools.org";
-                m.From.Add(new MailboxAddress("Dave Mateer", fromAddress));
-                //m.To.Add(new MailboxAddress("Dave (Gmail)", toEmailAddress));
-                // todo a to name?
-                m.To.Add(MailboxAddress.Parse(toEmailAddress));
+                //var fromAddress = "dave@osr4rightstools.org";
+                //m.From.Add(new MailboxAddress("Dave Mateer", fromAddress));
+                ////m.To.Add(new MailboxAddress("Dave (Gmail)", toEmailAddress));
+                //// todo a to name?
+                //m.To.Add(MailboxAddress.Parse(toEmailAddress));
 
-                m.Subject = osrEmail.Subject;
+                //m.Subject = osrEmail.Subject;
 
-                var bodyBuilder = new BodyBuilder
-                {
-                    HtmlBody = htmlBody,
-                    TextBody = textBody
-                };
+                //var bodyBuilder = new BodyBuilder
+                //{
+                //    HtmlBody = htmlBody,
+                //    TextBody = textBody
+                //};
 
-                m.Body = bodyBuilder.ToMessageBody();
-                try
-                {
-                    using var c = new SmtpClient();
-                    await c.ConnectAsync("smtp.gmail.com", 587);
-                    // Note: since we don't have an OAuth2 token, disable
-                    // the XOAUTH2 authentication mechanism.
-                    c.AuthenticationMechanisms.Remove("XOAUTH2");
+                //m.Body = bodyBuilder.ToMessageBody();
+                //try
+                //{
+                //    using var c = new SmtpClient();
+                //    await c.ConnectAsync("smtp.gmail.com", 587);
+                //    // Note: since we don't have an OAuth2 token, disable
+                //    // the XOAUTH2 authentication mechanism.
+                //    c.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                    // Note: only needed if the SMTP server requires authentication
-                    await c.AuthenticateAsync("dave@osr4rightstools.org", gmailPassword);
-                    await c.SendAsync(m);
-                    await c.DisconnectAsync(true);
+                //    // Note: only needed if the SMTP server requires authentication
+                //    await c.AuthenticateAsync("dave@osr4rightstools.org", gmailPassword);
+                //    await c.SendAsync(m);
+                //    await c.DisconnectAsync(true);
 
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Gmail Exception sending email - need to investigate! Dumping out salient points of email next into Error log for manual resend");
+                //    return true;
+                //}
+                //catch (Exception ex)
+                //{
+                //    Log.Error(ex, "Gmail Exception sending email - need to investigate! Dumping out salient points of email next into Error log for manual resend");
 
-                    Log.Error($"Trying to send email to final address of {osrEmail.ToEmailAddress}");
-                    Log.Error($"Subject {osrEmail.Subject}");
-                    Log.Error($"With body {osrEmail.HtmlBody}");
-                    return false;
-                }
+                //    Log.Error($"Trying to send email to final address of {osrEmail.ToEmailAddress}");
+                //    Log.Error($"Subject {osrEmail.Subject}");
+                //    Log.Error($"With body {osrEmail.HtmlBody}");
+                //    return false;
+                //}
             }
             else
             {
