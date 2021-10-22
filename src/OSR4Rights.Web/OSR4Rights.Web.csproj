@@ -32,11 +32,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="template.html" />
+    <None Remove="template - Copy.html" />
+    <None Remove="template-email.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="template.html">
+    <Content Include="template - Copy.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="template-email.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -86,7 +86,6 @@ namespace OSR4Rights.Web.Pages.Account
 
                 // shortcut way to get the url eg https://localhost500 or https://testserver.azure.com
                 // to make testing easier
-
                 var request = HttpContextAccessor.HttpContext?.Request;
 
                 // eg https
