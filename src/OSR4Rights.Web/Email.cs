@@ -182,7 +182,7 @@ namespace OSR4Rights.Web
 ";
 
             // read template from file so don't have to worry about double escaping ""
-            //var template2 = await File.ReadAllTextAsync("template.html");
+            var template2 = await File.ReadAllTextAsync("template.html");
 
             //<p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;""><a href=""https://osr4rights.org/contact-us/"">Contact Us</a> with any questions. Thank you for using OSR4Rights.</p>
             string? textBodyTesting = null;
