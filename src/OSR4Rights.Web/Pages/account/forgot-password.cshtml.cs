@@ -48,41 +48,43 @@ namespace OSR4Rights.Web.Pages.Account
                 //var scheme = request?.Scheme;
                 // force as we are using reverse proxy communicating over http
 
-                var scheme = "https";
+                // old email way
+//                var scheme = "https";
 
-                // eg localhost:5001
-                var host = request?.Host.ToUriComponent();
+//                // eg localhost:5001
+//                var host = request?.Host.ToUriComponent();
 
-                var foo = $"{scheme}://" + host + $"/account/reset-password/{guid}";
-                Log.Information(foo);
+//                var foo = $"{scheme}://" + host + $"/account/reset-password/{guid}";
+//                Log.Information(foo);
 
-                var textBody = $@"Hi,
-Here is your OSR4Rights Tools email reset link: {foo}
-Please click this link within 1 hour from now
-";
+//                var textBody = $@"Hi,
+//Here is your OSR4Rights Tools email reset link: {foo}
+//Please click this link within 1 hour from now
+//";
 
-                var htmlText = $@"<p>Hi,</p>
-<p>Here is your OSR4Rights Tools email reset link:</p>
-<p><a href=""{foo}"">{foo}</a></p>
-<p>Please click this link within 1 hour from now</p>
-                    ";
+//                var htmlText = $@"<p>Hi,</p>
+//<p>Here is your OSR4Rights Tools email reset link:</p>
+//<p><a href=""{foo}"">{foo}</a></p>
+//<p>Please click this link within 1 hour from now</p>
+//                    ";
 
-                var osrEmail = new OSREmail(
-                    //ToEmailAddress: Email,
-                    ToEmailAddress: login.Email,
-                    Subject: "OSR4RightsTools Password Reset",
-                    TextBody: textBody,
-                    HtmlBody: htmlText
-                );
+//                var osrEmail = new OSREmail(
+//                    //ToEmailAddress: Email,
+//                    ToEmailAddress: login.Email,
+//                    Subject: "OSR4RightsTools Password Reset",
+//                    TextBody: textBody,
+//                    HtmlBody: htmlText
+//                );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
-                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
+                //var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-                var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+                //var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+                var response = await Web.Email.SendTemplate("forgot-password", Email, guid.ToString(), postmarkServerToken);
 
                 if (response == false)
                 {
-                    ModelState.AddModelError("Password", "Sorry problem sending the confirmation email");
+                    ModelState.AddModelError("Password", "Sorry problem sending the forgot password email");
                     return Page();
                 }
 

@@ -555,42 +555,36 @@ namespace OSR4Rights.Web.BackgroundServices
                 await Db.UpdateVMStatusId(connectionString, vmFromDb.VMId, Db.VMStatusId.ReadyToRunJobOnVM);
 
                 // Send confirmation email that the job is done
-                var url = $"https://osr4rightstools.org/result/{jobId}";
+                //var url = $"https://osr4rightstools.org/result/{jobId}";
                 var toEmailAddress = await Db.GetEmailByJobId(connectionString, jobId);
-                var textBody = $@"Hi,
-                    Your HateSpeech job has completed on OSR4RightsTools. Please see you results here: {url}
-                    ";
+                //var textBody = $@"Hi,
+                //    Your HateSpeech job has completed on OSR4RightsTools. Please see you results here: {url}
+                //    ";
 
-                var htmlText = $@"<p>Hi,</p>
-                    <p>Your HateSpeech job has completed on OSR4RightsTools. Please see you results here:</p>
-                    <p><a href=""{url}"">{url}</a></p>
-                    ";
+                //var htmlText = $@"<p>Hi,</p>
+                //    <p>Your HateSpeech job has completed on OSR4RightsTools. Please see you results here:</p>
+                //    <p><a href=""{url}"">{url}</a></p>
+                //    ";
 
-                var subject = "OSR4RightsTools HateSpeech Job Complete";
+                //var subject = "OSR4RightsTools HateSpeech Job Complete";
 
-                var osrEmail = new OSREmail(
-                    ToEmailAddress: toEmailAddress,
-                    Subject: subject,
-                    TextBody: textBody,
-                    HtmlBody: htmlText
-                );
+                //var osrEmail = new OSREmail(
+                //    ToEmailAddress: toEmailAddress,
+                //    Subject: subject,
+                //    TextBody: textBody,
+                //    HtmlBody: htmlText
+                //);
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
-                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
+                //var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-                var response = await Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+                //var response = await Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+                var response = await Email.SendTemplate("hate-speech-job-complete", toEmailAddress, jobId.ToString(), postmarkServerToken);
 
                 if (response == false)
                 {
-                    // Calls to the client can throw an exception which is handled in the helper
-                    // lets give more information here so can recreate messages if need to from log files
-                    Log.Warning($"{nameof(HateSpeechFileProcessingService)} Email send problem which probably didn't send for email: {toEmailAddress}, {textBody}, {subject}");
+                    Log.Warning("HS Problem sending email");
                 }
-
-                //if (response?.Status != PostmarkStatus.Success)
-                //{
-                //    Log.Warning($"{nameof(HateSpeechFileProcessingService)} Email send response status error: {response?.Status}, {toEmailAddress}, {textBody}, {subject}");
-                //}
 
                 Log.Information($"HS End {nameof(HateSpeechFileProcessingService)}");
             }

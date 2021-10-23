@@ -33,6 +33,52 @@ namespace OSR4Rights.Web
 
                 subject = "OSR4RightsTools - Please confirm email address for registration";
             }
+            else if (templateName == "forgot-password")
+            {
+                // html
+                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-forgot-password.html"));
+                htmlMiddle = htmlMiddle.Replace("{{guid}}", dataToSendUser);
+                htmlBody = htmlTop + htmlMiddle + htmlBottom;
+
+                // text
+                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-register.html"));
+                textBody = textBody.Replace("{{guid}}", dataToSendUser);
+
+                subject = "OSR4RightsTools - Forgot Password";
+            }
+            else if (templateName == "face-search-job-complete")
+            {
+                // html
+                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-face-search-job-complete.html"));
+                htmlMiddle = htmlMiddle.Replace("{{jobId}}", dataToSendUser);
+                htmlBody = htmlTop + htmlMiddle + htmlBottom;
+
+                // text
+                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-face-search-job-complete.html"));
+                textBody = textBody.Replace("{{jobId}}", dataToSendUser);
+
+                subject = "OSR4RightsTools - FaceSearch Job Complete";
+            }
+            else if (templateName == "hate-speech-job-complete")
+            {
+                // html
+                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-hate-speech-job-complete.html"));
+                htmlMiddle = htmlMiddle.Replace("{{jobId}}", dataToSendUser);
+                htmlBody = htmlTop + htmlMiddle + htmlBottom;
+
+                // text
+                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-hate-speech-job-complete.html"));
+                textBody = textBody.Replace("{{jobId}}", dataToSendUser);
+
+                subject = "OSR4RightsTools - HateSpeech Job Complete";
+            }
+            else
+            {
+                Log.Warning($"Unrecognised template name passed of {templateName}");
+                return false;
+            }
+
+            Log.Information($"email sending to {toEmailAddress}, subject {subject}, textBody is {textBody}");
 
             // Send email via PostMark
             var client = new PostmarkClient(postmarkServerToken);
@@ -69,6 +115,7 @@ namespace OSR4Rights.Web
             return false;
         }
 
+        // No templating - used for messages to admins, and not to end users
         public static async Task<bool> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
         {
             var sendViaGmail = false;
@@ -240,7 +287,6 @@ namespace OSR4Rights.Web
 ";
 
             // read template from file so don't have to worry about double escaping ""
-            var template2 = await File.ReadAllTextAsync("template-email.html");
 
             //<p style=""font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0;""><a href=""https://osr4rights.org/contact-us/"">Contact Us</a> with any questions. Thank you for using OSR4Rights.</p>
             string? textBodyTesting = null;

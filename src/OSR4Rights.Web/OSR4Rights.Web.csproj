@@ -33,14 +33,38 @@
 
   <ItemGroup>
     <None Remove="email-templates\html-template-bottom.html" />
+    <None Remove="email-templates\html-template-face-search-job-complete.html" />
+    <None Remove="email-templates\html-template-forgot-password.html" />
+    <None Remove="email-templates\html-template-hate-speech-job-complete.html" />
     <None Remove="email-templates\html-template-register.html" />
     <None Remove="email-templates\html-template-top.html" />
+    <None Remove="email-templates\text-face-search-job-complete.html" />
+    <None Remove="email-templates\text-forgot-password.html" />
+    <None Remove="email-templates\text-hate-speech-job-complete.html" />
     <None Remove="email-templates\text-register.html" />
     <None Remove="template-email.html" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="email-templates\html-template-bottom.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-hate-speech-job-complete.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-face-search-job-complete.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-forgot-password.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\text-hate-speech-job-complete.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\text-face-search-job-complete.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\text-forgot-password.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="email-templates\text-register.html">
@@ -52,7 +76,7 @@
     <Content Include="email-templates\html-template-top.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="email-templates\html-template-full-register.html">
+    <Content Include="email-templates\full.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

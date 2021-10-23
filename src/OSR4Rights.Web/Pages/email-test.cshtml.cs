@@ -21,7 +21,6 @@ namespace OSR4Rights.Web.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-
             var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
 
             var response = await Web.Email.SendTemplate("register", Email, Guid.NewGuid().ToString(), postmarkServerToken);

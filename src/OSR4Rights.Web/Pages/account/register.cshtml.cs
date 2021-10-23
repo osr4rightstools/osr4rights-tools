@@ -99,40 +99,41 @@ namespace OSR4Rights.Web.Pages.Account
                 // eg localhost:5001
                 var host = request?.Host.ToUriComponent();
 
-                var foo = $"{scheme}://" + host + $"/account/email-address-confirmation/{guid}";
-                Log.Information(foo);
+                // old email stuff before template
+//                var foo = $"{scheme}://" + host + $"/account/email-address-confirmation/{guid}";
+//                Log.Information(foo);
 
-                var textBody = $@"Hi,
-Here is your OSR4Rights Tools email address confirmation link: {foo}
-Please click this link within 1 hour from now
-Or register again if you miss this time
-";
+//                var textBody = $@"Hi,
+//Here is your OSR4Rights Tools email address confirmation link: {foo}
+//Please click this link within 1 hour from now
+//Or register again if you miss this time
+//";
 
-                var htmlText = $@"<p>Hi,</p>
-<p>Here is your OSR4Rights Tools email address confirmation link: </p>
-<p><a href=""{foo}"">{foo}</a></p>
-<p>Please click this link within 1 hour from now</p>
-<p>Or register again if you miss this time</p>
-                    ";
+//                var htmlText = $@"<p>Hi,</p>
+//<p>Here is your OSR4Rights Tools email address confirmation link: </p>
+//<p><a href=""{foo}"">{foo}</a></p>
+//<p>Please click this link within 1 hour from now</p>
+//<p>Or register again if you miss this time</p>
+//                    ";
 
-                var osrEmail = new OSREmail(
-                    ToEmailAddress: Email,
-                    Subject: "OSR4RightsTools Account Confirm",
-                    TextBody: textBody,
-                    HtmlBody: htmlText
-                );
+//                var osrEmail = new OSREmail(
+//                    ToEmailAddress: Email,
+//                    Subject: "OSR4RightsTools Account Confirm",
+//                    TextBody: textBody,
+//                    HtmlBody: htmlText
+//                );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
-                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-                var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+                //var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+                var response = await Web.Email.SendTemplate("register", Email, guid.ToString(), postmarkServerToken);
 
                 if (response == false)
                 {
                     // Calls to the client can throw an exception 
                     // if the request to the API times out.
                     // or if the From address is not a Sender Signature 
-                    ModelState.AddModelError("Email", "Sorry problem sending the confirmation email");
+                    ModelState.AddModelError("Email", "Sorry problem sending the confirmation email - please try again later. We are working on resolving it.");
                     return Page();
                 }
 
@@ -144,8 +145,8 @@ Or register again if you miss this time
                     HtmlBody: $"New User Registered on OSR {Email}"
                 );
 
+                var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
                 var notifyEmailResponse = await Web.Email.Send(notifyEmail, postmarkServerToken, gmailPassword);
-
 
                 return LocalRedirect("/account/register-success");
             }
