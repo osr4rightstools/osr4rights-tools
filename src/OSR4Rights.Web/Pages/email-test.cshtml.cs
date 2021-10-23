@@ -23,21 +23,8 @@ namespace OSR4Rights.Web.Pages
         {
 
             var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
-            var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-            var textBody = $@"test - please disregard (text)";
-
-            var htmlText = "";
-
-            var osrEmail = new OSREmail(
-                ToEmailAddress: Email,
-                Subject: "Please confirm email address for registration with OSR4RightsTools",
-                TextBody: textBody,
-                HtmlBody: htmlText
-            );
-
-            var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
-
+            var response = await Web.Email.SendTemplate("register", Email, Guid.NewGuid().ToString(), postmarkServerToken);
 
             if (response == false)
             {
@@ -45,6 +32,30 @@ namespace OSR4Rights.Web.Pages
 
                 return Page();
             }
+
+            //var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
+            //var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
+
+            //var textBody = $@"test - please disregard (text)";
+
+            //var htmlText = "";
+
+            //var osrEmail = new OSREmail(
+            //    ToEmailAddress: Email,
+            //    Subject: "Please confirm email address for registration with OSR4RightsTools",
+            //    TextBody: textBody,
+            //    HtmlBody: htmlText
+            //);
+
+            //var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
+
+
+            //if (response == false)
+            //{
+            //    Log.Warning("Problem sending email");
+
+            //    return Page();
+            //}
 
 
 

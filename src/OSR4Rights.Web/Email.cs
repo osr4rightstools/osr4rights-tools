@@ -10,7 +10,65 @@ namespace OSR4Rights.Web
 {
     public static class Email
     {
-        //public static async Task<PostmarkResponse?> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
+        public static async Task<bool> SendTemplate(string templateName, string toEmailAddress, string dataToSendUser, string postmarkServerToken)
+        {
+
+            var folder = "email-templates";
+            var htmlTop = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-top.html"));
+            var htmlBottom = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-bottom.html"));
+            string subject = "";
+            string htmlBody = "";
+            string textBody = "";
+
+            if (templateName == "register")
+            {
+                // html
+                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-register.html"));
+                htmlMiddle = htmlMiddle.Replace("{{guid}}", dataToSendUser);
+                htmlBody = htmlTop + htmlMiddle + htmlBottom;
+
+                // text
+                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-register.html"));
+                textBody = textBody.Replace("{{guid}}", dataToSendUser);
+
+                subject = "OSR4RightsTools - Please confirm email address for registration";
+            }
+
+            // Send email via PostMark
+            var client = new PostmarkClient(postmarkServerToken);
+            var postmarkMessage = new PostmarkMessage
+            {
+                To = toEmailAddress,
+                From = "help@osr4rightstools.org", // has to be a Sender Signature on postmark account
+                Subject = subject,
+                TextBody = textBody,
+                HtmlBody = htmlBody
+            };
+
+            try
+            {
+                var sendResult = await client.SendMessageAsync(postmarkMessage);
+
+                if (sendResult is { Status: PostmarkStatus.Success })
+                {
+                    Log.Information("send email success");
+                    return true;
+                }
+                Log.Warning($"Send fail Postmark {sendResult?.Status} {sendResult?.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Calls to the client can throw an exception 
+                // if the request to the API times out.
+                // or if the From address is not a Sender Signature 
+                Log.Error(ex, $"{nameof(Email)} helper method - sending mail via Postmark error");
+                return false;
+            }
+
+            // very unusual to get here - exception in catch block
+            return false;
+        }
+
         public static async Task<bool> Send(OSREmail osrEmail, string postmarkServerToken, string gmailPassword)
         {
             var sendViaGmail = false;
@@ -313,5 +371,6 @@ namespace OSR4Rights.Web
                 return false;
             }
         }
+
     }
 }

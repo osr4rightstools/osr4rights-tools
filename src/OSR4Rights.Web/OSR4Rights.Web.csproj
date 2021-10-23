@@ -32,15 +32,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="template - Copy.html" />
+    <None Remove="email-templates\html-template-bottom.html" />
+    <None Remove="email-templates\html-template-register.html" />
+    <None Remove="email-templates\html-template-top.html" />
+    <None Remove="email-templates\text-register.html" />
     <None Remove="template-email.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="template - Copy.html">
+    <Content Include="email-templates\html-template-bottom.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="template-email.html">
+    <Content Include="email-templates\text-register.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-register.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-top.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-full-register.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
