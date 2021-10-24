@@ -1,11 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Serilog;
 
 namespace OSR4Rights.Web.Pages.Account
 {
@@ -13,60 +9,31 @@ namespace OSR4Rights.Web.Pages.Account
     {
         public string? Message { get; set; }
 
-        public bool EmailConfirmationSuccess { get; set; }
-
         [BindProperty]
         [EmailAddress]
         public string Email { get; set; } = null!;
 
-        public async Task<IActionResult> OnGet(Guid emailAddressConfirmationCode)
+        public async Task<IActionResult> OnGet()
         {
-            // Has a logged in user somehow got to this page?
-            //if (User.Identity is { IsAuthenticated: true })
-            //{
-            //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            //    // hopefully this would log them out seamlessly
-            //    return LocalRedirect($"/account/email-address-confirmation/{emailAddressConfirmationCode}");
-            //}
-
-            // We have a button on the page so that spam filters such as barracuda
-            // which come and look at the email, and do requests on the page
-            // get stopped
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(Guid emailAddressConfirmationCode)
+        public async Task<IActionResult> OnPostAsync()
         {
-            //var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
+            var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
+            var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
 
-            //// get the guid and check whether it is a valid guid
-            //var login = await Db.GetLoginByEmailConfirmationCode(connectionString, emailAddressConfirmationCode);
+            // Notify an admin that a user has unsubscribed 
+            var notifyEmail = new OSREmail(
+                ToEmailAddress: "dave@hmsoftware.co.uk",
+                Subject: "User unsubscribed",
+                TextBody: $"Unsubscribe user {Email}",
+                HtmlBody: $"Unsubscribe user {Email}"
+            );
 
-            //if (login is null)
-            //{
-            //    Log.Warning($"Email address confirmation fail on guid {emailAddressConfirmationCode}");
-
-            //    await Task.Delay(3000);
-            //    return LocalRedirect("/account/email-address-confirmation-fail");
-
-            //    //EmailConfirmationSuccess = false;
-
-            //    //return Page();
-            //}
-
-            //EmailConfirmationSuccess = true;
-
-            //await Db.UpdateLoginIdWithLoginStateId(connectionString, login.LoginId, LoginStateId.InUse);
-
-            //// This only happens when user registers for the first time
-            //// so am happy to set RoleId to Tier1
-            //await Db.UpdateLoginIdWithRoleId(connectionString, login.LoginId, RoleId.Tier1);
-
-            //// Don't need the Confirmation Code Guid any more.
-            //await Db.UpdateLoginIdSetEmailAddressConfirmationCodeToNull(connectionString, login.LoginId);
+            var response = await Web.Email.Send(notifyEmail, postmarkServerToken, gmailPassword);
 
             return LocalRedirect("/account/unsubscribe-success");
-            //return Page();
         }
     }
 }

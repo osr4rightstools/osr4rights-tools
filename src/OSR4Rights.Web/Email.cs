@@ -16,9 +16,9 @@ namespace OSR4Rights.Web
             var folder = "email-templates";
             var htmlTop = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-top.html"));
             var htmlBottom = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-bottom.html"));
-            string subject = "";
-            string htmlBody = "";
-            string textBody = "";
+            string subject;
+            string htmlBody;
+            string textBody;
 
             if (templateName == "register")
             {
@@ -31,7 +31,7 @@ namespace OSR4Rights.Web
                 textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-register.html"));
                 textBody = textBody.Replace("{{guid}}", dataToSendUser);
 
-                subject = "OSR4RightsTools - Please confirm email address for registration";
+                subject = "Confirm email address for registration";
             }
             else if (templateName == "forgot-password")
             {
@@ -44,7 +44,7 @@ namespace OSR4Rights.Web
                 textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-register.html"));
                 textBody = textBody.Replace("{{guid}}", dataToSendUser);
 
-                subject = "OSR4RightsTools - Forgot Password";
+                subject = "Forgot Password";
             }
             else if (templateName == "face-search-job-complete")
             {
@@ -57,7 +57,7 @@ namespace OSR4Rights.Web
                 textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-face-search-job-complete.html"));
                 textBody = textBody.Replace("{{jobId}}", dataToSendUser);
 
-                subject = "OSR4RightsTools - FaceSearch Job Complete";
+                subject = "FaceSearch Job Complete";
             }
             else if (templateName == "hate-speech-job-complete")
             {
@@ -70,7 +70,7 @@ namespace OSR4Rights.Web
                 textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-hate-speech-job-complete.html"));
                 textBody = textBody.Replace("{{jobId}}", dataToSendUser);
 
-                subject = "OSR4RightsTools - HateSpeech Job Complete";
+                subject = "HateSpeech Job Complete";
             }
             else
             {
