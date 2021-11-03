@@ -193,7 +193,7 @@ namespace OSR4Rights.Web
                     //var host = request?.Host;
 
                     string? refererS = null;
-                    Log.Information($"referer is {referer}");
+                    //Log.Information($"referer is {referer}");
                     if (referer is { })
                     {
                         if (referer.ToString().Contains(@"https://osr4rightstools.org/"))
