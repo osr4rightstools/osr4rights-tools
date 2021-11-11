@@ -125,6 +125,8 @@ namespace OSR4Rights.Web
                     //}
                     //Log.Information(" --end request headers--");
 
+                    // maybe get the total bytes from nginx so can write that to db, and dashboard the total traffic
+
                     // HTTP version passed from nginx
                     var xDMRequest = context.Request.Headers.FirstOrDefault(x => x.Key == "X-DM-Request").Value;
                     string httpVersion = "none";
