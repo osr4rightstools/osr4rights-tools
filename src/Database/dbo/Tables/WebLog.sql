@@ -10,10 +10,12 @@
     [ElapsedTimeInMs] INT             NOT NULL,
     [Referer]         NVARCHAR (MAX)  NULL,
     [UserAgent]       NVARCHAR (MAX)  NULL,
-    [Protocol]        NVARCHAR (50)   NOT NULL,
+    [HttpVersion]     NVARCHAR (50)   NULL,
     [LoginId]         INT             NULL,
     [Email]           NVARCHAR (1024) NULL,
     [RoleName]        NVARCHAR (50)   NULL,
     CONSTRAINT [PK_WebLog] PRIMARY KEY CLUSTERED ([WebLogId] ASC)
 );
+
+
 

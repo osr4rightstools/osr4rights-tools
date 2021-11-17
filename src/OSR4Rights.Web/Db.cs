@@ -811,6 +811,7 @@ namespace OSR4Rights.Web
         }
 
         // used by startup.cs to insert into custom weblog table
+        // this should be a fast insert!
         public static async Task InsertWebLog(string connectionString,
             int webLogTypeId,
             string? ipAddress,
