@@ -12,14 +12,13 @@ APT::Periodic::AutocleanInterval "0";
 APT::Periodic::Unattended-Upgrade "1";
 EOT
 
-# sudo cp /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 sudo mv /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
 # go with newer apt which gets dependency updates too (like linux-azure)
 sudo apt update -y
 sudo apt upgrade -y
   
-# Install .NET 5 on Ubutu 20.04 LTS
+# Install packages for .NET for Ubutu 20.04 LTS
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
@@ -27,10 +26,11 @@ rm packages-microsoft-prod.deb
 # nginx
 sudo apt-get install nginx -y
 
+# .NET 6 SDK
 sudo apt-get update; \
   sudo apt-get install -y apt-transport-https && \
   sudo apt-get update && \
-  sudo apt-get install -y dotnet-sdk-5.0
+  sudo apt-get install -y dotnet-sdk-6.0
 
 # create document root for published files 
 sudo mkdir /var/www
