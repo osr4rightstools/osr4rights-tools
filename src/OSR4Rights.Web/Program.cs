@@ -31,12 +31,12 @@ namespace OSR4Rights.Web
 
                 // x-info-with-framework (useful for debugging)
                 // stuff like: [14:27:19 INF] Executing handler method OSR4Rights.Web.Pages.IndexModel.OnGet - ModelState is Valid
-                //.WriteTo.Logger(lc => lc
-                //    .MinimumLevel.Information()
-                //    .Filter.ByExcluding("RequestPath in ['/health-check', '/health-check-db']")
-                //    .WriteTo.File("logs/x-info-with-framework.txt", rollingInterval: RollingInterval.Day)
-                //.WriteTo.Console()
-                //)
+                .WriteTo.Logger(lc => lc
+                    .MinimumLevel.Information()
+                    .Filter.ByExcluding("RequestPath in ['/health-check', '/health-check-db']")
+                    .WriteTo.File("logs/x-info-with-framework.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.Console()
+                )
 
                 // info
                 // framework minimum level is Warning (normal everyday looking at logs)

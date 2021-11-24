@@ -82,24 +82,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.4.1" />
+    <PackageReference Include="Azure.Identity" Version="1.5.0" />
     <PackageReference Include="Azure.ResourceManager.Compute" Version="1.0.0-preview.2" />
     <PackageReference Include="Azure.ResourceManager.Network" Version="1.0.0-preview.1" />
     <PackageReference Include="Azure.ResourceManager.Resources" Version="1.0.0-preview.2" />
     <PackageReference Include="CliWrap" Version="3.3.3" />
-    <PackageReference Include="CsvHelper" Version="27.1.1" />
-    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="CsvHelper" Version="27.2.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.55.0" />
     <PackageReference Include="MailKit" Version="2.15.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
     <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
     <PackageReference Include="Postmark" Version="4.5.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
-    <PackageReference Include="Serilog.Expressions" Version="3.2.0" />
+    <PackageReference Include="Serilog.Expressions" Version="3.2.1" />
     <PackageReference Include="SSH.NET" Version="2020.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-    <PackageReference Include="tusdotnet" Version="2.4.0" />
+    <PackageReference Include="tusdotnet" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
