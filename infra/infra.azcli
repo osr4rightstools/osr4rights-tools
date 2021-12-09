@@ -151,18 +151,17 @@ az vm run-command invoke \
 # delete old resource groups
 groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
 
-# TODO - unpatch this 
-# for rgtodel in $groupstodel
-# do
-#     if [ "$rgtodel" = "$rg" ]; then  
-#     echo "not deleting $rgtodel as have just created it"
-#     else
-# 	az group delete \
-#             --name $rgtodel \
-#             --no-wait \
-#             --yes
-#     fi
-# done
+for rgtodel in $groupstodel
+do
+    if [ "$rgtodel" = "$rg" ]; then  
+    echo "not deleting $rgtodel as have just created it"
+    else
+	az group delete \
+            --name $rgtodel \
+            --no-wait \
+            --yes
+    fi
+done
 
 # allow port 80
 az network nsg rule create \

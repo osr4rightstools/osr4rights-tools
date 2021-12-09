@@ -53,6 +53,7 @@ namespace OSR4Rights.Web
         int StatusCode,
         int ElapsedTimeInMs,
         string? Referer,
+        bool? DisplayReferer,
         string? UserAgent,
         string HttpVersion,
         int? LoginId,

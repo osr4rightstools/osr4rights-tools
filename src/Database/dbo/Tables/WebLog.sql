@@ -9,6 +9,7 @@
     [StatusCode]      INT             NOT NULL,
     [ElapsedTimeInMs] INT             NOT NULL,
     [Referer]         NVARCHAR (MAX)  NULL,
+    [DisplayReferer]  BIT             NULL,
     [UserAgent]       NVARCHAR (MAX)  NULL,
     [HttpVersion]     NVARCHAR (50)   NULL,
     [LoginId]         INT             NULL,
@@ -16,6 +17,8 @@
     [RoleName]        NVARCHAR (50)   NULL,
     CONSTRAINT [PK_WebLog] PRIMARY KEY CLUSTERED ([WebLogId] ASC)
 );
+
+
 
 
 

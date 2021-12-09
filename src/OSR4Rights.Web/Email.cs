@@ -41,7 +41,7 @@ namespace OSR4Rights.Web
                 htmlBody = htmlTop + htmlMiddle + htmlBottom;
 
                 // text
-                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-register.html"));
+                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-forgot-password.html"));
                 textBody = textBody.Replace("{{guid}}", dataToSendUser);
 
                 subject = "Forgot Password";
