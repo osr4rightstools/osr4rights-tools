@@ -188,20 +188,16 @@ namespace OSR4Rights.Web
                     message += $"Time:  {watch.ElapsedMilliseconds}ms ";
 
                     // Request header: referer null if no referer
-
-                    //var referer = context.Request.GetTypedHeaders().Referer?.ToString();
                     Uri? referer = context.Request.GetTypedHeaders().Referer;
-                    // is the referer another page on this site?
-                    //var host = request?.Host;
 
                     string? refererS = null;
-                    //Log.Information($"referer is {referer}");
                     if (referer is { })
                     {
-                        if (referer.ToString().Contains(@"https://osr4rightstools.org/"))
-                            refererS = referer.ToString().Replace(@"https://osr4rightstools.org/", "");
-                        else
-                            refererS = referer.ToString();
+                        // 9th Dec 2021 took this out to make marketing dashboard processing easier
+                        //if (referer.ToString().Contains(@"https://osr4rightstools.org/"))
+                        //    refererS = referer.ToString().Replace(@"https://osr4rightstools.org/", "");
+                        //else
+                        refererS = referer.ToString();
 
                         message += $"Referer: {refererS} ";
                     }

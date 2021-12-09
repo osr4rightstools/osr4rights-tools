@@ -151,18 +151,18 @@ az vm run-command invoke \
 # delete old resource groups
 groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
 
-for rgtodel in $groupstodel
-do
-    if [ "$rgtodel" = "$rg" ]; then  
-    echo "not deleting $rgtodel as have just created it"
-    else
-	az group delete \
-            --name $rgtodel \
-            --no-wait \
-            --yes
-    fi
-done
-
+# TODO - unpatch this 
+# for rgtodel in $groupstodel
+# do
+#     if [ "$rgtodel" = "$rg" ]; then  
+#     echo "not deleting $rgtodel as have just created it"
+#     else
+# 	az group delete \
+#             --name $rgtodel \
+#             --no-wait \
+#             --yes
+#     fi
+# done
 
 # allow port 80
 az network nsg rule create \
@@ -195,8 +195,7 @@ generate_post_data()
 EOF
 }
 
-# TODO patch
-### patch DNS through to the new VM only if the token file exist
+# patch DNS through to the new VM only if the token file exist
 filename=../secrets/dnsimpletoken.txt
 if [ -f "$filename" ]; then
     echo "dnsimpletoken.txt file found"
