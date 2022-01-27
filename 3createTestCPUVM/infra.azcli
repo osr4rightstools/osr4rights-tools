@@ -114,7 +114,7 @@ else
      --image ${image} \
      --admin-username ${adminusername} \
      --admin-password ${adminpassword} \
-     --size Standard_D4s_v4
+     --size Standard_D4s_v5
 fi
 
     #  --custom-data create-cpu-vm.sh \
