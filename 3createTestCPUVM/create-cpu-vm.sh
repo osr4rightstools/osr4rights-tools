@@ -13,7 +13,7 @@ sudo mv /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
 # go with newer apt which gets dependency updates too (like linux-azure)
 sudo apt update -y
-sudo apt upgrade-dist -y
+sudo apt dist-upgrade -y
 
 sudo apt install python3-pip -y
 

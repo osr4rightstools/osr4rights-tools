@@ -1,0 +1,172 @@
+#!/bin/bash
+
+# A test VM so we can build up bash script for various tools
+
+# activate script debugging from here
+set -x
+
+# generate a random suffix between 1 and 1000
+int=$(shuf -i 1-1000 -n 1)
+# Password must have the 3 of the following: 1 lower case character, 1 upper case character, 1 number and 1 special character
+# generate a 34 character password (normal, capitals and numbers)
+password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c34)
+
+rgprefix=4AudioCPU
+rg=${rgprefix}${int}
+# don't put capitals in dns name below and it needs to be unique (ie not used in azure at the moment)
+dnsname=osraudiocpu${int}
+
+# adminusername=azureuser${int}
+adminusername=dave
+adminpassword=${password}
+
+region=westeurope
+# so it is obvious which VM I'm on from the terminal
+# vmname=vm${int}
+vmname=${dnsname}
+
+vnet=vnet${int}
+subnet=subnet${int}
+publicIPName=publicIP${int}
+nsgname=nsg${int}
+nicName=nic${int}
+
+# Create a resource group
+az group create \
+   --name ${rg} \
+   --location ${region}
+
+# Create a virtual network
+az network vnet create \
+    --resource-group ${rg} \
+    --name ${vnet} \
+    --subnet-name ${subnet} 
+
+# Create a nework security group
+az network nsg create \
+    --resource-group ${rg} \
+    --name ${nsgname} 
+
+# Create a network with a public IP and associate with the given DNS name
+# use Standard SKU as secure by default
+az network public-ip create \
+    --resource-group ${rg} \
+    --sku Standard \
+    --zone 1 \
+    --name ${publicIPName} \
+    --dns-name ${dnsname} 
+
+# Create a virtual network card and associate with publicIP address and NSG
+az network nic create \
+    --resource-group ${rg} \
+    --name ${nicName} \
+    --vnet-name ${vnet} \
+    --subnet ${subnet} \
+    --public-ip-address ${publicIPName} \
+    --network-security-group ${nsgname}
+
+# Create vm which runs the cloud init script to provision 
+
+# Ubuntu 20.04 LTS “Focal Fossa,” which was released on April 23, 2020 (LTS is every 2 years)
+# az vm image list --publisher Canonical --sku 20_04-lts-gen2 --output table --all
+# image=Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest
+image=Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest
+
+# If one of my keys exist 
+# uncomment line below to get ssh keys working
+# filename="../secrets/sshkey-homelenovo.pub"
+if [ -f "$filename" ]; then
+az vm create \
+    --resource-group ${rg} \
+    --name ${vmname} \
+    --location ${region} \
+    --nics ${nicName} \
+    --image ${image} \
+    --custom-data create-cpu-vm.sh \
+    --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub \
+    --size Standard_D4s_v5
+
+    #--size Standard_B2s # £22.63
+
+    # Standard_D2as_v4 # £125 (2CPU 8GB)
+    # Standard_D4as_v4 # £125 (4CPU 16GB)
+    # Standard_D8s_v4 # £ (8CPU 32GB)
+    # Standard_D16s_v4 # £ (16CPU 64GB)
+
+    # --size Standard_B1LS  # £2.82
+    # --size Standard_B1s # £5.65
+    # --size Standard_B1ms # £11.26
+    # --size Standard_B2s # £22.63 (4GB)
+    # --size Standard_B2ms # £45 (8GB)
+    # --size Standard_B4ms # £90 (16GB)
+    # --size Standard_B8ms # £181 (8vcpu and 32GB)
+else
+# no ssh keys found so could use username and password or ssh-keys
+ az vm create \
+     --resource-group ${rg} \
+     --name ${vmname} \
+     --location ${region} \
+     --nics ${nicName} \
+     --image ${image} \
+     --custom-data create-cpu-vm.sh \
+     --admin-username ${adminusername} \
+     --admin-password ${adminpassword} \
+     --size Standard_D4s_v5
+fi
+
+
+# delete old resource groups
+groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
+
+for rgtodel in $groupstodel
+do
+    if [ "$rgtodel" = "$rg" ]; then  
+    echo "not deleting $rgtodel as have just created it"
+    else
+    #  Delete the old group(s)
+	az group delete \
+            --name $rgtodel \
+            --no-wait \
+            --yes
+    fi
+done
+
+# allow port 22 ssh
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleSSH \
+    --protocol tcp \
+    --priority 1000 \
+    --destination-port-range 22 \
+    --access allow 
+
+# allow port 80
+# az network nsg rule create \
+#     --resource-group ${rg} \
+#     --nsg-name ${nsgname} \
+#     --name nsgGroupRuleWeb80 \
+#     --protocol tcp \
+#     --priority 1001 \
+#     --destination-port-range 80 \
+#     --access allow 
+
+# # allow port 443
+# az network nsg rule create \
+#     --resource-group ${rg} \
+#     --nsg-name ${nsgname} \
+#     --name nsgGroupRuleWeb443 \
+#     --protocol tcp \
+#     --priority 1002 \
+#     --destination-port-range 443 \
+#     --access allow 
+
+# in case there were errors in vm deployment display the deployment output
+# az deployment group list --resource-group ${rg}
+
+echo -e "\nssh -o StrictHostKeyChecking=no dave@${dnsname}.westeurope.cloudapp.azure.com\n" > sshCurrentVm.sh
+
+echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
+
+echo -e "password is ${adminpassword}" > password.txt
+
