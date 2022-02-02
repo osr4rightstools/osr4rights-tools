@@ -86,7 +86,15 @@ az vm create \
     --admin-username ${adminusername} \
     --admin-password ${adminpassword} \
     --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub \
-    --size Standard_E4-2as_V5
+    --os-disk-size-gb 128 \
+    --size Standard_E4-2s_V5
+    # --size Standard_E4-2as_V5
+
+    # notice I'm using a password too - take this out for prod?
+    # notice the larger disk to cope with huge files (eg 10gb 200 hours of video)
+
+    # --size Standard_E4-2as_V5 (2CPU, 32GB, 32GB Disk default)
+    # --size Standard_E8-2as_V5 (2CPU, 64GB, 32GB Disk
 
     # --size Standard_D2s_v5 £62 (2CPU, 8GB)
 

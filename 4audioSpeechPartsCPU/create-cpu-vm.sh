@@ -77,6 +77,10 @@ rm 8mixFormats.zip
 # encode all files in input diretory mp3's etc to WAV
 #./encodeToWAV.sh
 
+# issue with >4GB WAV
+# threads not working
+# ffmpeg -y -i '100 Hour Timer Countdown – 100 Hrs Video - 100h Video Countdown - 100 Stunden Timer [56lkofpjOAs].webm' -rf64 auto x.wav
+
 # get speech parts
 # python3 audiofile_reduce_to_speechparts.py -i /home/dave/OSR4Rights/AudioTools/input/ -j 123  
 
