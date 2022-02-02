@@ -74,7 +74,7 @@ image=Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest
 
 # If one of my keys exist 
 # uncomment line below to get ssh keys working
-# filename="../secrets/sshkey-homelenovo.pub"
+filename="../secrets/sshkey-homelenovo.pub"
 if [ -f "$filename" ]; then
 az vm create \
     --resource-group ${rg} \
@@ -83,8 +83,10 @@ az vm create \
     --nics ${nicName} \
     --image ${image} \
     --custom-data create-cpu-vm.sh \
+    --admin-username ${adminusername} \
+    --admin-password ${adminpassword} \
     --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub \
-    --size Standard_D4s_v5
+    --size Standard_D2s_v5
 
     #--size Standard_B2s # £22.63
 
