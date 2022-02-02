@@ -51,10 +51,20 @@ cd AudioTools
 mkdir input
 sudo chmod 777 input
 
-# make it easy to execute permissions for user dave so can run ./encodeToWAV.sh
+# make it easy for user dave so can run ./encodeToWAV.sh while testing (and maybe in prod)
 sudo chmod 777 encodeToWAV.sh
+sudo chmod 777 run.sh
 
 # get sample wave files using yt-dlp from youtube
+# I've zipped some up here so can download quickly to run perf tests
+cd input
+wget https://functionsdm2storage.blob.core.windows.net/outputfiles/8mixFormats.zip
+sudo apt install unzip
+unzip 8mixFormats.zip
+
+# after this rm I have 7.4GB free disk
+rm 8mixFormats.zip
+
 
 # sudo apt install yt-dlp
 

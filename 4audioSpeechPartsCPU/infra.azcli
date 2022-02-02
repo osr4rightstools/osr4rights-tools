@@ -86,7 +86,11 @@ az vm create \
     --admin-username ${adminusername} \
     --admin-password ${adminpassword} \
     --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub \
-    --size Standard_D2s_v5
+    --size Standard_E4-2as_V5
+
+    # --size Standard_D2s_v5 £62 (2CPU, 8GB)
+
+    # --size Standard_E4-2as_V5 £149 (2CPU AMD, 32GB)
 
     #--size Standard_B2s # £22.63
 
