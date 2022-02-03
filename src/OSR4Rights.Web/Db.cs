@@ -290,6 +290,7 @@ namespace OSR4Rights.Web
         {
             public const int FaceSearch = 1;
             public const int HateSpeech = 2;
+            public const int SpeechParts = 3;
         }
 
         public static class JobStatusId
@@ -314,6 +315,7 @@ namespace OSR4Rights.Web
         {
             public const int FaceSearchGPU = 1;
             public const int HateSpeechCPU = 2;
+            public const int SpeechPartsCPU = 3;
         }
 
         public static async Task UpdateJobIdToStatusId(string connectionString, int jobId, int jobStatusId)
@@ -446,9 +448,11 @@ namespace OSR4Rights.Web
             else if (vmTypeId == VMTypeId.HateSpeechCPU)
                 resourceGroupName = $"webhatespeechcpu{vmId}";
 
-            else
-                throw new ApplicationException("Unexpected VMTypeId");
+            else if (vmTypeId == VMTypeId.SpeechPartsCPU)
+                resourceGroupName = $"speechpartscpu{vmId}";
 
+            else
+                throw new ApplicationException("Unexpected VMTypeId - check in CreateNewVM Method");
 
             var foo = await conn.QueryAsyncWithRetry<VMFromDb>(@"
                 update VM

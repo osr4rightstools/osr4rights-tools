@@ -37,16 +37,21 @@
     <None Remove="email-templates\html-template-forgot-password.html" />
     <None Remove="email-templates\html-template-hate-speech-job-complete.html" />
     <None Remove="email-templates\html-template-register.html" />
+    <None Remove="email-templates\html-template-speech-parts-job-complete.html" />
     <None Remove="email-templates\html-template-top.html" />
     <None Remove="email-templates\text-face-search-job-complete.html" />
     <None Remove="email-templates\text-forgot-password.html" />
     <None Remove="email-templates\text-hate-speech-job-complete.html" />
     <None Remove="email-templates\text-register.html" />
+    <None Remove="email-templates\text-speech-parts-job-complete.html" />
     <None Remove="template-email.html" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="email-templates\html-template-bottom.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\html-template-speech-parts-job-complete.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="email-templates\html-template-hate-speech-job-complete.html">
@@ -56,6 +61,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="email-templates\html-template-forgot-password.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="email-templates\text-speech-parts-job-complete.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="email-templates\text-hate-speech-job-complete.html">
@@ -104,6 +112,7 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+    <Folder Include="wwwroot\sample-data\speechparts\" />
   </ItemGroup>
 
 </Project>

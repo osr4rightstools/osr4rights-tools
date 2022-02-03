@@ -87,8 +87,11 @@ namespace OSR4Rights.Web
             // hate-speech
             services.AddSingleton<HateSpeechFileProcessingChannel>();
             services.AddHostedService<HateSpeechFileProcessingService>();
-            // TOOD - turn this back on!!!
             services.AddHostedService<HateSpeechCleanUpAzureService>();
+
+            // speech-parts
+            services.AddSingleton<SpeechPartsFileProcessingChannel>();
+            services.AddHostedService<SpeechPartsFileProcessingService>();
 
             services.AddHttpContextAccessor();
         }

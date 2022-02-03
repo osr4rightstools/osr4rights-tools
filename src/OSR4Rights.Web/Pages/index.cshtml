@@ -23,7 +23,7 @@
 
 @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
 {
-    <p>Please see the top menu or go to <a href="/face-search">FaceSearch</a> or <a href="/hate-speech">HateSpeech</a>  to try these tools</p>
+    <p>Please see the top menu or go to <a href="/face-search">FaceSearch</a>, <a href="/hate-speech">HateSpeech</a>, or <a href="/speech-parts">SpeechParts</a>  to try these tools</p>
 }
 else
 {
@@ -47,7 +47,13 @@ else
 
 <p>We define "hate speech" as text that contains hateful, offensive and toxic language. The tool will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text. The languages currently supported by this tool are English, Arabic and Russian, although the language does not need to be specified together with the input text. </p>
 
-<p><a href="https://osr4rights.org/technical-tools/">More information</a></p>
+<p><a href="/technical-tools">More information</a></p>
+
+<h3>Speech Parts</h3>
+
+<p>Upload a Video or Audio file and we analyse this to find only the parts with speech. We then give you back only the sections with speech. For example hours of CCTV footage looking for only the sections with talking. </p>
+
+<p><a href="/speech-parts/">More information</a></p>
 
 @*<h3>Proposed Tools</h3>
 

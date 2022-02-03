@@ -1,0 +1,14 @@
+﻿@page
+@model OSR4Rights.Web.Pages.SpeechPartsGoModel
+@{
+    ViewData["Title"] = "Speech Parts";
+}
+
+<h1 class="text-danger">Problem</h1>
+
+@if (Model.ErrorMessage != null)
+{
+    <p class="text-danger">@Model.ErrorMessage</p>
+}
+
+<p>Please check the file and <a href="/speech-parts">upload again</a></p>

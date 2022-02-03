@@ -7,7 +7,7 @@ using Serilog;
 namespace OSR4Rights.Web.Pages
 {
     [Authorize(Roles = "Tier1, Tier2, Admin")]
-    public class HateSpeechModel : PageModel
+    public class SpeechPartsModel : PageModel
     {
         public bool IsAllowedToUpload { get; set; }
 
@@ -27,13 +27,17 @@ namespace OSR4Rights.Web.Pages
 
         // Sample data buttons
         // notice the TIER1 suffix on filenames
-        public IActionResult OnPostRunTE1() =>
-            LocalRedirect($"/hate-speech-go?createdFileName=x1TE1TIER1.csv");
 
-        public IActionResult OnPostRunTESTfile() =>
-            LocalRedirect($"/hate-speech-go?createdFileName=x2TESTfileTIER1.csv");
+        public IActionResult OnPostRunFlac()
+        {
+            return LocalRedirect($"/speech-parts-go?createdFileName=test_vocal_aTIER1.flac");
+        }
 
-        public IActionResult OnPostRunMultiLingualTest() =>
-                LocalRedirect($"/hate-speech-go?createdFileName=x3multilingual-testTIER1.csv");
+        //public IActionResult OnPostRunTESTfile() =>
+        //    LocalRedirect($"/hate-speech-go?createdFileName=x2TESTfileTIER1.csv");
+
+        //public IActionResult OnPostRunMultiLingualTest() =>
+        //        LocalRedirect($"/hate-speech-go?createdFileName=x3multilingual-testTIER1.csv");
+
     }
 }

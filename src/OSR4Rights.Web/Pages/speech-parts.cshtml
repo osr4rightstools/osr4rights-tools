@@ -1,0 +1,96 @@
+﻿@page
+@model OSR4Rights.Web.Pages.SpeechPartsModel
+@{
+    ViewData["Title"] = "Speech Parts";
+}
+
+<h1>Speech Parts</h1>
+
+<p>Please upload video or audio files and we will give results back as only the speech parts (as wavs) and corresponding frames where you can find them. </p>
+
+<p>We have successfully tested up to</p>
+
+<ul>
+    <li>30 mins, 800MB mp4 video</li>
+    <li>1 hour, 174MB video</li>
+    <li>9 hour, 393MB video</li>
+</ul>
+
+
+@if (Model.IsAllowedToUpload)
+{
+    <!-- keep for now as js code still references-->
+    <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
+    <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
+    <input type="number" id="chunksize" name="chunksize" hidden="true">
+
+    <br />
+    <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
+    <!-- file button -->
+    <label class="btn btn-default">
+        <input type="file">
+    </label>
+
+    <br />
+    <br />
+    <div class="progress" style="height: 32px;">
+        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
+    </div>
+
+    <br />
+    <!-- pause / resume button-->
+    <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
+
+    <br />
+}
+else
+{
+    <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
+}
+
+<br />
+
+<h1>Samples</h1>
+
+<p>Please feel free to try any of the following samples </p>
+
+<p>
+    1. <a href="/sample-data/speechparts/test_vocal_a.flac">test_vocal_a.flac</a> Flac audio example - some vocal, some noise 
+</p>
+<p>
+    <form method="post" asp-page-handler="runFlac">
+        <input type="submit" value="Run test_vocal_a.flac" />
+    </form>
+</p>
+@*
+
+<p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
+
+<p>
+    <form method="post" asp-page-handler="runTESTfile">
+        <input type="submit" value="Run x2TESTfile.csv" />
+    </form>
+</p>
+
+
+<p>3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
+
+<p>
+    <form method="post" asp-page-handler="runmultilingualtest">
+        <input type="submit" value="Run x3multilingual-test.csv" />
+    </form>
+</p>*@
+
+<h1>Further Information</h1>
+
+<p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
+    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
+}
+
+
