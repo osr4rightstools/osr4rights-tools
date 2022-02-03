@@ -92,6 +92,7 @@ namespace OSR4Rights.Web
             // speech-parts
             services.AddSingleton<SpeechPartsFileProcessingChannel>();
             services.AddHostedService<SpeechPartsFileProcessingService>();
+            services.AddHostedService<SpeechPartsCleanUpAzureService>();
 
             services.AddHttpContextAccessor();
         }

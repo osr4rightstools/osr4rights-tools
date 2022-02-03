@@ -54,6 +54,11 @@ else
         <p><a href="/downloads/@Model.Job.JobId/@csvFile">Csv results</a></p>
     }
 
+    @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
+    {
+        <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip of results</a></p>
+    }
+
     <!-- show the html results in the same page-->
     <!-- https://stackoverflow.com/questions/16584237/how-to-get-height-100-on-object-embed  -->
 
