@@ -513,6 +513,7 @@ namespace OSR4Rights.Web.BackgroundServices
 
                         var htmlFileName = $"results{jobId}.csv";
                         var pathLocalFile = Path.Combine(pathLocalDestinationDirectory, htmlFileName);
+                        Log.Information($"Remote file to read from: {pathRemoteFile}");
                         Log.Information($"Local path is {pathLocalFile}");
 
                         using (Stream fileStream = File.OpenWrite(pathLocalFile))

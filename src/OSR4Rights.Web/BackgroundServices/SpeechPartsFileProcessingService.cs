@@ -439,7 +439,7 @@ namespace OSR4Rights.Web.BackgroundServices
                             }
                         }
 
-                        
+
                         Log.Information("SP - run.sh which runs: python3 audiofile_reduce_to_speechparts.py -i /home/dave/OSR4Rights/AudioTools/input/ -j 123   ");
                         shellStream.WriteLine($"./run.sh");
 
@@ -531,28 +531,32 @@ namespace OSR4Rights.Web.BackgroundServices
 
                     // download zip results file from remote 
                     {
-                        //string pathRemoteFile = "/home/dave/hatespeech/hate_speech_result.csv";
-                        string pathRemoteFile = "/home/dave/OSR4Rights/AudioTools/results_123.zip";
+                        string pathRemoteFile = "/home/dave/OSR4Rights/AudioTools/input/results_123.zip";
 
+                        // dev
                         // Path where the file should be saved once downloaded (locally)
                         //var pathLocalDestinationDirectory = Path.Combine(Environment.CurrentDirectory, $"downloads/{jobId}");
 
+                        // live
                         // Azure File Share - created in the build scripts so that we can rebuild the VM (and updated code)
                         // without data loss and users can still download their results
-
-                        // live?
                         var pathLocalDestinationDirectory = Path.Combine("/mnt/osrshare/", $"downloads/{jobId}");
 
-                        // dev - nope this doesn't work
-                        //var pathLocalDestinationDirectory = Path.Combine("/osrshare/", $"downloads/{jobId}");
+                        // create a new local directory for the job results
+                        Directory.CreateDirectory(pathLocalDestinationDirectory);
 
                         //var htmlFileName = $"results{jobId}.csv";
                         var htmlFileName = $"results{jobId}.zip";
                         var pathLocalFile = Path.Combine(pathLocalDestinationDirectory, htmlFileName);
-                        Log.Information($"Local path is {pathLocalFile}");
+                        Log.Information($"Remote file to read from: {pathRemoteFile}");
+                        Log.Information($"Local path to save to: {pathLocalFile}");
 
                         using (Stream fileStream = File.OpenWrite(pathLocalFile))
+                        {
+                            Log.Information("inside filestream");
                             sftp.DownloadFile(pathRemoteFile, fileStream);
+                            Log.Information("past download");
+                        }
 
                         Log.Information($"zip downloaded to {pathLocalFile}");
 
