@@ -315,7 +315,6 @@ namespace OSR4Rights.Web.BackgroundServices
                         using var s = File.OpenRead(osrFileStorePathAndFileName);
                         client.UploadFile(s, remoteFilePath);
 
-                        // TODO - will this be a zip or what?
                         // lets get orig filename (and thus extension) from the Db
                         // so we can write the correct extension onto the remote server
                         var job = await Db.GetJobByJobId(connectionString, jobId);
@@ -327,8 +326,10 @@ namespace OSR4Rights.Web.BackgroundServices
                         Log.Information($"extension is {extension}");
 
                         //var newRemoteFilePathWithCsv = remoteFilePath.Replace(".tmp", ".flac");
-                        var newRemoteFilePathWithCsv = remoteFilePath.Replace(".tmp", "." + extension);
-                        client.RenameFile(remoteFilePath, newRemoteFilePathWithCsv);
+                        var newRemoteFilePathWithExtension = remoteFilePath.Replace(".tmp", "." + extension);
+                        client.RenameFile(remoteFilePath, newRemoteFilePathWithExtension);
+
+                        await LogHelper.LogToDbAndLog($"SP SFTP success Remote file path with extension is: {newRemoteFilePathWithExtension} ", jobId);
 
                         fullyCompleted = true;
                         Log.Information("2.SFTP successful upload");

@@ -128,6 +128,10 @@ function startUpload() {
                 window.location.replace("/hate-speech-go?createdFileName=" + bar + "&origFileName=" + orig);
             }
 
+            if (foo.endsWith('speech-parts')) {
+                window.location.replace("/speech-parts-go?createdFileName=" + bar + "&origFileName=" + orig);
+            }
+
             reset()
 
         },
