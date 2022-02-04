@@ -57,6 +57,8 @@ else
     @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
     {
         <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
+
+        <p>Please download and listen to the results. If none, it means there was no speech found. Press the log button below to view the frame numbers of where speech was found.</p>
     }
 
     <!-- show the html results in the same page-->
