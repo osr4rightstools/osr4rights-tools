@@ -559,12 +559,6 @@ namespace OSR4Rights.Web.BackgroundServices
                         }
 
                         Log.Information($"zip downloaded to {pathLocalFile}");
-
-                        // instead of SSH'ing to box to remove files as we did in FaceSearchFileProcessingService
-                        // we can use sftp as only have a single file to delete
-                        sftp.DeleteFile(pathRemoteFile);
-
-                        Log.Information($"SP Remote zip file deleted {pathRemoteFile}");
                     }
                 }
                 catch (Exception e)
@@ -580,7 +574,44 @@ namespace OSR4Rights.Web.BackgroundServices
                 // 5. Clean up /job on VM ready for next run
                 //
 
-                // done above in sftp
+                {
+                    using var client = new SshClient(host, username, password);
+                    try
+                    {
+                        client.Connect();
+                        using var shellStream = client.CreateShellStream("Tail", 0, 0, 0, 0, 1024);
+
+                        shellStream.DataReceived += (_, e) =>
+                        {
+                            var responseFromVm = Encoding.UTF8.GetString(e.Data).Trim();
+
+                            if (responseFromVm.Trim() != "")
+                            {
+                                Log.Information(responseFromVm);
+                            }
+                        };
+
+                        var number = vmFromDb.VMId;
+                        var rgName = "speechpartscpu";
+
+                        var prompt = $"dave@{rgName}{number}vm:~$";
+                        shellStream.Expect(prompt);
+
+                        // delete all data from job eg *.flac, mp3.. then the encoded *.wav, and results folder
+                        shellStream.WriteLine("rm -rf /home/dave/OSR4Rights/AudioTools/input/");
+                        shellStream.Expect(prompt);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "SP - Exception in SSH");
+                        throw;
+                    }
+                    finally
+                    {
+                        Log.Information("SP - Disconnecting");
+                        client.Disconnect();
+                    }
+                }
 
                 //
                 // 6. Completion

@@ -40,7 +40,6 @@ else
 }
 
 <!-- test -->
-
 @if (Model.Job.JobStatusId == Db.JobStatusId.Completed)
 {
     <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
@@ -61,16 +60,24 @@ else
 
     <!-- show the html results in the same page-->
     <!-- https://stackoverflow.com/questions/16584237/how-to-get-height-100-on-object-embed  -->
-
-    @if (Model.ResultsFileExists)
+    
+    <!-- we don't have a results file yet for speech parts -->
+    @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
     {
-        <div>
-            <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width: 100%; height: 100vh;"> </object>
-        </div>
     }
     else
     {
-        <p class="text-danger">Results file not returned - press Show logs to investigate. Look for issues such as Parser errors</p>
+        @if (Model.ResultsFileExists)
+        {
+            <div>
+                <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width: 100%; height: 100vh;"> </object>
+            </div>
+        }
+        else
+        {
+            <p class="text-danger">Results file not returned - press Show logs to investigate. Look for issues such as Parser errors</p>
+        }
+
     }
 }
 
