@@ -12,6 +12,7 @@ namespace OSR4Rights.Web.Pages
     {
         private readonly FaceSearchFileProcessingChannel _faceSearchFileMessageChannel;
         private readonly HateSpeechFileProcessingChannel _hateSpeechFileProcessingChannel;
+        private readonly SpeechPartsFileProcessingChannel _speechPartsFileProcessingChannel;
 
         public int JobId { get; set; }
 
@@ -19,11 +20,13 @@ namespace OSR4Rights.Web.Pages
 
         public int FaceSearchQueueLength { get; set; }
         public int HateSpeechQueueLength { get; set; }
+        public int SpeechPartsQueueLength { get; set; }
 
-        public ResultsModel(FaceSearchFileProcessingChannel faceSearchFileMessageChannel, HateSpeechFileProcessingChannel hateSpeechFileProcessingChannel)
+        public ResultsModel(FaceSearchFileProcessingChannel faceSearchFileMessageChannel, HateSpeechFileProcessingChannel hateSpeechFileProcessingChannel, SpeechPartsFileProcessingChannel speechPartsFileProcessingChannel)
         {
             _faceSearchFileMessageChannel = faceSearchFileMessageChannel;
             _hateSpeechFileProcessingChannel = hateSpeechFileProcessingChannel;
+            _speechPartsFileProcessingChannel = speechPartsFileProcessingChannel;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -47,6 +50,7 @@ namespace OSR4Rights.Web.Pages
                 string? jobType = null;
                 if (job.JobTypeId == Db.JobTypeId.FaceSearch) jobType = "FaceSearch";
                 if (job.JobTypeId == Db.JobTypeId.HateSpeech) jobType = "HateSpeech";
+                if (job.JobTypeId == Db.JobTypeId.SpeechParts) jobType = "SpeechParts";
 
                 var jvm = new JobViewModel(job.JobId, job.LoginId, job.OrigFileName, job.DateTimeUtcUploaded,
                     job.JobStatusId, jobStatusString, job.VMId, job.DateTimeUtcJobStartedOnVm,
@@ -58,6 +62,7 @@ namespace OSR4Rights.Web.Pages
 
             FaceSearchQueueLength = _faceSearchFileMessageChannel.CountOfFileProcessingChannel();
             HateSpeechQueueLength = _hateSpeechFileProcessingChannel.CountOfFileProcessingChannel();
+            SpeechPartsQueueLength = _speechPartsFileProcessingChannel.CountOfSpeechPartsProcessingChannel();
 
             return Page();
         }

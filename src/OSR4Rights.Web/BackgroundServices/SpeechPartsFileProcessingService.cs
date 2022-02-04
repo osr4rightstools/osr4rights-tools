@@ -124,7 +124,7 @@ namespace OSR4Rights.Web.BackgroundServices
                     vmId = vmFromDb.VMId;
                     resourceGroupName = vmFromDb.ResourceGroupName;
 
-                    await LogHelper.LogToDbAndLog("SP Found an existing VM", jobId);
+                    await LogHelper.LogToDbAndLog($"SP Found an existing VM in rg {resourceGroupName} with id of {vmId}", jobId);
 
                     await Db.UpdateJobVMIdDetails(connectionString, jobId, vmFromDb.VMId);
                 }
@@ -598,7 +598,7 @@ namespace OSR4Rights.Web.BackgroundServices
                         shellStream.Expect(prompt);
 
                         // delete all data from job eg *.flac, mp3.. then the encoded *.wav, and results folder
-                        shellStream.WriteLine("rm -rf /home/dave/OSR4Rights/AudioTools/input/");
+                        shellStream.WriteLine("rm -rf /home/dave/OSR4Rights/AudioTools/input/*");
                         shellStream.Expect(prompt);
                     }
                     catch (Exception ex)

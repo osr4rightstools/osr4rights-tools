@@ -42,26 +42,26 @@ else
 <!-- test -->
 @if (Model.Job.JobStatusId == Db.JobStatusId.Completed)
 {
-    <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
     @if (Model.Job.JobTypeId == Db.JobTypeId.FaceSearch)
     {
+        <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
         <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
     }
 
     @if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
     {
+        <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
         <p><a href="/downloads/@Model.Job.JobId/@csvFile">Csv results</a></p>
     }
 
     @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
     {
-        <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip of results</a></p>
+        <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
     }
 
     <!-- show the html results in the same page-->
     <!-- https://stackoverflow.com/questions/16584237/how-to-get-height-100-on-object-embed  -->
-    
-    <!-- we don't have a results file yet for speech parts -->
+    <!-- we don't have a results file yet for speech parts, so don't need to display the warning -->
     @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
     {
     }
