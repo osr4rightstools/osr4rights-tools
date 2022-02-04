@@ -91,6 +91,24 @@
 
 <br />
 
+<h4>SpeechParts</h4>
+
+<p>rg's active currently are:</p>
+
+<div class="container">
+
+    @foreach (var rg in Model.SpeechPartsRgs)
+    {
+        <div class="row">
+            <div class="col">
+                @rg
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+
 <h4>Info</h4>
 
 <p>Don't worry if a RG stays here for a while - it happens that the vm is deleted but it takes overnight for the the other (cheap) things to be deleted in the Rg. See portal.azure.com for more info</p>

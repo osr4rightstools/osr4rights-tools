@@ -72,9 +72,22 @@ namespace OSR4Rights.Web
 
                 subject = "HateSpeech Job Complete";
             }
+            else if (templateName == "speech-parts-job-complete")
+            {
+                // html
+                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-speech-parts-job-complete.html"));
+                htmlMiddle = htmlMiddle.Replace("{{jobId}}", dataToSendUser);
+                htmlBody = htmlTop + htmlMiddle + htmlBottom;
+
+                // text
+                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-speech-parts-job-complete.html"));
+                textBody = textBody.Replace("{{jobId}}", dataToSendUser);
+
+                subject = "HateSpeech Job Complete";
+            }
             else
             {
-                Log.Warning($"Unrecognised template name passed of {templateName}");
+                Log.Warning($"Unrecognised template name passed of {templateName} - look in SendTemplate method");
                 return false;
             }
 

@@ -16,7 +16,6 @@ namespace OSR4Rights.Web.Pages.Admin
     public class IndexModel : PageModel
     {
         public List<LoginAdminViewModel> Logins { get; set; } = null!;
-        //public List<LoginSmall> Logins { get; set; } = null!;
 
         [BindProperty]
         public int SelectedTag { get; set; }
@@ -24,24 +23,13 @@ namespace OSR4Rights.Web.Pages.Admin
 
         public List<string> FaceSearchRgs { get; set; } = new();
         public List<string> HateSpeechRgs { get; set; } = new();
+        public List<string> SpeechPartsRgs { get; set; } = new();
 
         public async Task OnGet()
         {
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
-            // Want to display nicely the LoginStateId
-            // Want to display nicely the RoleId
-            //var foo = LoginStateId.WaitingToBeInitiallyVerifiedByEmail;
-
             var loginStates = await Db.GetAllLoginStates(connectionString);
-
-            //Options = loginStates.Select(x =>
-            //    new SelectListItem
-            //    {
-            //        Value = x.LoginStateId.ToString(),
-            //        Text = x.Name
-            //    }).ToList();
-            //SelectedTag = 2;
 
             // make collection with SelectListItem inside it
             var logins = await Db.GetAllLogins(connectionString);
@@ -63,7 +51,7 @@ namespace OSR4Rights.Web.Pages.Admin
                     x.Email,
                     x.PasswordHash,
                     x.LoginStateId,
-                    LoginStateName: loginStateName, 
+                    LoginStateName: loginStateName,
                     RoleName: roleName,
                     x.RoleId
                 );
@@ -80,9 +68,9 @@ namespace OSR4Rights.Web.Pages.Admin
 
             var resourceGroupClient = resourcesClient.ResourceGroups;
 
-            // how to get the resourcegroupname which look like
-            // webfacesearchgpu47
             var foo = resourceGroupClient.List();
+
+            // eg webfacesearchgpu47
             foreach (var bar in foo)
             {
                 if (bar.Name.StartsWith("webfacesearchgpu")) FaceSearchRgs.Add(bar.Name);
@@ -93,6 +81,12 @@ namespace OSR4Rights.Web.Pages.Admin
             {
                 if (bar.Name.StartsWith("webhatespeechcpu")) HateSpeechRgs.Add(bar.Name);
             }
+
+            foreach (var bar in foo)
+            {
+                if (bar.Name.StartsWith("speechpartscpu")) SpeechPartsRgs.Add(bar.Name);
+            }
+
         }
 
         // Sample data buttons

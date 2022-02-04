@@ -111,6 +111,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="downloads\" />
     <Folder Include="logs\" />
     <Folder Include="wwwroot\sample-data\speechparts\" />
   </ItemGroup>
