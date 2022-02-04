@@ -78,6 +78,9 @@ namespace OSR4Rights.Web.Pages
 
             var uploadedTusFileAndPath = Path.Combine(tusFileStorePath, createdFileName);
 
+            //
+            // Validation Testing
+            //
             // csvHelper
             // https://joshclose.github.io/CsvHelper/getting-started/
 
@@ -180,8 +183,7 @@ namespace OSR4Rights.Web.Pages
             Helper.CleanUpTusFiles(tusFileStorePath, createdFileName);
 
             // add the job to the processing queue // eg job-17.tmp // so we know the jobId
-            // **TODO put back in**
-            //await _boundedMessageChannel.AddFileAsync(newOsrFileNameAndPath);
+            await _boundedMessageChannel.AddFileAsync(newOsrFileNameAndPath);
 
             Log.Information($"SP added {newOsrFileNameAndPath} to queue");
 
