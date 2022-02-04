@@ -28,16 +28,13 @@ namespace OSR4Rights.Web.Pages
         // Sample data buttons
         // notice the TIER1 suffix on filenames
 
-        public IActionResult OnPostRunFlac()
-        {
-            return LocalRedirect($"/speech-parts-go?createdFileName=test_vocal_aTIER1.flac");
-        }
+        public IActionResult OnPostRunFlac() =>
+            LocalRedirect($"/speech-parts-go?createdFileName=test_vocal_aTIER1.flac");
 
-        //public IActionResult OnPostRunTESTfile() =>
-        //    LocalRedirect($"/hate-speech-go?createdFileName=x2TESTfileTIER1.csv");
+        public IActionResult OnPostRunMp3() =>
+                    LocalRedirect($"/speech-parts-go?createdFileName=test_vocal_aTIER1.mp3");
 
-        //public IActionResult OnPostRunMultiLingualTest() =>
-        //        LocalRedirect($"/hate-speech-go?createdFileName=x3multilingual-testTIER1.csv");
-
+        public IActionResult OnPostRunMp4() =>
+                    LocalRedirect($"/speech-parts-go?createdFileName=test_vocal_aTIER1.mp4");
     }
 }

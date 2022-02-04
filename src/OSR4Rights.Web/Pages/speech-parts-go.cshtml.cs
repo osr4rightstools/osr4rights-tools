@@ -37,7 +37,7 @@ namespace OSR4Rights.Web.Pages
             // Are they trying the sample files?
             // this block is an abbreviated version of the method below
             // suffix's of Sample to make scoping simpler
-            if (createdFileName == "test_vocal_aTIER1.flac" || createdFileName == "x2TESTfileTIER1.csv" || createdFileName == "x3multilingual-testTIER1.csv")
+            if (createdFileName == "test_vocal_aTIER1.flac" || createdFileName == "test_vocal_aTIER1.mp3" || createdFileName == "test_vocal_aTIER1.mp4")
             {
                 var origFileNameSample = createdFileName.Replace("TIER1", "");
                 var jobIdSample = await Db.InsertJobWithOrigFileNameAndReturnJobId(connectionString, loginId, origFileNameSample, Db.JobTypeId.SpeechParts);

@@ -61,16 +61,30 @@ else
 
 <h1>Samples</h1>
 
-<p>Please feel free to try any of the following samples </p>
+<p>Please feel free to try any of the following samples <a href="/sample-data/speechparts/test_vocal_a.zip">test_vocal_a.zip</a> (this is all the samples below) </p>
 
-<p>
-    1. <a href="/sample-data/speechparts/test_vocal_a.flac">test_vocal_a.flac</a> Flac audio example - some vocal, some noise
-</p>
+<p> Flac audio example - some vocal, some noise </p>
 <p>
     <form method="post" asp-page-handler="runFlac">
         <input type="submit" value="Run test_vocal_a.flac" />
     </form>
 </p>
+
+<p> mp3 audio example - some vocal, some noise </p>
+<p>
+    <form method="post" asp-page-handler="runMp3">
+        <input type="submit" value="Run test_vocal_a.mp3" />
+    </form>
+</p>
+
+<p> mp4 video example - some vocal, some noise </p>
+<p>
+    <form method="post" asp-page-handler="runMp4">
+        <input type="submit" value="Run test_vocal_a.mp4" />
+    </form>
+</p>
+
+
 @*
 
     <p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>

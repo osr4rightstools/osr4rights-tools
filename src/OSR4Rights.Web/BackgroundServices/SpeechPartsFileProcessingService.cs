@@ -316,7 +316,15 @@ namespace OSR4Rights.Web.BackgroundServices
                         client.UploadFile(s, remoteFilePath);
 
                         // TODO - will this be a zip or what?
-                        var newRemoteFilePathWithCsv = remoteFilePath.Replace(".tmp", ".flac");
+                        // lets get orig filename (and thus extension) from the Db
+                        // so we can write the correct extension onto the remote server
+                        var foo = await Db.GetJobByJobId(connectionString, jobId);
+                        var bar = foo.OrigFileName;
+                        var extension = bar.Split('.').Last();
+                        if (string.IsNullOrEmpty(extension)) throw new ApplicationException("File extension from Db is null or empty which is a logical problem");
+
+                        //var newRemoteFilePathWithCsv = remoteFilePath.Replace(".tmp", ".flac");
+                        var newRemoteFilePathWithCsv = remoteFilePath.Replace(".tmp", extension);
                         client.RenameFile(remoteFilePath, newRemoteFilePathWithCsv);
 
                         fullyCompleted = true;
