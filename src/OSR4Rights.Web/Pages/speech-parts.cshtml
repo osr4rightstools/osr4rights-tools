@@ -6,7 +6,7 @@
 
 <h1>Speech Parts</h1>
 
-<p>Please upload video or audio files and we will give results back as only the speech parts (as wavs) and corresponding frames where you can find them. </p>
+<p>Upload a Video or Audio file and to find only the sections with English speech. We then give you back only those sections as a WAV file. For example CCTV footage looking for only the sections with talking. </p>
 
 <p>We have successfully tested up to</p>
 
@@ -16,9 +16,18 @@
     <li>9 hour, 393MB video</li>
 </ul>
 
-
 @if (Model.IsAllowedToUpload)
 {
+    <p>Please upload a file of any of these types</p>
+    <ul>
+        <li>mp4 (video)</li>
+        <li>webm (video)</li>
+        <li>mp3</li>
+        <li>ogg</li>
+        <li>flac</li>
+        <li>m4a</li>
+        <li>wav</li>
+    </ul>
     <!-- keep for now as js code still references-->
     <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
     <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
@@ -55,7 +64,7 @@ else
 <p>Please feel free to try any of the following samples </p>
 
 <p>
-    1. <a href="/sample-data/speechparts/test_vocal_a.flac">test_vocal_a.flac</a> Flac audio example - some vocal, some noise 
+    1. <a href="/sample-data/speechparts/test_vocal_a.flac">test_vocal_a.flac</a> Flac audio example - some vocal, some noise
 </p>
 <p>
     <form method="post" asp-page-handler="runFlac">
@@ -64,22 +73,22 @@ else
 </p>
 @*
 
-<p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
+    <p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
 
-<p>
+    <p>
     <form method="post" asp-page-handler="runTESTfile">
-        <input type="submit" value="Run x2TESTfile.csv" />
+    <input type="submit" value="Run x2TESTfile.csv" />
     </form>
-</p>
+    </p>
 
 
-<p>3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
+    <p>3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
 
-<p>
+    <p>
     <form method="post" asp-page-handler="runmultilingualtest">
-        <input type="submit" value="Run x3multilingual-test.csv" />
+    <input type="submit" value="Run x3multilingual-test.csv" />
     </form>
-</p>*@
+    </p>*@
 
 <h1>Further Information</h1>
 
@@ -87,10 +96,10 @@ else
 
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 
-    <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
-    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
+<script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
+<script src="~/js/upload-tus.js" asp-append-version="true"></script>
 }
 
 

@@ -83,7 +83,7 @@ namespace OSR4Rights.Web
                 textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-speech-parts-job-complete.html"));
                 textBody = textBody.Replace("{{jobId}}", dataToSendUser);
 
-                subject = "HateSpeech Job Complete";
+                subject = "SpeechParts Job Complete";
             }
             else
             {
