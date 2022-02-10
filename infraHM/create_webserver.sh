@@ -41,9 +41,10 @@ cd /gitsource
 sudo git clone https://github.com/osr4rightstools/osr4rights-tools .
 
 # nginx config
+# **CHANGED FOR HM**
 # ssl certs will already be in /certs
 # copied in with create-kestrel-osr-with-secrets.sh file
-sudo cp /gitsource/infra/nginx.conf /etc/nginx/sites-available/default
+sudo cp /gitsource/infraHM/nginx.conf /etc/nginx/sites-available/default
 sudo nginx -s reload
 
 # compile and publish the web app
