@@ -116,4 +116,22 @@
     <Folder Include="wwwroot\sample-data\speechparts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\ai.svg" />
+    <None Include="wwwroot\img\azure.svg" />
+    <None Include="wwwroot\img\hw-logo.svg" />
+    <None Include="wwwroot\img\ms.svg" />
+    <None Include="wwwroot\img\old\logo.svg" />
+    <None Include="wwwroot\img\old\marker.svg" />
+    <None Include="wwwroot\img\old\social-facebook.svg" />
+    <None Include="wwwroot\img\old\social-instagram.svg" />
+    <None Include="wwwroot\img\old\social-pinterest.svg" />
+    <None Include="wwwroot\img\old\social-spotify.svg" />
+    <None Include="wwwroot\img\old\social-twitter.svg" />
+    <None Include="wwwroot\img\old\social-youtube.svg" />
+    <None Include="wwwroot\img\people\Designing for rights.pptx" />
+    <None Include="wwwroot\img\swansea-university-logo.svg" />
+    <None Include="wwwroot\img\um.svg" />
+  </ItemGroup>
+
 </Project>

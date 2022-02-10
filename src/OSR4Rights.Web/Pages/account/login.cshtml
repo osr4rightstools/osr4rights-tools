@@ -8,10 +8,8 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            @*<div asp-validation-summary="All" class="text-danger"></div>*@
             <div class="form-group">
                 <label asp-for="Email"></label>
-                @*<input asp-for="Email" class="form-control" value="tier2@contoso.com">*@
                 <input asp-for="Email" class="form-control" value="">
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
@@ -23,10 +21,8 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label asp-for="RememberMe">
-                        @*<input asp-for="RememberMe" checked="checked" />*@
                         <input asp-for="RememberMe" />
                         Remember Me
-                        @*@Html.DisplayNameFor(m => m.RememberMe)*@
                     </label>
                 </div>
             </div>
@@ -40,17 +36,6 @@
             </div>
         </form>
     </div>
-    @*<div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Sample Users</h4>
-            <hr />
-            <div>
-                <p>Tier1 Role: <code>tier1@contoso.com</code> password: Letmein1</p>
-                <p>Tier2 Role: <code>tier2@contoso.com</code> password: Letmein2</p>
-                <p>Admin Role: <code>admin@contoso.com</code> password: Letmein3</p>
-            </div>
-        </section>
-    </div>*@
 </div>
 
 @section Scripts {

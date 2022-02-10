@@ -1,0 +1,610 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+/* 
+    1. Reset and Base Styles
+ */
+
+/* font sizes handled in utility class eg text-sm */
+
+:root {
+    /* blue eg for buttons, hyperlink hover */
+    --color-primary: #3474e6;
+    /* backgrounds */
+    --color-light-grey: #f4f7fa;
+}
+
+* {
+    /* so padding doesn't affect the width */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-family: "Open Sans", sans-serif;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    line-height: 1.4;
+    color: #000;
+}
+
+/* All body links  */
+a {
+    color: #000;
+    /*color: #7a1ba6;*/
+    font-size: 15px;
+}
+
+    a:active, a:focus, a:hover {
+        color: #6e5cef;
+        text-decoration: none;
+    }
+
+/* no dots or numbers when displaying an unordered list */
+ul {
+    list-style: none;
+}
+
+p {
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* section a {
+  color: #000;
+} */
+
+/* 
+    2. Navbar
+*/
+.navbar {
+    display: flex;
+    /* Main Axis ie horizonal here */
+    justify-content: space-between;
+    /* Cross Axis ie vertical here */
+    align-items: center;
+    /* Don't want nav to go all the way left and right so will contain it after 1440 */
+    /* boxes in main section constrained in media query */
+    max-width: 1440px;
+    /* max-width: 1024px; */
+    /* make it centered if >1440 */
+    margin: 0 auto;
+    padding: 20px;
+    /* width: 100%; */
+    /* height: auto; */
+}
+
+/* osr4rights logo */
+.navbar-logo img {
+    width: 130px;
+    height: 50px;
+}
+
+/* all ul's in navbar ie navbar-left and navbar-right */
+.navbar ul {
+    display: flex;
+    /* Cross Axis ie vertical  */
+    align-items: center;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+/* all hyperlinks in navbar */
+.navbar a {
+    text-decoration: none;
+}
+
+    /* nice hover colour */
+    .navbar a:hover {
+        color: var(--color-primary);
+    }
+
+/* put the underline on */
+.navbar .underline a:hover {
+    border-bottom: 2px solid var(--color-primary);
+}
+
+/* padding for underline */
+.navbar .underline a {
+    padding-bottom: 3px;
+}
+
+.navbar-nav-left {
+    /* shorthand for flex-basis, flex-grow, flex-shrink */
+    /* giving navbar-nav-left element more space */
+    flex: 1;
+    margin-left: 20px;
+}
+
+/* login hyperlink make blue*/
+/*.navbar-nav-right li:nth-child(2) a {*/
+.navbar-nav-right .login-link a {
+    color: var(--color-primary);
+}
+
+/* Try for free button decrease margin on left and right from 15 to 5px */
+.navbar-nav-right li:nth-child(3) a {
+    margin: 0 5px;
+}
+
+    /* override button hover colour */
+    .navbar-nav-right li:nth-child(3) a:hover {
+        background-color: rgba(53, 116, 230, 0.7);
+        color: #fff;
+    }
+
+/* 
+   3. Buttons
+      first usage is in the navbar-nav-right 
+ */
+
+.btn {
+    cursor: pointer;
+    display: inline-block;
+    background: none;
+    border: 1px var(--color-primary) solid;
+    border-radius: 5px;
+    padding: 9px 19px;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    /* buttons need this (as opposed to a href) */
+    /* eg Analyse Text Above in Hatespeech detection */
+    font-size: 15px;
+    font-family: "Open Sans", sans-serif;
+    /* size: 26px; */
+    /* margin: 10px 0; */
+}
+
+/* Blue button (mostly an a href) with white text  */
+.btn-blue {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+    .btn-blue:hover {
+        background-color: rgba(53, 116, 230, 0.7);
+        color: #fff;
+    }
+
+/* Lighter button with black text */
+.btn-light {
+    border-color: #000;
+    /* color: #fff; */
+}
+
+    .btn-light:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        /* color: #fff; */
+    }
+
+/* Hatespeech input box */
+.input {
+    width: 500px;
+    /* font-size: 15px; */
+    padding: 10px;
+    margin: 10px 0;
+    border: 0;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* 
+ 	4. Sections / Boxes 
+*/
+
+.box {
+    /* media query constrains box to 1400 on large screen */
+    /* padding: 0 20px; */
+    margin: 0 20px;
+    margin-bottom: 30px;
+}
+
+/* Used in most boxes */
+.box-text {
+    max-width: 500px;
+    /* text-align: center; */
+    /* justify-self: center; */
+    padding: 5px 20px;
+    /* margin: 0 auto; */
+}
+
+    .box-text btn {
+        margin-top: 20px;
+    }
+
+/* Box A overrides */
+.box-a {
+    padding: 10px;
+}
+
+    .box-a img {
+        /* left align text */
+        /* text-align: start; */
+        /* max-width: 500px; */
+        margin-top: 10px;
+    }
+
+/* as it is a grey background, push out this button to give more space */
+/* .box-b .btn-light { */
+/* margin-bottom: 20px; */
+/* } */
+
+/* case studies */
+.box-cs .box-text {
+    max-width: 500px;
+}
+
+.box-cs img {
+    padding: 0 20px;
+}
+
+/* only used in Box Numbers */
+/* .box-inner {
+  max-width: 700px;
+  margin: 0 auto;
+} */
+
+/* Grid Styles */
+/* CSS Grid */
+.grid-col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    /* Main Axis ie horizonal here (just like flex, don't really need)*/
+    justify-content: space-between;
+    /* Cross Axis ie vertical here (just like flex) */
+    /* have commented out but TODO may want to put back in */
+    /* align-items: center; */
+}
+
+/* The first child is the image */
+/* this is so we can easily get stacking in mobile view, yet in non mobile put the image where we like */
+.grid-reversed :first-child {
+    order: 2;
+}
+
+/* Section Utility Classes including: text-center, py-md, text-xl */
+/* like coding with Tailwind */
+
+/* Backgrounds Utility classes we can use around the site*/
+
+.bg-grey {
+    background-color: var(--color-light-grey);
+    color: #000;
+}
+
+/* Text Styling */
+.text-center {
+    text-align: center;
+}
+
+/* Text Sizes */
+.text-xl {
+    font-size: 30px;
+    /* letter-spacing: 1px; */
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.text-lg {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.text-md {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.text-sm {
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* Padding */
+.py-lg {
+    padding: 40px 0;
+}
+
+.py-md {
+    padding: 20px 0;
+}
+
+.py-sm {
+    padding: 10px 0;
+}
+
+/*  
+   Hamburger Menu 
+*/
+
+.hamburger {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    /* going to position things inside absolute */
+    position: relative;
+    background: none;
+    /* buttons have a border by default */
+    border: none;
+    /* alwyas be on top */
+    z-index: 10;
+    transition: all 0.25s;
+    /* don't want on large screens */
+    display: none;
+}
+
+.hamburger-top,
+.hamburger-middle,
+.hamburger-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 2px;
+    background: #000;
+    transform: rotate(0);
+    transition: all 0.5s;
+}
+
+.hamburger-middle {
+    /* move along y ie down 7 */
+    transform: translateY(7px);
+}
+
+.hamburger-bottom {
+    transform: translateY(14px);
+}
+
+/* goes from 3 lines to an X */
+/* javascript toggles this class on btn element */
+/* using click event on the btn */
+.open .hamburger-top {
+    transform: rotate(45deg) translateY(6px) translateX(6px);
+}
+
+.open .hamburger-middle {
+    display: none;
+}
+
+.open .hamburger-bottom {
+    transform: rotate(-45deg) translateY(6px) translateX(-6px);
+}
+
+/* Mobile Menu */
+
+.mobile-menu {
+    /* fix on right on the screen */
+    position: fixed;
+    top: 95px;
+    right: 0;
+    background-color: #fff;
+    color: #000;
+    width: 70%;
+    /* fill entire screen */
+    height: 100%;
+    padding: 30px;
+    box-shadow: inset 0 4px 3px -3px rgb(0 0 0 / 10%), inset 0 4px 2px -2px rgb(0 0 0 / 7%);
+    transition: all 0.3s;
+}
+
+    .mobile-menu ul {
+        /* spread links apart */
+        line-height: 3;
+        border-bottom: #777 solid 1px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .mobile-menu a {
+        text-decoration: none;
+        font-size: 20px;
+    }
+
+        .mobile-menu a:hover {
+            color: var(--color-primary);
+        }
+
+    /* a bit of space under buttons */
+    .mobile-menu div {
+        margin-top: 20px;
+    }
+
+        .mobile-menu div a {
+            /* display: flex; */
+            /* align-items: center; */
+            /* find a store */
+            font-size: 16px;
+        }
+
+.hidden {
+    /* dont want display: none */
+    /* put it off screen so can slide back */
+    transform: translateX(100%);
+}
+
+/* as don't want to scroll when hamburger menu is there */
+.no-scroll {
+    overflow: hidden;
+}
+
+.box-demo-started img {
+    /* align-self: center; */
+}
+
+.box-thank-you-logos ul {
+    display: flex;
+    flex-wrap: wrap;
+    /* Main Axis */
+    justify-content: center;
+    /* Cross Axis ie vertical here (just like flex) */
+    align-items: center;
+}
+
+.box-thank-you-logos li {
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+
+.box-thank-you-logos img {
+    width: 140px;
+}
+
+/* 
+    Bottom Links
+ */
+.links {
+    /* background: #f2f2f2; */
+    color: #616161;
+    font-size: 14px;
+    padding: 35px 0;
+}
+
+.links-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.links li {
+    line-height: 2.8;
+}
+
+/* Footer */
+.footer {
+    padding: 20px 0;
+    font-size: 15px;
+}
+
+    .footer ul {
+        display: flex;
+        flex-wrap: wrap;
+        /* Main Axis */
+        justify-content: center;
+    }
+
+    .footer li {
+        margin-right: 30px;
+        margin-bottom: 20px;
+    }
+
+
+.links a {
+    color: #000;
+    text-decoration: none;
+}
+
+    .links a:hover {
+        text-decoration: underline;
+    }
+
+.footer a {
+    color: #000;
+    text-decoration: none;
+}
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
+/* .social img {
+  width: 35px;
+  height: 35px;
+}
+
+.social a {
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+} */
+
+/* 768 or less  */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .grid-col-2 {
+        grid-template-columns: 1fr;
+    }
+
+    /* the image is always first, so make sure it is on top rather than reversed */
+    .grid-reversed :first-child {
+        /* order: 0; */
+    }
+
+    /* put hero image on top */
+    .box-a :first-child {
+        order: 1;
+    }
+
+    /* .box-a .box-text h2 {
+    text-align: center;
+  }
+
+  .box-b .box-text h2 {
+    text-align: center;
+  } */
+
+    .box .box-text h2 {
+        text-align: center;
+    }
+
+    .navbar .navbar-nav-left,
+    .navbar .navbar-nav-right {
+        display: none;
+    }
+
+    .navbar-logo img {
+        /* height: 40px; */
+        /* width: 40px; */
+    }
+
+    .box-text {
+        padding: 5px 0px;
+    }
+
+    .box-b .input {
+        width: 95%;
+    }
+
+    .footer {
+        text-align: center;
+    }
+}
+
+/* 960 or less */
+@media (max-width: 960px) {
+    .text-xl {
+        font-size: 25px;
+    }
+}
+
+/* 1440 or more */
+@media (min-width: 1440px) {
+    /* Make background boxes stop when get to 1440 */
+    .box {
+        max-width: 1440px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .divider {
+        max-width: 90%;
+    }
+}

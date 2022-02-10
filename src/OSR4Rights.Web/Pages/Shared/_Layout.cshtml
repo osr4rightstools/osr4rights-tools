@@ -3,101 +3,256 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <title>OSR4Rights @ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a href="/">
-                    <img src="/images/osr-logo.png" width="130" />
+
+    <nav class="navbar">
+        <!-- Logo -->
+        <div class="navbar-logo">
+            <a href="/">
+                <img src="/img/osr-logo.png" alt="OSR4RightsTools">
+            </a>
+        </div>
+
+        <!-- Navbar Left -->
+        <ul class="navbar-nav-left">
+            <li class="underline"><a href="#">Tools</a></li>
+            <li class="underline"><a href="#">Case Studies</a></li>
+            <li class="underline"><a href="#">About</a></li>
+        </ul>
+
+        <!--  Navbar Right-->
+        <ul class="navbar-nav-right">
+            <li class="underline"><a href="#">Contact</a></li>
+            @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+            {
+                <li class="underline"><a href="/account/manage">Hello @User?.Identity?.Name!</a></li>
+                <li class="underline">
+                    <form class="form-inline" asp-page="/account/logout" method="post">
+                        <button type="submit" class="btn btn-light">Logout</button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="underline login-link"><a href="/account/login">Login</a></li>
+                <li><a href="#" class="btn btn-blue">Try for free</a></li>
+            }
+        </ul>
+
+        <!-- Hamburger Menu -->
+        <button type="button" class="hamburger" id="menu-btn">
+            <span class="hamburger-top"></span>
+            <span class="hamburger-middle"></span>
+            <span class="hamburger-bottom"></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu hidden" id="mobile-menu">
+        <ul>
+            <li><a href="#">Tools</a></li>
+            <li><a href="#">Case Studies</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+
+        <div class="mobile-menu-bottom">
+            <div>
+                <a href="#">
+                    <!--<img src="/img/marker.svg" alt=""> -->
+                    <span>Contact</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-
-                    <ul class="navbar-nav">
-                        @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/account/manage" title="Manage">Hello @User?.Identity?.Name!</a>
-                            </li>
-                            <li class="nav-item">
-                                <form class="form-inline" asp-page="/account/logout" method="post">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                </form>
-                            </li>
-
-                        } else {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/account/register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/account/login">Login</a>
-                            </li>
-                        }
-                    </ul>
-
-
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/"></a> </li>
-
-                        @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-                        {
-                            <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/face-search">FaceSearch</a> </li>
-                            <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/hate-speech">HateSpeech</a> </li>
-                            <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/speech-parts">SpeechParts</a> </li>
-                            <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/results">Results</a> </li>
-
-                        }
-                        
-                        @{ 
-                            bool isAdmin = false;
-                            var roles = User?.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-                            if (roles.Contains("Admin")) isAdmin = true;
-                        }
-
-                        @if (isAdmin)
-                        {
-                         <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/admin/index">Admin</a> </li>
-                         <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/admin/dashboard">Dashboard</a> </li>
-                        }
-
-                        <li class="nav-item"> <a class="nav-link text-dark" href="https://osr4rights.org/">About Us</a> </li>
-
-                        </ul>
-                    </div>
-
             </div>
-        </nav>
+
+            <div>
+                <ul>
+                    @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                    {
+                        <li><a href="/account/manage">Hello @User?.Identity?.Name!</a></li>
+                        <li>
+                            <form class="form-inline" asp-page="/account/logout" method="post">
+                                <button type="submit" class="btn btn-light">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="underline login-link"><a href="/account/login">Login</a></li>
+                        <li><a href="#" class="btn btn-blue">Try for free</a></li>
+                    }
+                </ul>
+            </div>
+
+
+            @*<button class="btn btn-dark-outline">Login</button>
+                <button class="btn btn-blue">Try for free</button>
+            *@            <!-- put in div so it goes down a line -->
+        </div>
+    </div>
+    <!-- end mobile menu-->
+    @RenderBody()
+
+    <!-- Links -->
+    <section class="links bg-grey">
+        <div class="links-inner">
+            <ul>
+                <li>
+                    <h3>OSRR4RightsTools</h3>
+                </li>
+                <li><a href="#">Data Protection</a></li>
+                <li><a href="#">Terms of Use</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Conferences</a></li>
+                <li><a href="#">Sustainability</a></li>
+            </ul>
+            <ul>
+                <li>
+                    <h3>Tools</h3>
+                </li>
+                <li><a href="#">Hate Speech</a></li>
+                <li><a href="#">Face Search</a></li>
+                <li><a href="#">Speech Parts</a></li>
+                <li><a href="#">Face Search (Offline Docker)</a></li>
+                <li><a href="#">Face Search Video (coming soon)</a></li>
+            </ul>
+            <ul>
+                <li>
+                    <h3>Resources</h3>
+                </li>
+                <li><a href="#">Case Studies</a></li>
+                <li><a href="#">Human Rights Information</a></li>
+                <li><a href="#">What can I do to help?</a></li>
+                <li><a href="#">What are human rights tools?</a></li>
+            </ul>
+            <ul>
+                <li>
+                    <h3>Get Support</h3>
+                </li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Video Tutorials</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-grey">
+        <ul>
+            <li><a href="#">&copy; 2017 - 2022 OSR4Rights</a></li>
+            <li><a href="#">GitHub Source</a></li>
+            <li><a href="#">Sitemap</a></li>
+            <li><a href="#">Hosted in the EU on Microsoft Azure</a></li>
+        </ul>
+    </footer>
+
+
+    <script src="~/js/script.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+
+@*
+    <body>
+    <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container">
+    <a href="/">
+    <img src="/images/osr-logo.png" width="130" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+
+    <ul class="navbar-nav">
+    @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    {
+    <li class="nav-item">
+    <a class="nav-link text-dark" href="/account/manage" title="Manage">Hello @User?.Identity?.Name!</a>
+    </li>
+    <li class="nav-item">
+    <form class="form-inline" asp-page="/account/logout" method="post">
+    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+    </form>
+    </li>
+
+    } else {
+    <li class="nav-item">
+    <a class="nav-link text-dark" href="/account/register">Register</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link text-dark" href="/account/login">Login</a>
+    </li>
+    }
+    </ul>
+
+
+    <ul class="navbar-nav flex-grow-1">
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/"></a> </li>
+
+    @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    {
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/face-search">FaceSearch</a> </li>
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/hate-speech">HateSpeech</a> </li>
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/speech-parts">SpeechParts</a> </li>
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/results">Results</a> </li>
+
+    }
+
+    @{
+    bool isAdmin = false;
+    var roles = User?.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+    if (roles.Contains("Admin")) isAdmin = true;
+    }
+
+    @if (isAdmin)
+    {
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/admin/index">Admin</a> </li>
+    <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-page="/admin/dashboard">Dashboard</a> </li>
+    }
+
+    <li class="nav-item"> <a class="nav-link text-dark" href="https://osr4rights.org/">About Us</a> </li>
+
+    </ul>
+    </div>
+
+    </div>
+    </nav>
     </header>
 
     <div class="container">
     <main role="main" class="pb-3">
-        @RenderBody()
+    @RenderBody()
     </main>
-</div>
-
-<footer class="border-top footer text-muted">
-    <div class="container"style="text-align: center;" >
-        &copy; @DateTime.Now.Year - <a href="https://osr4rights.org">OSR4Rights.org</a> - <a href="/privacy">Privacy</a> - <a href="https://github.com/osr4rightstools/osr4rights-tools">Source on GitHub</a>  <br />       
-        <a href="https://osr4rights.org/contact-us/">Contact Team</a> -  <a href="mailto:dave@hmsoftware.co.uk">Technical Website Contact is Dave Mateer</a>
     </div>
-</footer>
 
-<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+    <footer class="border-top footer text-muted">
+    <div class="container"style="text-align: center;" >
+    &copy; @DateTime.Now.Year - <a href="https://osr4rights.org">OSR4Rights.org</a> - <a href="/privacy">Privacy</a> - <a href="https://github.com/osr4rightstools/osr4rights-tools">Source on GitHub</a>  <br />
+    <a href="https://osr4rights.org/contact-us/">Contact Team</a> -  <a href="mailto:dave@hmsoftware.co.uk">Technical Website Contact is Dave Mateer</a>
+    </div>
+    </footer>
 
-@await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/script.js" asp-append-version="true"></script>
 
-</body>
-</html>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    </body>
+    </html>
+*@

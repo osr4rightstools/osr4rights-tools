@@ -6,96 +6,192 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">OSR4Rights Tools</h1>
-    <p>A set of open source tools for human rights investigators </p>
-    <p><a href="https://osr4rights.org/">osr4rights.org</a> for more information</p>
-</div>
+	
+	<!-- Box A - Hero - Text Left col, Image and button right -->
+	<!-- <section class="box box-a grid-col-2 bg-grey"> -->
+	<section class="box box-a grid-col-2">
+		<!-- col 1 -->
+		<div>
+			<div class="box-text">
+				<h2 class="text-xl">Free Open Source Tools for Human Rights Investigators</h2>
+				<p class="text-sm">Right here on this website - User friendly, secure, free tools to help human rights investigators in conducting open source investigations. The system runs using virtual machines that are deleted after every use for maximum security.</p>
 
-@*<div class="text-center">
-    <p>help@osr4rightstools.org</p>
-</div>*@
+				<p class="text-sm">Funded by the Research Wales Innovation Fund, the OSR4Rights Tools Hub developed from <a href="https://www.osr4rights.org">OSR4Rights</a>, a collaboration between Swansea University, University of Manchester, Heriot Watt University, University of Essex and University of California Berkeley in collaboration with Amnesty International, which was funded by the UK's Economic and Social Research Council from 2018-2021.</p>
 
-@*<div class="text-center">
-    <p class="text-danger">Site is in private testing! Please don't register yet.</p>
-</div>*@
+				<!-- <p class="text-sm">Thanks to Amnesty, Uni California Berkeley</p> -->
+				<!-- <a href="#" class="btn btn-dark">Run Demo</a> -->
+			</div>
+		</div>
+		<!-- col 2 -->
+		<!-- maybe should be like box-c? -->
+		<div>
+			<img src="img/people/mont.jpg" alt="">
+		</div>
+	</section>
 
+	<!-- Box B - Hatespeech Detection -->
+	<section class="box box-b grid-col-2 ">
+		<!-- <img src="img/box-b.png" alt=""> -->
+		<div class="box-text">
+			<h2 class="text-xl">Try HateSpeech Detection</h2>
 
-@if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-{
-    <p>Please see the top menu or go to <a href="/face-search">FaceSearch</a>, <a href="/hate-speech">HateSpeech</a>, or <a href="/speech-parts">SpeechParts</a>  to try these tools</p>
-}
-else
-{
-    <p>Please <a href="/account/login">Login</a> or if you are a new user <a href="/account/register">Register</a> for access to the live tools.</p>
-}
+			<form method="post">
 
-<h3>Face Search</h3>
+				<div>
+					<!-- <label for="hateSpeech">Enter hatespeech:</label> -->
+				</div>
+				<input class="input text-sm" type="text" id="hateSpeech" placeholder="asdf" value="Please type hate speech here to analyse">
 
-<p>Looks for a target face which you give as an image, in many other images. </p>
+				<div class="py-md">
+					<!-- submit the form -->
+					<button type="submit" class="btn btn-blue">Analyse Text Above</button>
+				</div>
+				<div>
+					<a href="#" class="btn btn-light">Run Demos</a>
+				</div>
 
-<p>This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
+			</form>
+		</div>
 
-<p><a href="https://osr4rights.org/technical-tools/">More information</a></p>
+		<div class="box-text">
+			<p class="text-sm">We define "hate speech" as text that contains hateful, offensive and toxic language. </p>
+			<p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
 
-@*<p>Here is a sample output</p>*@
+			<p class="text-sm">Languages currently supported by this tool are English, Arabic and Russian</p>
+		</div>
+	</section>
 
-@*<img src="/screenshots/facesearch/1barack.jpg" />*@
+	<!-- Box C - FaceSearch Detection, Image on Right -->
+	<section class="box bg-primary grid-col-2 grid-reversed">
+		<!-- <img src="img/box-c.png" alt=""> -->
 
+		<!-- <img src="img/box-f1.jpg" alt=""> -->
+		<img src="img/fs.png" alt="">
+		<div class="box-text">
+			<h2 class="text-xl">Try FaceSearch Detection</h2>
+			<p class="text-sm">Looks for a target face which you give as an image, in many other images.</p>
 
-<h3>Hate Speech</h3>
+			<p class="text-sm">
+				This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
 
-<p>We define "hate speech" as text that contains hateful, offensive and toxic language. The tool will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text. The languages currently supported by this tool are English, Arabic and Russian, although the language does not need to be specified together with the input text. </p>
+			<!-- <div class="py-md"> -->
+			<div>
+				<a href="#" class="btn btn-light">Run Demos</a>
+			</div>
+		</div>
+	</section>
 
-<p><a href="/technical-tools">More information</a></p>
+	<!-- Box D - Speech Parts , Image on Right -->
+	<!-- <section class="box bg-primary grid-col-2 grid-reversed bg-grey"> -->
+	<section class="box bg-primary grid-col-2 grid-reversed">
+		<!-- <img src="img/box-c.png" alt=""> -->
 
-<h3>Speech Parts</h3>
+		<!-- <img src="img/box-f1.jpg" alt=""> -->
+		<img src="img/sp.png" alt="">
+		<div class="box-text">
+			<h2 class="text-xl">Try SpeechParts</h2>
+			<p class="text-sm">Upload a Video or Audio file and to find only the sections with English speech. We then give you back only those sections as a WAV file. For example CCTV footage looking for only the sections with talking.</p>
 
-<p>Upload a Video or Audio file and to find only the sections with English speech. We then give you back only those sections as a WAV file. For example CCTV footage looking for only the sections with talking. </p>
-
-<p><a href="/speech-parts/">More information</a></p>
-
-@*<h3>Proposed Tools</h3>
-
-<p>Here are more tools we are considering implementing into this site</p>*@
-
-@*<p><a href="/video-face-search">Video Face Search</a></p>
-    <p><a href="/camouflage">Camouflage</a></p>
-    <p><a href="/named-entity-recognition">Named Entity Recognition</a></p>
-    <p><a href="/text-to-map">Text to Map</a></p>*@
-
-@*<p>Video Face Search</p>
-<p>Camouflage</p>
-<p>Named Entity Recognition</p>
-<p>Text to Map</p>*@
-
-<br />
-
-<p>We are always open to suggestions for more tools to add to this site. Please <a href="https://osr4rights.org/contact-us/">Contact Us</a></p>
-
-@*<hr />
-    <p>Below are for developer testing only</p>
-
-    <ul>
-
-        <li class=""> <a class="" href="/hosting-environment-check">hosting-environment-check</a> </li>
-        <li class=""> <a class="" href="/health-check">health-check</a> </li>
-        <li class=""> <a class="" href="/health-check-db">health-check-db</a> </li>
-        <li class=""> <a class="" href="/enquiry">enquiry</a> </li>
-
-        <li class=""> <a class="" href="/status-code-400">status-code-400</a> ie 400 bad request </li>
-        <li class=""> <a class="" href="/nopagehere">nopagehere</a> ie 404 </li>
-        <li class=""> <a class="" href="/throw-exception">throw-exception</a> ie 500 </li>
-    </ul>
-
-    <br />
-
-    <ul>
-        <li class=""> <a class="" href="/account/access-denied">access-denied</a> </li>
-        <li class=""> <a class="" href="/tools-summary">tools-summary</a> anonymous </li>
-        <li class=""> <a class="" href="/face-search">face-search</a> tier1 or tier2 to view. Tier2 to post own file </li>
-        <li class=""> <a class="" href="/hate-speech">hate-speech</a> tier1 or tier2. Tier2 to post own file </li>
-        <li class=""> <a class="" href="/admin">admin</a> admin</li>
-    </ul>*@
+			<!-- <div class="py-md"> -->
+			<div>
+				<a href="#" class="btn btn-light">Run Demos</a>
+			</div>
+		</div>
+	</section>
 
 
+
+
+
+	<!-- Do you want a demo-->
+	<section class="box box-demo-started grid-col-2">
+		<!-- col 1 -->
+		<div>
+			<!-- <img src="img/box-f1.jpg" alt=""> -->
+			<!-- <img src="img/Yvonne-230x300.jpg" alt=""> -->
+			<img src="img/Yvonne-white.jpg" alt="">
+
+			<div class="py-lg">
+				<div class="box-text">
+					<h2 class="text-xl">Do you want a Demo?</h2>
+					<p class="text-sm">Please get in touch and we can do an online demo of the tools.</p>
+					<p class="text-sm">Yvonne.Mcdermottrees@swansea.ac.uk</p>
+					<!-- <a href="#" class="btn btn-dark">Run Demo</a> -->
+				</div>
+			</div>
+		</div>
+		<!-- col 2  - Get Started -->
+		<div>
+			<!-- <img src="img/box-f2.jpg" alt=""> -->
+			<img src="img/start.jpg" alt="">
+
+
+			<div class="bg-primary py-lg">
+				<div class="box-text">
+					<h2 class="text-xl">Get Started Now</h2>
+					<p class="text-sm">Try the demos on this page. Then press Try for free to register so you can try with your own images and text.</p>
+					<a href="#" class="btn btn-blue">Try for free</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- See us at RightsCon -->
+	<section class="box bg-grey text-center py-md">
+		<div class="box-inner">
+			<h2 class="text-md">Session proposal submitted to RightsCon 2022</h2>
+			<p class="text-sm">RightsCon is the world’s leading summit on human rights in the digital age. The 11th edition of RightsCon will take place from Monday, June 6 to Friday, June 10, 2022 online and across all timezones.</p>
+
+			<a href="https://rightscon.org">rightscon.org</a>
+		</div>
+	</section>
+
+	<!-- Thank you to-->
+	<section class="box box-thank-you text-center py-md">
+		<div class="box-inner">
+			<h2 class="text-md">Thank You</h2>
+			<p class="text-sm">To our collaborators, sponsors and technology providers</p>
+			<!-- <ul>
+				<li>ESRC</li>
+			</ul> -->
+		</div>
+	</section>
+
+	<!-- thank you logos -->
+	<!-- box gives 1440 max width -->
+	<section class="box box-thank-you-logos">
+		<ul>
+			<li><a href="https://esrc.ukri.org/"><img src="img/esrc-logo.jpg" alt="Economic and Social Research Council" title="Economic and Social Research Council"></a></li>
+			<li><a href="https://www.swansea.ac.uk/law/"><img src="img/swansea-university-logo.svg" alt="Sweansea University" title="Swansea University"></a></li>
+			<li><a href="https://www.hw.ac.uk/"><img src="img/hw-logo.svg" alt="Heriot Watt University" title="Heriot Watt University"></a></li>
+			<li><a href="https://www.manchester.ac.uk/"><img src="img/um.svg" alt="University of Manchester" title="University of Manchester"></a></li>
+			<li><a href="https://azure.microsoft.com/"><img src="img/ms.svg" alt="Microsoft Azure" title="Microsoft Azure"></a></li>
+			<li><a href="https://www.amnesty.org/"><img src="img/ai.svg" alt="Amnesty International" title="Amnesty International"></a></li>
+			<li><a href="https://hmsoftware.co.uk/"><img src="img/hms-logo2.png" alt="HMSoftware" title="Amnesty International"></a></li>
+			<!-- <li><img src="img/esrc-logo.jpg" alt=""></li> -->
+		</ul>
+		<!-- https://cs.swansea.ac.uk/~cssimonr/resources/ -->
+		<!-- https://www.hw.ac.uk/uk/services/media-services/brand-guidelines.htm -->
+	</section>
+
+	<!-- <footer class="footer bg-grey">
+		<div class="footer-container">
+			<ul>
+				<li><a href="#">&copy; 2017 - 2022 OSR4Rights</a></li>
+				<li><a href="#">GitHub Source</a></li>
+				<li><a href="#">Sitemap</a></li>
+				<li><a href="#">Hosted in the EU on Microsoft Azure</a></li>
+			</ul>
+		</div>
+	</footer> -->
+
+
+
+	<!-- Team and About Us -->
+	<!-- <section class="box box-x text-center">
+		<div class="box-inner">
+			<h2 class="text-md">Team and About Us</h2>
+			<p class="text-sm">Here are the team that have brought you OSR4RightsTools</p>
+
+		</div>
+	</section> -->
