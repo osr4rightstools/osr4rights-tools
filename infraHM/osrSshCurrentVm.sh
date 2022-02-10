@@ -1,0 +1,1 @@
+ssh -o StrictHostKeyChecking=no dave@hmsoftware.uk

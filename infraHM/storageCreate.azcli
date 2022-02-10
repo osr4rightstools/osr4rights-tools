@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Create Storage / Azure file share 
+
+# should only ever need to do once
+
+rg=storage
+region=westeurope
+storageAccountName="osrstorageaccount"
+
+# create resource group
+az group create \
+   --name ${rg} \
+   --location ${region}
+
+# create storage account
+# https://docs.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az_storage_account_create
+az storage account create \
+    --resource-group $rg \
+    --name $storageAccountName \
+    --kind StorageV2 \
+    --sku Standard_LRS
+
+# --enable-large-file-share
+# --sku Standard_ZRS \
+
+
+shareName="osrshare"
+
+# create file share
+# https://docs.microsoft.com/en-us/cli/azure/storage/share-rm?view=azure-cli-latest#az_storage_share_rm_create
+az storage share-rm create \
+    --resource-group $rg \
+    --storage-account $storageAccountName \
+    --name $shareName \
+    --access-tier "Hot" \
+    --quota 10
+    # --output none
+
+# 10GB quota
+
+# costs for tiers
+# https://azure.microsoft.com/en-gb/pricing/details/storage/files/
+
+# https://docs.microsoft.com/en-us/azure/storage/files/storage-files-planning#storage-tiers
+
+# storage tiers - TransactionOptimized is default.. Hot and Cool are others
+
+# change the tier
+# az storage share-rm update \
+#     --resource-group $resourceGroupName \
+#     --storage-account $storageAccountName \
+#     --name $shareName \
+#     --access-tier "Cool"
