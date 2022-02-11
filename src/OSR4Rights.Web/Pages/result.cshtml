@@ -4,122 +4,131 @@
     var zipFile = $"results{Model.Job.JobId}.zip";
     var csvFile = $"results{Model.Job.JobId}.csv";
 }
-
-@if (Model.Job.JobStatusId == Db.JobStatusId.WaitingToStart)
-{
-    <p>We will email you when the job is finished, or <a href="/result/@Model.Job.JobId">refresh this page.</a></p>
-    <p>You can safely close this page.</p>
-
-    <br />
-
-    <p>Job in Queue</p>
-    <p>Queue Length: @Model.QueueLength</p>
-    <p>File: @Model.Job.OrigFileName</p>
-}
-else if (Model.Job.JobStatusId == Db.JobStatusId.Running)
-{
-    <p>We will email you when the job is finished, or <a href="/result/@Model.Job.JobId">refresh this page.</a></p>
-    <p>You can safely close this page.</p>
-
-    <p>File: @Model.Job.OrigFileName</p>
-    <p>Status: @Model.Job.JobStatusString</p>
-    <p>Start and End (UTC): @Model.Job.DateTimeUtcUploaded.ToString("dd/MM/yyyy HH:mm:ss") @Model.Job.DateTimeUtcJobEndedOnVm?.ToString("dd/MM/yyyy HH:mm:ss")</p>
-    <p>Total Time: @Model.TotalTime.ToString(@"hh\:mm\:ss") (hh:mm:ss)</p>
-}
-else
-{
-    <p>File: @Model.Job.OrigFileName</p>
-    <p>Status: @Model.Job.JobStatusString </p>
-    <p>Start and End (UTC): @Model.Job.DateTimeUtcUploaded.ToString("dd/MM/yyyy HH:mm:ss") @Model.Job.DateTimeUtcJobEndedOnVm?.ToString("dd/MM/yyyy HH:mm:ss")</p>
-    <p>Total Time: @Model.TotalTime.ToString(@"hh\:mm\:ss") (hh:mm:ss)</p>
+@section Styles {
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
 }
 
-@if (Model.Job.JobStatusId == Db.JobStatusId.Exception)
-{
-    <p class="text-danger">Sorry - the job returned an exception which we couldn't handle. Please try again, see the Logs (click button below) for any more information, and finally contact us to look at server logs.</p>
-}
+<div class="container-tool">
 
-<!-- test -->
-@if (Model.Job.JobStatusId == Db.JobStatusId.Completed)
-{
+    @if (Model.Job.JobStatusId == Db.JobStatusId.WaitingToStart)
+    {
+        <p>We will email you when the job is finished, or <a href="/result/@Model.Job.JobId">refresh this page.</a></p>
+        <p>You can safely close this page.</p>
+
+        <br />
+
+        <p>Job in Queue</p>
+        <p>Queue Length: @Model.QueueLength</p>
+        <p>File: @Model.Job.OrigFileName</p>
+    }
+    else if (Model.Job.JobStatusId == Db.JobStatusId.Running)
+    {
+        <p>We will email you when the job is finished, or <a href="/result/@Model.Job.JobId">refresh this page.</a></p>
+        <p>You can safely close this page.</p>
+
+        <p>File: @Model.Job.OrigFileName</p>
+        <p>Status: @Model.Job.JobStatusString</p>
+        <p>Start and End (UTC): @Model.Job.DateTimeUtcUploaded.ToString("dd/MM/yyyy HH:mm:ss") @Model.Job.DateTimeUtcJobEndedOnVm?.ToString("dd/MM/yyyy HH:mm:ss")</p>
+        <p>Total Time: @Model.TotalTime.ToString(@"hh\:mm\:ss") (hh:mm:ss)</p>
+    }
+    else
+    {
+        <p>File: @Model.Job.OrigFileName</p>
+        <p>Status: @Model.Job.JobStatusString </p>
+        <p>Start and End (UTC): @Model.Job.DateTimeUtcUploaded.ToString("dd/MM/yyyy HH:mm:ss") @Model.Job.DateTimeUtcJobEndedOnVm?.ToString("dd/MM/yyyy HH:mm:ss")</p>
+        <p>Total Time: @Model.TotalTime.ToString(@"hh\:mm\:ss") (hh:mm:ss)</p>
+    }
+
+    @if (Model.Job.JobStatusId == Db.JobStatusId.Exception)
+    {
+        <p class="text-danger">Sorry - the job returned an exception which we couldn't handle. Please try again, see the Logs (click button below) for any more information, and finally contact us to look at server logs.</p>
+    }
+
+    <!-- test -->
+    @if (Model.Job.JobStatusId == Db.JobStatusId.Completed)
+    {
+        @if (Model.Job.JobTypeId == Db.JobTypeId.FaceSearch)
+        {
+            <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
+            <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
+        }
+
+        @if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
+        {
+            <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
+            <p><a href="/downloads/@Model.Job.JobId/@csvFile">Csv results</a></p>
+        }
+
+        @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
+        {
+            <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
+
+            <p>Please download and listen to the results. If none, it means there was no speech found. Press the log button below to view the frame numbers of where speech was found.</p>
+        }
+
+        <!-- show the html results in the same page-->
+        <!-- https://stackoverflow.com/questions/16584237/how-to-get-height-100-on-object-embed  -->
+        <!-- we don't have a results file yet for speech parts, so don't need to display the warning -->
+        @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
+        {
+        }
+        else
+        {
+            @if (Model.ResultsFileExists)
+            {
+                <div>
+                    <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width: 100%; height: 100vh;"> </object>
+                </div>
+            }
+            else
+            {
+                <p class="text-danger">Results file not returned - press Show logs to investigate. Look for issues such as Parser errors</p>
+            }
+
+        }
+    }
+
+    <!-- always show logs so can debug empty result sets from VM-->
+    @*@if (Model.Job.JobStatusId != Db.JobStatusId.WaitingToStart)
+        {*@
+
+    @*todo make this button work - it used to be controlled by bootstrap*@
+    <p>
+        <button class="btn btn-light" type="button" id="show-logs-button">
+            Show logs
+        </button>
+    </p>
+    <div class="hidden-display-none" id="logs-list">
+        <ul>
+            @foreach (var log in Model.Logs)
+            {
+                <li>@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
+            }
+        </ul>
+    </div>
+    @*}*@
+
+    @if (Model.WarningMessage is { })
+    {
+        <p class="text-danger">@Model.WarningMessage</p>
+    }
+
     @if (Model.Job.JobTypeId == Db.JobTypeId.FaceSearch)
     {
-        <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
-        <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
+        <p>The remote VM will remain open for 15 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/face-search">add them</a> to the queue</p>
+        <p>We have a maximum 2 hour processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
     }
 
     @if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
     {
-        <p><a href="/downloads/@Model.Job.JobId/results.html">Html results</a></p>
-        <p><a href="/downloads/@Model.Job.JobId/@csvFile">Csv results</a></p>
+        <p>The VM will remain 30 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/hate-speech">add them</a> to the queue</p>
+        <p>We have a maximum 30 minute processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
     }
-
-    @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
-    {
-        <p><a href="/downloads/@Model.Job.JobId/@zipFile">Zip results</a></p>
-
-        <p>Please download and listen to the results. If none, it means there was no speech found. Press the log button below to view the frame numbers of where speech was found.</p>
-    }
-
-    <!-- show the html results in the same page-->
-    <!-- https://stackoverflow.com/questions/16584237/how-to-get-height-100-on-object-embed  -->
-    <!-- we don't have a results file yet for speech parts, so don't need to display the warning -->
-    @if (Model.Job.JobTypeId == Db.JobTypeId.SpeechParts)
-    {
-    }
-    else
-    {
-        @if (Model.ResultsFileExists)
-        {
-            <div>
-                <object data="/downloads/@Model.Job.JobId/results.html" type="text/html" style="width: 100%; height: 100vh;"> </object>
-            </div>
-        }
-        else
-        {
-            <p class="text-danger">Results file not returned - press Show logs to investigate. Look for issues such as Parser errors</p>
-        }
-
-    }
-}
-
-<!-- always show logs so can debug empty result sets from VM-->
-@*@if (Model.Job.JobStatusId != Db.JobStatusId.WaitingToStart)
-    {*@
-<p>
-    <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Show logs
-    </button>
-</p>
-<div class="collapse" id="collapseExample">
-    <ul class="list-group list-group-flush">
-        <!-- todo put in css instead of inline styling-->
-        @foreach (var log in Model.Logs)
-        {
-            <li class="list-group-item-light" style="border: none; list-style-type: none;">@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
-        }
-    </ul>
 </div>
-@*}*@
-
-@if (Model.WarningMessage is { })
-{
-    <p class="text-danger">@Model.WarningMessage</p>
-}
-
-@if (Model.Job.JobTypeId == Db.JobTypeId.FaceSearch)
-{
-    <p>The remote VM will remain open for 15 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/face-search">add them</a> to the queue</p>
-    <p>We have a maximum 2 hour processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
-}
-
-@if (Model.Job.JobTypeId == Db.JobTypeId.HateSpeech)
-{
-    <p>The VM will remain 30 minutes after the last job finished to make future processing times faster. If you have multiple files, please <a href="/hate-speech">add them</a> to the queue</p>
-    <p>We have a maximum 30 minute processing time for a job. Please <a href="https://osr4rights.org/contact-us/">get in touch</a> if you need more.</p>
-}
 
 @section Scripts {
+    <script src="~/js/result.js" asp-append-version="true"></script>
 }
 
 

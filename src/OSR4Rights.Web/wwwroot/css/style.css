@@ -76,10 +76,12 @@ img {
     padding: 20px;
     /* width: 100%; */
     /* height: auto; */
+    flex-wrap: wrap;
 }
 
 /* osr4rights logo */
 .navbar-logo img {
+    min-width: 130px;
     width: 130px;
     height: 50px;
 }
@@ -429,6 +431,10 @@ img {
     transform: translateX(100%);
 }
 
+.hidden-display-none {
+    display: none;
+}
+
 /* as don't want to scroll when hamburger menu is there */
 .no-scroll {
     overflow: hidden;
@@ -532,6 +538,20 @@ img {
   align-items: center;
   margin: 20px 0;
 } */
+
+.text-green {
+    color: green;
+}
+
+.file-upload {
+    cursor: pointer;
+}
+
+#upload-photo {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
 
 /* 768 or less  */
 @media (max-width: 768px) {

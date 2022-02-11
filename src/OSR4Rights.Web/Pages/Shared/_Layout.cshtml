@@ -9,8 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", false)
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <title>OSR4Rights @ViewData["Title"]</title>
 </head>
 
@@ -26,17 +26,39 @@
 
         <!-- Navbar Left -->
         <ul class="navbar-nav-left">
-            <li class="underline"><a href="#">Tools</a></li>
-            <li class="underline"><a href="#">Case Studies</a></li>
-            <li class="underline"><a href="#">About</a></li>
+            @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+            {
+                <li class="underline"><a href="/hate-speech">HateSpeech</a></li>
+                <li class="underline"><a href="/face-search">FaceSearch</a></li>
+                <li class="underline"><a href="/speech-parts">SpeechParts</a></li>
+                <li class="underline"><a href="/results">Results</a></li>
+            }
+
+            @{
+                bool isAdmin = false;
+                var roles = User?.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+                if (roles.Contains("Admin")) isAdmin = true;
+            }
+
+            @if (isAdmin)
+            {
+                <li class="underline"><a href="/admin/index">Admin</a></li>
+                <li class="underline"><a href="/admin/dashboard">Dash</a></li>
+            }
+            else
+            {
+                <li class="underline"><a href="https://osr4rights.org">About</a></li>
+            }
+
         </ul>
 
         <!--  Navbar Right-->
         <ul class="navbar-nav-right">
-            <li class="underline"><a href="#">Contact</a></li>
+            @*<li class="underline"><a href="#">Contact</a></li>*@
             @if (HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
             {
-                <li class="underline"><a href="/account/manage">Hello @User?.Identity?.Name!</a></li>
+                //<li class="underline"><a href="/account/manage">Hello @User?.Identity?.Name!</a></li>
+                <li class="underline"><a href="/account/manage">@User?.Identity?.Name</a></li>
                 <li class="underline">
                     <form class="form-inline" asp-page="/account/logout" method="post">
                         <button type="submit" class="btn btn-light">Logout</button>
@@ -45,8 +67,9 @@
             }
             else
             {
-                <li class="underline login-link"><a href="/account/login">Login</a></li>
-                <li><a href="#" class="btn btn-blue">Try for free</a></li>
+                @*<li class="underline login-link"><a href="/account/login">Login</a></li>*@
+                <li class="underline"><a href="/account/login">Login</a></li>
+                <li><a href="/account/register" class="btn btn-blue">Try for free</a></li>
             }
         </ul>
 

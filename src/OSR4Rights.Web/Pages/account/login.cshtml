@@ -9,51 +9,33 @@
 }
 
 <div class="container">
-    @*<h1 class="brand"><span>OSR4</span>Rights</h1>*@
     <div class="wrapper">
         <div class="company-info">
             <h3>Welcome Back!</h3>
             <p class="text-sm">If you have any problems please get in touch</p>
             <ul>
-                <!-- <li><i class="fa fa-road"></i> 44 Something st</li> -->
-                <!-- <li><i class="fa fa-phone"></i> (555) 555-5555</li> -->
-                <li class="text-sm"><i class="fa fa-envelope"></i> yvonne@swansea.ac.uk</li>
+                <li class="text-sm"><i class="fa fa-envelope"></i> help@osr4rightstools.org</li>
             </ul>
         </div>
         <div class="contact">
-            @*<h3>Login</h3>*@
             <form method="post">
                 <div class="py-md">
                     <label class="text-sm">Email Address</label>
-                    <input asp-for="Email" value="">
+                    <input asp-for="Email" class="input-text" value="">
                     <span asp-validation-for="Email" class="text-danger text-sm"></span>
                 </div>
-                <!-- <p>
-                    <label>Company</label>
-                    <input type="text" name="company">
-                </p> -->
-
                 <div class="py-md">
                     <label class="text-sm">Password</label>
-                    @*<input type="password" name="email">*@
-                    <input asp-for="Password" value="">
+                    <input asp-for="Password" class="input-text" value="">
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
-                <!-- <p>
-                    <label>Phone Number</label>
-                    <input type="text" name="phone">
-                </p>
-                <p class="full">
-                    <label>Message</label>
-                    <textarea name="message" rows="5"></textarea>
-                </p> -->
                 <p class="full">
                     <button type="submit">Log in</button>
                 </p>
 
                 <div class="py-md">
-                    <a href="">Forgot your Password?</a>
+                    <a href="/account/forgot-password">Forgot your Password?</a>
                 </div>
 
             </form>
