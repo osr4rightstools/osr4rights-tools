@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Hate Speech";
 }
+
+@* bootstrap for tus progress bar*@
 @section Styles {
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
 <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
@@ -45,8 +47,8 @@
 
     <p>In a normal tweet size message we are seeing on average 300 lines processed per minute (when the VM is already there - otherwise it is about 3 minutes to startup the VM). Please be aware we have a 30 minute max per file which is roughly 9,000 lines. We suggest a max of 3,000 lines per file</p>
 
-        @if (Model.IsAllowedToUpload)
-        {
+    @if (Model.IsAllowedToUpload)
+    {
         <!-- keep for now as js code still references-->
         <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
         <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
@@ -56,10 +58,8 @@
         <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
         <!-- file button -->
         <!-- have got a css name clash with bootstrap but I've put mine further down in _Layout so it takes precedence -->
-        <label for="upload-photo" class="btn btn-blue file-upload">
-            Choose File
-        </label>
-        <input type="file" id="upload-photo" >
+        <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
+        <input type="file" id="upload-photo">
 
         <br />
         <br />
@@ -72,11 +72,11 @@
         <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
 
         <br />
-        }
-        else
-        {
+    }
+    else
+    {
         <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
-        }
+    }
 
     <br />
 
@@ -84,38 +84,32 @@
 
     <p>Please feel free to try any of the following samples. IMPORTANT NOTE: For the purposes of demonstrating the detection capabilities of the tool, the test files below contain language (drawn from real-world examples) that some users might find highly offensive.</p>
 
-    <p>
-        1. <a href="/sample-data/hatespeech/x1TE1.csv">x1TE1.csv</a> A very small set of English tweets
-    </p>
-    <p>
-        <form method="post" asp-page-handler="runTE1">
-            <input type="submit" value="Run x1TE1.csv" />
-        </form>
-    </p>
+    <p class="py-md"> 1. <a href="/sample-data/hatespeech/x1TE1.csv">x1TE1.csv</a> A very small set of English tweets </p>
+
+    <form method="post" asp-page-handler="runTE1">
+        <input type="submit" class="btn btn-light" value="Run x1TE1.csv" />
+    </form>
 
 
-    <p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
+    <p class="py-md">2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
 
-    <p>
-        <form method="post" asp-page-handler="runTESTfile">
-            <input type="submit" value="Run x2TESTfile.csv" />
-        </form>
-    </p>
+    <form method="post" asp-page-handler="runTESTfile">
+        <input type="submit" class="btn btn-light" value="Run x2TESTfile.csv" />
+    </form>
 
 
-    <p>3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
+    <p class="py-md">3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
 
-    <p>
-        <form method="post" asp-page-handler="runmultilingualtest">
-            <input type="submit" value="Run x3multilingual-test.csv" />
-        </form>
-    </p>
+    <form method="post" asp-page-handler="runmultilingualtest">
+        <input type="submit" class="btn btn-light" value="Run x3multilingual-test.csv" />
+    </form>
 </div>
 
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial" />
+@*<partial name="_ValidationScriptsPartial" />*@
 
+@* jquery needed for tus script - todo refactor out*@
 <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 
 <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>

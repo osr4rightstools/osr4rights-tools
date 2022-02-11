@@ -1,17 +1,18 @@
 ﻿@page "{emailAddressConfirmationCode:guid}"
 @model EmailAddressConfirmationModel
 
-<h1>Email Address Confirmation</h1>
+@section Styles {
+<link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+}
 
-<p>Please press to confirm your email address</p>
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Confirm Email</button>
-            </div>
-        </form>
-    </div>
+<div class="container-tool">
+    <h1>Email Address Confirmation</h1>
+
+    <p class="py-md">Please press to confirm your email address</p>
+
+    <form method="post">
+        <button type="submit" class="btn btn-blue">Confirm Email</button>
+    </form>
 </div>
 
 

@@ -4,9 +4,17 @@
     ViewData["Title"] = "Access denied";
 }
 
-<h2 class="text-danger">@ViewData["Title"]</h2>
-<p class="text-danger">
-    Sorry - you do not have the correct Role to access to this resource.
-</p>
+@section Styles {
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+}
 
+<div class="container-tool">
+    <h2 class="text-red">@ViewData["Title"]</h2>
+    <p class="text-danger">
+        Sorry - you do not have the correct Role to access to this resource.
+    </p>
+</div>
 
+@section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
+}

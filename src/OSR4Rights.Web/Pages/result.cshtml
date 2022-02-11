@@ -99,11 +99,11 @@
             Show logs
         </button>
     </p>
-    <div class="hidden-display-none" id="logs-list">
+    <div class="hidden-display-none py-md" id="logs-list">
         <ul>
             @foreach (var log in Model.Logs)
             {
-                <li>@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
+                <li class="li-sm">@log.DateTimeUtc.ToString("dd/MM/yyyy HH:mm:ss") @log.Text</li>
             }
         </ul>
     </div>

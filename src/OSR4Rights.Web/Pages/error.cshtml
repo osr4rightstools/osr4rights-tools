@@ -3,10 +3,17 @@
 @{
     ViewData["Title"] = "Error";
 }
+@section Styles {
+<link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+}
 
-<h1 class="text-danger">Sorry.</h1>
-<h2 class="text-danger">An error occurred.</h2>
+<div class="container-tool">
 
-<p>
-    Something has gone wrong (Status code: @Model.CustomStatusCode)
-</p>
+    <h1 class="text-red">Sorry.</h1>
+    <h2 class="text-red">An error occurred.</h2>
+
+    <p>
+        Something has gone wrong (Status code: @Model.CustomStatusCode)
+    </p>
+
+</div>

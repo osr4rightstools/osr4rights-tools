@@ -309,6 +309,11 @@ img {
     margin-bottom: 20px;
 }
 
+
+.li-sm {
+    font-size: 15px;
+}
+
 /* Padding */
 .py-lg {
     padding: 40px 0;
@@ -543,6 +548,11 @@ img {
     color: green;
 }
 
+.text-red {
+    color: red;
+}
+
+
 .file-upload {
     cursor: pointer;
 }
@@ -551,6 +561,14 @@ img {
     opacity: 0;
     position: absolute;
     z-index: -1;
+}
+
+.normal-ul {
+    list-style: inside;
+}
+
+.normal-ul li {
+    font-size: 15px;
 }
 
 /* 768 or less  */
