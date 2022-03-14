@@ -31,13 +31,16 @@ namespace OSR4Rights.Web;
 
 public class Startup
 {
-    public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
+    public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment, IWebHostEnvironment env)
     {
         _hostEnvironment = hostEnvironment;
         Configuration = configuration;
+        CurrentEnvironment = env;
     }
     private readonly IHostEnvironment _hostEnvironment;
     public IConfiguration Configuration { get; }
+    //https://stackoverflow.com/a/32556303/26086
+    private IWebHostEnvironment CurrentEnvironment { get; set; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -79,17 +82,25 @@ public class Startup
         // the channel that the background service will use.
         services.AddSingleton<FaceSearchFileProcessingChannel>();
         services.AddHostedService<FaceSearchFileProcessingService>();
-        //services.AddHostedService<FaceSearchCleanUpAzureService>();
 
         // hate-speech
         services.AddSingleton<HateSpeechFileProcessingChannel>();
         services.AddHostedService<HateSpeechFileProcessingService>();
-        //services.AddHostedService<HateSpeechCleanUpAzureService>();
 
         // speech-parts
         services.AddSingleton<SpeechPartsFileProcessingChannel>();
         services.AddHostedService<SpeechPartsFileProcessingService>();
-        //services.AddHostedService<SpeechPartsCleanUpAzureService>();
+
+        // so when developing we don't try and delete Azure VM's
+        if (CurrentEnvironment.IsProduction())
+        {
+            Log.Information("Running Azure Cleanup - Production");
+            services.AddHostedService<FaceSearchCleanUpAzureService>();
+            services.AddHostedService<HateSpeechCleanUpAzureService>();
+            services.AddHostedService<SpeechPartsCleanUpAzureService>();
+        }
+        else
+            Log.Information("NOT Running Azure Cleanup jobs - Non Production");
 
         services.AddHttpContextAccessor();
     }
