@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace OSR4Rights.Web.Pages
 {
-    [Authorize(Roles = "Tier1, Tier2, Admin")]
+    //[Authorize(Roles = "Tier1, Tier2, Admin")]
     public class FaceSearchModel : PageModel
     {
         public bool IsAllowedToUpload { get; set; }

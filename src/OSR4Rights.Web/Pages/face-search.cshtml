@@ -1,11 +1,13 @@
 ﻿@page
 @model OSR4Rights.Web.Pages.FaceSearchModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 @{
     ViewData["Title"] = "Face Search";
 }
 @* bootstrap for tus progress bar*@
 @section Styles {
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
+
 <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
 }
 
@@ -16,93 +18,111 @@
 
     <p>This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
 
-    @if (Model.IsAllowedToUpload)
+    <!-- not logged in -->
+    @if (!HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
     {
-        <p>Please upload a zip file containing 2 folders</p>
-        <ul class="normal-ul">
-            <li>/search directory which contains images to search</li>
-            <li>/target directory which contains target image(s)</li>
-        </ul>
+        <h2 class="py-sm">If you wouldn't mind...</h2>
 
-        <!-- keep for now as js code still references-->
-        <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
-        <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
-        <input type="number" id="chunksize" name="chunksize" hidden="true">
+        <p class="py-sm">Please Tell Us who you are by <a href="">registering</a> then you can run all the samples</p>
 
-        <div class="py-md">
-            <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
-            <input type="file" id="upload-photo">
-        </div>
+        <p class="py-sm">Or <a href="">Login</a> if you have already registered</p>
 
-
-        <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
-        <!-- file button -->
-        @*        <label class="btn btn-default">
-            <input type="file">
-            </label>
-        *@
-        <div class="progress" style="height: 32px;">
-            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
-        </div>
-
-        <!-- pause / resume button-->
-        <div class="py-md">
-            <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
-        </div>
-
-        <p>If your upload is interrupted, come back to this page and try again. It will try to resume the upload. We use the <a href="https://tus.io/">tus.io</a> open protocol.</p>
-        <br />
+        <p class="py-sm">We take security very seriously. Please <a href="">see our privacy policy</a></p>
     }
     else
     {
-        <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
-    }
+        <!-- tier 2 -->
+        @if (Model.IsAllowedToUpload)
+        {
+            <p>Please upload a zip file containing 2 folders</p>
+            <ul class="normal-ul">
+                <li>/search directory which contains images to search</li>
+                <li>/target directory which contains target image(s)</li>
+            </ul>
 
-    <h4 id="samples">Samples</h4>
+            <!-- keep for now as js code still references-->
+            <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
+            <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
+            <input type="number" id="chunksize" name="chunksize" hidden="true">
 
-    <p class="py-md"> 1. <a href="/sample-data/facesearch/1barack.zip">barack.zip</a> 10 images with target is Barack Obama which is a 7KB headshot
+            <div class="py-md">
+                <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
+                <input type="file" id="upload-photo">
+            </div>
+
+
+            <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
+            <!-- file button -->
+            @*        <label class="btn btn-default">
+                <input type="file">
+                </label>
+            *@
+            <div class="progress" style="height: 32px;">
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
+            </div>
+
+            <!-- pause / resume button-->
+            <div class="py-md">
+                <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
+            </div>
+
+            <p>If your upload is interrupted, come back to this page and try again. It will try to resume the upload. We use the <a href="https://tus.io/">tus.io</a> open protocol.</p>
+            <br />
+        }
+        else
+        {
+            <!-- tier 1-->
+            <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
+        }
+
+        <h4 id="samples">Samples</h4>
+
+        <p class="py-md">
+            1. <a href="/sample-data/facesearch/1barack.zip">barack.zip</a> 10 images with target is Barack Obama which is a 7KB headshot
+        </p>
 
         <form method="post" asp-page-handler="run1barack">
             <input type="submit" class="btn btn-light" value="Run Barack Sample" />
         </form>
 
-    <p class="py-md">2. <a href="/sample-data/facesearch/6lfwsmall.zip">lfwsmall.zip</a> A subset of <a href="http://vis-www.cs.umass.edu/lfw/">Labeled Faces in the Wild</a> 145 images</p>
+        <p class="py-md">2. <a href="/sample-data/facesearch/6lfwsmall.zip">lfwsmall.zip</a> A subset of <a href="http://vis-www.cs.umass.edu/lfw/">Labeled Faces in the Wild</a> 145 images</p>
 
-    <form method="post" asp-page-handler="run6lfwsmall">
-        <input type="submit" class="btn btn-light" value="Run LFW Sample" />
-    </form>
+        <form method="post" asp-page-handler="run6lfwsmall">
+            <input type="submit" class="btn btn-light" value="Run LFW Sample" />
+        </form>
 
-    <br />
+        <br />
 
-    <h4>Screenshots</h4>
-    <p class="py-md">Here is the output of the Barack sample</p>
+        <h4>Screenshots</h4>
+        <p class="py-md">Here is the output of the Barack sample</p>
 
-    <img src="/screenshots/facesearch/1barack.jpg" asp-append-version="true" />
+        <img src="/screenshots/facesearch/1barack.jpg" asp-append-version="true" />
 
-    <h1>Background</h1>
+        <h1>Background</h1>
 
-    <p>.png, .jpg, .jpeg supported</p>
+        <p>.png, .jpg, .jpeg supported</p>
 
-    <p>Multiple target images supported</p>
+        <p>Multiple target images supported</p>
 
-    <p>Large zip filesizes are supported - we have tested up to 1.6GB. Please email support@osr4rights-tools.org if you have problems and need a different way to upload securely the files. </p>
-
-
-    <p>Model is trained for adults. It is not as good on childrens faces</p>
+        <p>Large zip filesizes are supported - we have tested up to 1.6GB. Please email support@osr4rights-tools.org if you have problems and need a different way to upload securely the files. </p>
 
 
-    <h1>Security</h1>
-    <p>We do not store any of your uploaded zip files.</p>
+        <p>Model is trained for adults. It is not as good on childrens faces</p>
 
-    <p>The VM where raw images are processed is deleted soon after your jobs are finished.</p>
 
-    <p>To download results you need to login with your approved email address</p>
+        <h1>Security</h1>
+        <p>We do not store any of your uploaded zip files.</p>
 
-    <h1>Technical</h1>
+        <p>The VM where raw images are processed is deleted soon after your jobs are finished.</p>
 
-    <p>A first job takes at a minimum 3 minutes to run. It runs on a Microsoft Azure GPU based virtual machine so needs time to initialise. Subsequent jobs are much faster</p>
+        <p>To download results you need to login with your approved email address</p>
 
-    <p>Based on the <a href="https://github.com/ageitgey/face_recognition#usage">face_recognition</a> open source library which uses the <a href="http://dlib.net/">dlib</a> toolkit's state-of-the-art facial recognition algorithms. The model has an accuracy of 99.38% on the <a href="http://vis-www.cs.umass.edu/lfw/">Label Faces in the Wild</a> benchmark</p>
+        <h1>Technical</h1>
+
+        <p>A first job takes at a minimum 3 minutes to run. It runs on a Microsoft Azure GPU based virtual machine so needs time to initialise. Subsequent jobs are much faster</p>
+
+        <p>Based on the <a href="https://github.com/ageitgey/face_recognition#usage">face_recognition</a> open source library which uses the <a href="http://dlib.net/">dlib</a> toolkit's state-of-the-art facial recognition algorithms. The model has an accuracy of 99.38% on the <a href="http://vis-www.cs.umass.edu/lfw/">Label Faces in the Wild</a> benchmark</p>
+    }
 
 </div>
 
