@@ -79,17 +79,17 @@ public class Startup
         // the channel that the background service will use.
         services.AddSingleton<FaceSearchFileProcessingChannel>();
         services.AddHostedService<FaceSearchFileProcessingService>();
-        services.AddHostedService<FaceSearchCleanUpAzureService>();
+        //services.AddHostedService<FaceSearchCleanUpAzureService>();
 
         // hate-speech
         services.AddSingleton<HateSpeechFileProcessingChannel>();
         services.AddHostedService<HateSpeechFileProcessingService>();
-        services.AddHostedService<HateSpeechCleanUpAzureService>();
+        //services.AddHostedService<HateSpeechCleanUpAzureService>();
 
         // speech-parts
         services.AddSingleton<SpeechPartsFileProcessingChannel>();
         services.AddHostedService<SpeechPartsFileProcessingService>();
-        services.AddHostedService<SpeechPartsCleanUpAzureService>();
+        //services.AddHostedService<SpeechPartsCleanUpAzureService>();
 
         services.AddHttpContextAccessor();
     }
