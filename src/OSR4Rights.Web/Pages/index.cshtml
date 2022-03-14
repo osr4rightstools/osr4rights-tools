@@ -6,185 +6,181 @@
     ViewData["Title"] = "Home";
 }
 
-	
-	<!-- Box A - Hero - Text Left col, Image and button right -->
-	<!-- <section class="box box-a grid-col-2 bg-grey"> -->
-	<section class="box box-a grid-col-2">
-		<!-- col 1 -->
-		<div>
-			<div class="box-text">
-				<h2 class="text-xl">Free Open Source Tools for Human Rights Investigators</h2>
-				<p class="text-sm">Right here on this website - User friendly, secure, free tools to help human rights investigators in conducting open source investigations. The system runs using virtual machines that are deleted after every use for maximum security.</p>
 
-				<p class="text-sm">Funded by the Research Wales Innovation Fund, the OSR4Rights Tools Hub developed from <a href="https://www.osr4rights.org">OSR4Rights</a>, a collaboration between Swansea University, University of Manchester, Heriot Watt University, University of Essex and University of California Berkeley in collaboration with Amnesty International, which was funded by the UK's Economic and Social Research Council from 2018-2021.</p>
+<!-- Box A - Hero - Text Left col, Image and button right -->
+<!-- <section class="box box-a grid-col-2 bg-grey"> -->
+<section class="box box-a grid-col-2">
+    <!-- col 1 -->
+    <div>
+        <div class="box-text">
+            <h2 class="text-xl">Free Open Source Tools for Human Rights Investigators</h2>
+            <p class="text-sm">Right here on this website - User friendly, secure, free tools to help human rights investigators in conducting open source investigations. The system runs using virtual machines that are deleted after every use for maximum security.</p>
 
-			</div>
-		</div>
-		<div>
-			<img src="img/people/mont.jpg" alt="">
-		</div>
-	</section>
+            <p class="text-sm">Funded by the Research Wales Innovation Fund, the OSR4Rights Tools Hub developed from <a href="https://www.osr4rights.org">OSR4Rights</a>, a collaboration between Swansea University, University of Manchester, Heriot Watt University, University of Essex and University of California Berkeley in collaboration with Amnesty International, which was funded by the UK's Economic and Social Research Council from 2018-2021.</p>
 
-	<!-- Box B - Hatespeech Detection -->
-	<section class="box box-b grid-col-2 ">
-		<!-- <img src="img/box-b.png" alt=""> -->
-		<div class="box-text">
-			<h2 class="text-xl">Try HateSpeech Detection</h2>
+        </div>
+    </div>
+    <div>
+        <img src="img/people/mont.jpg" alt="">
+    </div>
+</section>
 
-			<form method="post">
+<!-- Box B - Hatespeech Detection -->
+<section class="box box-b grid-col-2 ">
+    <!-- <img src="img/box-b.png" alt=""> -->
+    <div class="box-text">
+        <h2 class="text-xl">Try HateSpeech Detection</h2>
 
-				<div>
-					<!-- <label for="hateSpeech">Enter hatespeech:</label> -->
-				</div>
-				<input class="input text-sm" type="text" id="hateSpeech" placeholder="asdf" value="Please type hate speech here to analyse">
+        <form method="post">
 
-				<div class="py-md">
-					<!-- submit the form -->
-					<button type="submit" class="btn btn-blue">Analyse Text Above</button>
-				</div>
-				<div>
-					<a href="/hate-speech#samples" class="btn btn-light">Run Samples</a>
-				</div>
+            <div>
+                <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
+            </div>
+            <input class="input text-sm" type="text" id="hateSpeech" placeholder="asdf" value="Please type hate speech here to analyse">
 
-			</form>
-		</div>
+            <div class="py-md">
+                <!-- submit the form -->
+                <button type="submit" class="btn btn-blue">Analyse Text Above</button>
+            </div>
+        </form>
+        <div>
+            <a href="/hate-speech#samples" class="btn btn-light">Run Samples</a>
+        </div>
 
-		<div class="box-text">
-			<p class="text-sm">We define "hate speech" as text that contains hateful, offensive and toxic language. </p>
-			<p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
+    </div>
 
-			<p class="text-sm">Languages currently supported by this tool are English, Arabic and Russian</p>
-		</div>
-	</section>
+    <div class="box-text">
+        <p class="text-sm">We define "hate speech" as text that contains hateful, offensive and toxic language. </p>
+        <p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
 
-	<!-- Box C - FaceSearch Detection, Image on Right -->
-	<section class="box bg-primary grid-col-2 grid-reversed">
-		<!-- <img src="img/box-c.png" alt=""> -->
+        <p class="text-sm">Languages currently supported by this tool are English, Arabic and Russian</p>
+    </div>
+</section>
 
-		<!-- <img src="img/box-f1.jpg" alt=""> -->
-		<img src="img/fs.jpg" alt="">
-		<div class="box-text">
-			<h2 class="text-xl">Try FaceSearch Detection</h2>
-			<p class="text-sm">Looks for a target face which you give as an image, in many other images.</p>
+<!-- Box C - FaceSearch Detection, Image on Right -->
+<section class="box bg-primary grid-col-2 grid-reversed">
+    <!-- <img src="img/box-c.png" alt=""> -->
+    <!-- <img src="img/box-f1.jpg" alt=""> -->
+    <img src="img/fs.jpg" alt="">
+    <div class="box-text">
+        <h2 class="text-xl">Try FaceSearch Detection</h2>
+        <p class="text-sm">Looks for a target face which you give as an image, in many other images.</p>
 
-			<p class="text-sm">
-				This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
+        <p class="text-sm">
+            This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at
+        </p>
 
-			<!-- <div class="py-md"> -->
-			<div>
-				<a href="/face-search#samples" class="btn btn-light">Run Samples</a>
-			</div>
-		</div>
-	</section>
+        <!-- <div class="py-md"> -->
+        <div>
+            <a href="/face-search#samples" class="btn btn-light">Run Samples</a>
+        </div>
+    </div>
+</section>
 
-	<!-- Box D - Speech Parts , Image on Right -->
-	<!-- <section class="box bg-primary grid-col-2 grid-reversed bg-grey"> -->
-	<section class="box bg-primary grid-col-2 grid-reversed">
-		<!-- <img src="img/box-c.png" alt=""> -->
+<!-- Box D - Speech Parts , Image on Right -->
+<!-- <section class="box bg-primary grid-col-2 grid-reversed bg-grey"> -->
+<section class="box bg-primary grid-col-2 grid-reversed">
+    <!-- <img src="img/box-c.png" alt=""> -->
+    <!-- <img src="img/box-f1.jpg" alt=""> -->
+    <img src="img/sp.jpg" alt="">
+    <div class="box-text">
+        <h2 class="text-xl">Try SpeechParts</h2>
+        <p class="text-sm">Upload a Video or Audio file and to find only the sections with English speech. We then give you back only those sections as a WAV file. For example CCTV footage looking for only the sections with talking.</p>
 
-		<!-- <img src="img/box-f1.jpg" alt=""> -->
-		<img src="img/sp.jpg" alt="">
-		<div class="box-text">
-			<h2 class="text-xl">Try SpeechParts</h2>
-			<p class="text-sm">Upload a Video or Audio file and to find only the sections with English speech. We then give you back only those sections as a WAV file. For example CCTV footage looking for only the sections with talking.</p>
-
-			<!-- <div class="py-md"> -->
-			<div>
-				<a href="/speech-parts#samples" class="btn btn-light">Run Samples</a>
-			</div>
-		</div>
-	</section>
-
+        <!-- <div class="py-md"> -->
+        <div>
+            <a href="/speech-parts#samples" class="btn btn-light">Run Samples</a>
+        </div>
+    </div>
+</section>
 
 
 
-	<!-- Do you want a demo-->
-	<section class="box box-demo-started grid-col-2">
-		<!-- col 1 -->
-		<div>
-			<!-- <img src="img/box-f1.jpg" alt=""> -->
-			<!-- <img src="img/Yvonne-230x300.jpg" alt=""> -->
-			<img src="img/Yvonne-white.jpg" alt="">
 
-			<div class="py-lg">
-				<div class="box-text">
-					<h2 class="text-xl">Do you want a Demo?</h2>
-					<p class="text-sm">Please get in touch and we can do an online demo of the tools.</p>
-					<p class="text-sm">Yvonne.Mcdermottrees@swansea.ac.uk</p>
-					<!-- <a href="#" class="btn btn-dark">Run Demo</a> -->
-				</div>
-			</div>
-		</div>
-		<!-- col 2  - Get Started -->
-		<div>
-			<!-- <img src="img/box-f2.jpg" alt=""> -->
-			<img src="img/start.jpg" alt="">
+<!-- Do you want a demo-->
+<section class="box box-demo-started grid-col-2">
+    <!-- col 1 -->
+    <div>
+        <!-- <img src="img/box-f1.jpg" alt=""> -->
+        <!-- <img src="img/Yvonne-230x300.jpg" alt=""> -->
+        <img src="img/Yvonne-white.jpg" alt="">
 
-
-			<div class="bg-primary py-lg">
-				<div class="box-text">
-					<h2 class="text-xl">Get Started Now</h2>
-					<p class="text-sm">Try the demos on this page. Then press Try for free to register so you can try with your own images and text.</p>
-					<a href="#" class="btn btn-blue">Try for free</a>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- See us at RightsCon -->
-	<section class="box bg-grey text-center py-md">
-		<div class="box-inner">
-			<h2 class="text-md">Session proposal submitted to RightsCon 2022</h2>
-			<p class="text-sm">RightsCon is the world’s leading summit on human rights in the digital age. The 11th edition of RightsCon will take place from Monday, June 6 to Friday, June 10, 2022 online and across all timezones.</p>
-
-			<a href="https://rightscon.org">rightscon.org</a>
-		</div>
-	</section>
-
-	<!-- Thank you to-->
-	<section class="box box-thank-you text-center py-md">
-		<div class="box-inner">
-			<h2 class="text-md">Thank You</h2>
-			<p class="text-sm">To our collaborators, sponsors and technology providers</p>
-			<!-- <ul>
-				<li>ESRC</li>
-			</ul> -->
-		</div>
-	</section>
-
-	<!-- thank you logos -->
-	<!-- box gives 1440 max width -->
-	<section class="box box-thank-you-logos">
-		<ul>
-			<li><a href="https://esrc.ukri.org/"><img src="img/esrc-logo.jpg" alt="Economic and Social Research Council" title="Economic and Social Research Council"></a></li>
-			<li><a href="https://www.swansea.ac.uk/law/"><img src="img/swansea-university-logo.svg" alt="Sweansea University" title="Swansea University"></a></li>
-			<li><a href="https://www.hw.ac.uk/"><img src="img/hw-logo.svg" alt="Heriot Watt University" title="Heriot Watt University"></a></li>
-			<li><a href="https://www.manchester.ac.uk/"><img src="img/um.svg" alt="University of Manchester" title="University of Manchester"></a></li>
-			<li><a href="https://hmsoftware.co.uk/"><img src="img/hms-logo2.png" alt="HMSoftware" title="Amnesty International"></a></li>
-			<!-- <li><img src="img/esrc-logo.jpg" alt=""></li> -->
-		</ul>
-		<!-- https://cs.swansea.ac.uk/~cssimonr/resources/ -->
-		<!-- https://www.hw.ac.uk/uk/services/media-services/brand-guidelines.htm -->
-	</section>
-
-	<!-- <footer class="footer bg-grey">
-		<div class="footer-container">
-			<ul>
-				<li><a href="#">&copy; 2017 - 2022 OSR4Rights</a></li>
-				<li><a href="#">GitHub Source</a></li>
-				<li><a href="#">Sitemap</a></li>
-				<li><a href="#">Hosted in the EU on Microsoft Azure</a></li>
-			</ul>
-		</div>
-	</footer> -->
+        <div class="py-lg">
+            <div class="box-text">
+                <h2 class="text-xl">Do you want a Demo?</h2>
+                <p class="text-sm">Please get in touch and we can do an online demo of the tools.</p>
+                <p class="text-sm">Yvonne.Mcdermottrees@swansea.ac.uk</p>
+                <!-- <a href="#" class="btn btn-dark">Run Demo</a> -->
+            </div>
+        </div>
+    </div>
+    <!-- col 2  - Get Started -->
+    <div>
+        <!-- <img src="img/box-f2.jpg" alt=""> -->
+        <img src="img/start.jpg" alt="">
 
 
+        <div class="bg-primary py-lg">
+            <div class="box-text">
+                <h2 class="text-xl">Get Started Now</h2>
+                <p class="text-sm">Try the demos on this page. Then press Try for free to register so you can try with your own images and text.</p>
+                <a href="#" class="btn btn-blue">Try for free</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-	<!-- Team and About Us -->
-	<!-- <section class="box box-x text-center">
-		<div class="box-inner">
-			<h2 class="text-md">Team and About Us</h2>
-			<p class="text-sm">Here are the team that have brought you OSR4RightsTools</p>
+<!-- See us at RightsCon -->
+<section class="box bg-grey text-center py-md">
+    <div class="box-inner">
+        <h2 class="text-md">Session proposal submitted to RightsCon 2022</h2>
+        <p class="text-sm">RightsCon is the world’s leading summit on human rights in the digital age. The 11th edition of RightsCon will take place from Monday, June 6 to Friday, June 10, 2022 online and across all timezones.</p>
 
-		</div>
-	</section> -->
+        <a href="https://rightscon.org">rightscon.org</a>
+    </div>
+</section>
+
+<!-- Thank you to-->
+<section class="box box-thank-you text-center py-md">
+    <div class="box-inner">
+        <h2 class="text-md">Thank You</h2>
+        <p class="text-sm">To our collaborators, sponsors and technology providers</p>
+        <!-- <ul>
+            <li>ESRC</li>
+        </ul> -->
+    </div>
+</section>
+
+<!-- thank you logos -->
+<!-- box gives 1440 max width -->
+<section class="box box-thank-you-logos">
+    <ul>
+        <li><a href="https://esrc.ukri.org/"><img src="img/esrc-logo.jpg" alt="Economic and Social Research Council" title="Economic and Social Research Council"></a></li>
+        <li><a href="https://www.swansea.ac.uk/law/"><img src="img/swansea-university-logo.svg" alt="Sweansea University" title="Swansea University"></a></li>
+        <li><a href="https://www.hw.ac.uk/"><img src="img/hw-logo.svg" alt="Heriot Watt University" title="Heriot Watt University"></a></li>
+        <li><a href="https://www.manchester.ac.uk/"><img src="img/um.svg" alt="University of Manchester" title="University of Manchester"></a></li>
+        <li><a href="https://hmsoftware.co.uk/"><img src="img/hms-logo2.png" alt="HMSoftware" title="Amnesty International"></a></li>
+        <!-- <li><img src="img/esrc-logo.jpg" alt=""></li> -->
+    </ul>
+    <!-- https://cs.swansea.ac.uk/~cssimonr/resources/ -->
+    <!-- https://www.hw.ac.uk/uk/services/media-services/brand-guidelines.htm -->
+</section>
+
+<!-- <footer class="footer bg-grey">
+    <div class="footer-container">
+        <ul>
+            <li><a href="#">&copy; 2017 - 2022 OSR4Rights</a></li>
+            <li><a href="#">GitHub Source</a></li>
+            <li><a href="#">Sitemap</a></li>
+            <li><a href="#">Hosted in the EU on Microsoft Azure</a></li>
+        </ul>
+    </div>
+</footer> -->
+<!-- Team and About Us -->
+<!-- <section class="box box-x text-center">
+    <div class="box-inner">
+        <h2 class="text-md">Team and About Us</h2>
+        <p class="text-sm">Here are the team that have brought you OSR4RightsTools</p>
+
+    </div>
+</section> -->
