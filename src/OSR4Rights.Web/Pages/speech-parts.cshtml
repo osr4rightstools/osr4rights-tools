@@ -1,17 +1,18 @@
 ﻿@page
 @model OSR4Rights.Web.Pages.SpeechPartsModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
 @{
     ViewData["Title"] = "Speech Parts";
 }
 
 @* bootstrap for tus progress bar*@
 @section Styles {
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
 <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
 }
 
 <div class="container-tool">
-    <h1>Speech Parts</h1>
+    <h2 class="text-xl">Speech Parts</h2>
 
     <p class="py-md">Upload a Video or Audio file and to find only the sections with English speech. We then give you back only those sections as a WAV file. For example CCTV footage looking for only the sections with talking. </p>
 
@@ -22,99 +23,115 @@
         <li>1 hour, 174MB video</li>
         <li>9 hour, 393MB video</li>
     </ul>
-
-    @if (Model.IsAllowedToUpload)
+    <!-- not logged in -->
+    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
     {
-        <p>Please upload a file of any of these types</p>
-        <ul class="normal-ul">
-            <li>mp4 (video)</li>
-            <li>webm (video)</li>
-            <li>mp3</li>
-            <li>ogg</li>
-            <li>flac</li>
-            <li>m4a</li>
-            <li>wav</li>
-        </ul>
-        <!-- keep for now as js code still references-->
-        <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
-        <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
-        <input type="number" id="chunksize" name="chunksize" hidden="true">
+        <h2 class="text-md py-md">If you wouldn't mind...</h2>
 
-        <br />
-        <!-- file button -->
-        <!-- have got a css name clash with bootstrap but I've put mine further down in _Layout so it takes precedence -->
-        <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
-        <input type="file" id="upload-photo">
+        <p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>
 
-        <br />
-        <br />
+        <p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>
 
-        <div class="progress" style="height: 32px;">
-            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
-        </div>
+        <img src="img/sp.jpg" alt="">
 
-        <br />
-        <!-- pause / resume button-->
-        <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
-
-        <br />
     }
     else
     {
-        <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
-    }
+        <!-- tier 2-->
+        @if (Model.IsAllowedToUpload)
+        {
+            <p>Please upload a file of any of these types</p>
+            <ul class="normal-ul">
+                <li>mp4 (video)</li>
+                <li>webm (video)</li>
+                <li>mp3</li>
+                <li>ogg</li>
+                <li>flac</li>
+                <li>m4a</li>
+                <li>wav</li>
+            </ul>
+            <!-- keep for now as js code still references-->
+            <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
+            <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
+            <input type="number" id="chunksize" name="chunksize" hidden="true">
 
-    <br />
+            <br />
+            <!-- file button -->
+            <!-- have got a css name clash with bootstrap but I've put mine further down in _Layout so it takes precedence -->
+            <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
+            <input type="file" id="upload-photo">
 
-    <h1 id="samples">Samples</h1>
+            <br />
+            <br />
 
-    <p>Please feel free to try any of the following samples <a href="/sample-data/speechparts/test_vocal_a.zip">test_vocal_a.zip</a> (this is all the samples below) </p>
+            <div class="progress" style="height: 32px;">
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
+            </div>
 
-    <p class="py-md"> Flac audio example - some vocal, some noise </p>
-    <p>
-        <form method="post" asp-page-handler="runFlac">
-            <input type="submit" class="btn btn-light"  value="Run test_vocal_a.flac" />
-        </form>
-    </p>
+            <br />
+            <!-- pause / resume button-->
+            <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
 
-    <p class="py-md">mp3 audio example - some vocal, some noise </p>
-    <p>
-        <form method="post" asp-page-handler="runMp3">
-            <input type="submit" class="btn btn-light"  value="Run test_vocal_a.mp3" />
-        </form>
-    </p>
+            <br />
+        }
+        else
+        {
+            <!-- tier 1-->
+            <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
+        }
 
-    <p class="py-md"> mp4 video example - some vocal, some noise </p>
-    <p>
-        <form method="post" asp-page-handler="runMp4">
-            <input type="submit" class="btn btn-light"  value="Run test_vocal_a.mp4" />
-        </form>
-    </p>
+        <br />
 
+        <h1 id="samples">Samples</h1>
 
-    @*
+        <p>Please feel free to try any of the following samples <a href="/sample-data/speechparts/test_vocal_a.zip">test_vocal_a.zip</a> (this is all the samples below) </p>
 
-        <p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
-
+        <p class="py-md"> Flac audio example - some vocal, some noise </p>
         <p>
-        <form method="post" asp-page-handler="runTESTfile">
-        <input type="submit" value="Run x2TESTfile.csv" />
-        </form>
+            <form method="post" asp-page-handler="runFlac">
+                <input type="submit" class="btn btn-light" value="Run test_vocal_a.flac" />
+            </form>
+        </p>
+
+        <p class="py-md">mp3 audio example - some vocal, some noise </p>
+        <p>
+            <form method="post" asp-page-handler="runMp3">
+                <input type="submit" class="btn btn-light" value="Run test_vocal_a.mp3" />
+            </form>
+        </p>
+
+        <p class="py-md"> mp4 video example - some vocal, some noise </p>
+        <p>
+            <form method="post" asp-page-handler="runMp4">
+                <input type="submit" class="btn btn-light" value="Run test_vocal_a.mp4" />
+            </form>
         </p>
 
 
-        <p>3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
+        @*
 
-        <p>
-        <form method="post" asp-page-handler="runmultilingualtest">
-        <input type="submit" value="Run x3multilingual-test.csv" />
-        </form>
-        </p>*@
+            <p>2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
 
-    <h1 class="py-md">Further Information</h1>
+            <p>
+            <form method="post" asp-page-handler="runTESTfile">
+            <input type="submit" value="Run x2TESTfile.csv" />
+            </form>
+            </p>
 
-    <p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>
 
+            <p>3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
+
+            <p>
+            <form method="post" asp-page-handler="runmultilingualtest">
+            <input type="submit" value="Run x3multilingual-test.csv" />
+            </form>
+            </p>*@
+
+        <h1 class="py-md">Further Information</h1>
+
+        <p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>
+
+    }
 </div>
 
 @section Scripts {

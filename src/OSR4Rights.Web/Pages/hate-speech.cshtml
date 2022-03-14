@@ -1,108 +1,125 @@
 ﻿@page
 @model OSR4Rights.Web.Pages.HateSpeechModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
 @{
     ViewData["Title"] = "Hate Speech";
 }
 
 @* bootstrap for tus progress bar*@
 @section Styles {
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
 <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
 }
 
 <div class="container-tool">
-    <h1>Hate Speech</h1>
+    <h2 class="text-xl">Hate Speech</h2>
 
-    <p>Please upload a CSV file (comma-separated values format which spreadsheet tools such as Microsoft Excel generate) containing the text to be analysed, one sample per row. The CSV file can have any number of rows and any number of columns, as long as at least one of the columns has a header named Text (case-insensitive). </p>
-
-    <p>@*Please upload a CSV file (comma-separated values format which spreadsheet tools such as Microsoft Excel generate) containing the text to be analysed, one sample per row. The CSV file can have any number of rows and 1 columns, with a header named Text (case-insensitive).*@ </p>
-
-    <p><a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a> is the accepted standard, however a lot of systems generate bad CSV data that is impossible to parse. We recommend one of the following styles:</p>
-
-    <h4 class="py-sm">Single column</h4>
-    <p>Text</p>
-    <p>"Here is line 1 and all surrounded by double quotes"</p>
-    <p>"Here is line 2, with a comma"</p>
-    <p>"Here is line 3 with an apostrophe copied from Word’s text editor which is different from ' one"</p>
-
-    <h4 class="py-md">Multi column</h4>
-
-    <p>ID,Text</p>
-    <p>"Here is line 1 and Text column surrounded by quotation marks. Notice the first column isn't surrounded"</p>
-    <p> 2,"Here is line 2, with a comma which would cause an error without quotation marks"</p>
-    <p> 3,"Here is line 3 with an apostrophe copied from Word’s text editor which is different from '"</p>
-
-    <h4>Advanced</h4>
-
-    <p> Text</p>
-    <p> 1,"""Triple quotation marks surround all text, which parses as single Quotation Marks surrounding all text"""</p>
-    <p> 2,"""Quotation marks surrounding all text, and ""an inner quote"". """</p>
-    <p> 3x,"Notice the missing column name - our parser will render this as 1,2,3x, which could be useful for your own numbering scheme"</p>
-
-    <p>If you are using a spreadsheet tool to create the CSV file, double quotes are automatically added so you do not need to add them yourself. However, if you are using a text editor to create your CSV file, please make sure that any text containing commas is enclosed in double quotes.</p>
-
-    <p>We define "hate speech" as text that contains hateful, offensive and toxic language. The tool will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text. The languages currently supported by this tool are English, Arabic and Russian, although the language does not need to be specified together with the input text. </p>
-
-    <h4 class="py-sm">Volume</h4>
-
-    <p>In a normal tweet size message we are seeing on average 300 lines processed per minute (when the VM is already there - otherwise it is about 3 minutes to startup the VM). Please be aware we have a 30 minute max per file which is roughly 9,000 lines. We suggest a max of 3,000 lines per file</p>
-
-    @if (Model.IsAllowedToUpload)
+    <!-- not logged in -->
+    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
     {
-        <!-- keep for now as js code still references-->
-        <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
-        <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
-        <input type="number" id="chunksize" name="chunksize" hidden="true">
+        <h2 class="text-md py-md">If you wouldn't mind...</h2>
 
-        <br />
-        <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
-        <!-- file button -->
-        <!-- have got a css name clash with bootstrap but I've put mine further down in _Layout so it takes precedence -->
-        <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
-        <input type="file" id="upload-photo">
+        <p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>
 
-        <br />
-        <br />
-        <div class="progress" style="height: 32px;">
-            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
-        </div>
+        <p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>
 
-        <br />
-        <!-- pause / resume button-->
-        <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
+        @*<img src="img/fs.jpg" alt="">*@
 
-        <br />
     }
     else
     {
-        <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
+
+        <p>Please upload a CSV file (comma-separated values format which spreadsheet tools such as Microsoft Excel generate) containing the text to be analysed, one sample per row. The CSV file can have any number of rows and any number of columns, as long as at least one of the columns has a header named Text (case-insensitive). </p>
+
+        <p>@*Please upload a CSV file (comma-separated values format which spreadsheet tools such as Microsoft Excel generate) containing the text to be analysed, one sample per row. The CSV file can have any number of rows and 1 columns, with a header named Text (case-insensitive).*@ </p>
+
+        <p><a href="https://datatracker.ietf.org/doc/html/rfc4180">RFC 4180</a> is the accepted standard, however a lot of systems generate bad CSV data that is impossible to parse. We recommend one of the following styles:</p>
+
+        <h4 class="py-sm">Single column</h4>
+        <p>Text</p>
+        <p>"Here is line 1 and all surrounded by double quotes"</p>
+        <p>"Here is line 2, with a comma"</p>
+        <p>"Here is line 3 with an apostrophe copied from Word’s text editor which is different from ' one"</p>
+
+        <h4 class="py-md">Multi column</h4>
+
+        <p>ID,Text</p>
+        <p>"Here is line 1 and Text column surrounded by quotation marks. Notice the first column isn't surrounded"</p>
+        <p> 2,"Here is line 2, with a comma which would cause an error without quotation marks"</p>
+        <p> 3,"Here is line 3 with an apostrophe copied from Word’s text editor which is different from '"</p>
+
+        <h4>Advanced</h4>
+
+        <p> Text</p>
+        <p> 1,"""Triple quotation marks surround all text, which parses as single Quotation Marks surrounding all text"""</p>
+        <p> 2,"""Quotation marks surrounding all text, and ""an inner quote"". """</p>
+        <p> 3x,"Notice the missing column name - our parser will render this as 1,2,3x, which could be useful for your own numbering scheme"</p>
+
+        <p>If you are using a spreadsheet tool to create the CSV file, double quotes are automatically added so you do not need to add them yourself. However, if you are using a text editor to create your CSV file, please make sure that any text containing commas is enclosed in double quotes.</p>
+
+        <p>We define "hate speech" as text that contains hateful, offensive and toxic language. The tool will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text. The languages currently supported by this tool are English, Arabic and Russian, although the language does not need to be specified together with the input text. </p>
+
+        <h4 class="py-sm">Volume</h4>
+
+        <p>In a normal tweet size message we are seeing on average 300 lines processed per minute (when the VM is already there - otherwise it is about 3 minutes to startup the VM). Please be aware we have a 30 minute max per file which is roughly 9,000 lines. We suggest a max of 3,000 lines per file</p>
+
+        @if (Model.IsAllowedToUpload)
+        {
+            <!-- keep for now as js code still references-->
+            <input type="text" id="endpoint" name="endpoint" value="/files/" hidden="true">
+            <input type="number" id="paralleluploads" name="paralleluploads" value="1" hidden="true">
+            <input type="number" id="chunksize" name="chunksize" hidden="true">
+
+            <br />
+            <!-- https://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button-->
+            <!-- file button -->
+            <!-- have got a css name clash with bootstrap but I've put mine further down in _Layout so it takes precedence -->
+            <label for="upload-photo" class="btn btn-blue file-upload">Choose File</label>
+            <input type="file" id="upload-photo">
+
+            <br />
+            <br />
+            <div class="progress" style="height: 32px;">
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="foo"></span></div>
+            </div>
+
+            <br />
+            <!-- pause / resume button-->
+            <button class="btn btn-sm btn-outline-info" id="toggle-btn" hidden="true"></button>
+
+            <br />
+        }
+        else
+        {
+            <p class="text-danger">We need to manually approve you before you can upload your own files. Please try the samples below</p>
+        }
+
+        <br />
+
+        <h1 id="samples">Samples</h1>
+
+        <p>Please feel free to try any of the following samples. IMPORTANT NOTE: For the purposes of demonstrating the detection capabilities of the tool, the test files below contain language (drawn from real-world examples) that some users might find highly offensive.</p>
+
+        <p class="py-md"> 1. <a href="/sample-data/hatespeech/x1TE1.csv">x1TE1.csv</a> A very small set of English tweets </p>
+
+        <form method="post" asp-page-handler="runTE1">
+            <input type="submit" class="btn btn-light" value="Run x1TE1.csv" />
+        </form>
+
+
+        <p class="py-md">2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
+
+        <form method="post" asp-page-handler="runTESTfile">
+            <input type="submit" class="btn btn-light" value="Run x2TESTfile.csv" />
+        </form>
+
+
+        <p class="py-md">3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
+
+        <form method="post" asp-page-handler="runmultilingualtest">
+            <input type="submit" class="btn btn-light" value="Run x3multilingual-test.csv" />
+        </form>
     }
-
-    <br />
-
-    <h1 id="samples">Samples</h1>
-
-    <p>Please feel free to try any of the following samples. IMPORTANT NOTE: For the purposes of demonstrating the detection capabilities of the tool, the test files below contain language (drawn from real-world examples) that some users might find highly offensive.</p>
-
-    <p class="py-md"> 1. <a href="/sample-data/hatespeech/x1TE1.csv">x1TE1.csv</a> A very small set of English tweets </p>
-
-    <form method="post" asp-page-handler="runTE1">
-        <input type="submit" class="btn btn-light" value="Run x1TE1.csv" />
-    </form>
-
-
-    <p class="py-md">2. <a href="/sample-data/hatespeech/x2TESTfile.csv">x2TESTfile.csv</a> Almost 300 English text samples</p>
-
-    <form method="post" asp-page-handler="runTESTfile">
-        <input type="submit" class="btn btn-light" value="Run x2TESTfile.csv" />
-    </form>
-
-
-    <p class="py-md">3. <a href="/sample-data/hatespeech/x3multilingual-test.csv">x3multilingual-test.csv</a> A small set containing English, Arabic and Russian text </p>
-
-    <form method="post" asp-page-handler="runmultilingualtest">
-        <input type="submit" class="btn btn-light" value="Run x3multilingual-test.csv" />
-    </form>
 </div>
 
 

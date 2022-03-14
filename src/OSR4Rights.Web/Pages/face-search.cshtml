@@ -1,33 +1,33 @@
 ﻿@page
 @model OSR4Rights.Web.Pages.FaceSearchModel
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
 @{
     ViewData["Title"] = "Face Search";
 }
 @* bootstrap for tus progress bar*@
 @section Styles {
-@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
-
 <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
 }
 
 <div class="container-tool">
-    <h1>FaceSearch</h1>
+    <h2 class="text-xl">FaceSearch</h2>
 
     <p>Looks for a target face which you give as an image, in many other images. </p>
 
     <p>This is designed as a first pass to help human rights investigators - let this tool process many images and narrow down the most likely ones for investigators to look at</p>
 
     <!-- not logged in -->
-    @if (!HttpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
     {
-        <h2 class="py-sm">If you wouldn't mind...</h2>
+        <h2 class="text-md py-md">If you wouldn't mind...</h2>
 
-        <p class="py-sm">Please Tell Us who you are by <a href="">registering</a> then you can run all the samples</p>
+        <p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>
 
-        <p class="py-sm">Or <a href="">Login</a> if you have already registered</p>
+        <p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>
 
-        <p class="py-sm">We take security very seriously. Please <a href="">see our privacy policy</a></p>
+        <img src="img/fs.jpg" alt="">
+
     }
     else
     {
@@ -123,8 +123,10 @@
 
         <p>Based on the <a href="https://github.com/ageitgey/face_recognition#usage">face_recognition</a> open source library which uses the <a href="http://dlib.net/">dlib</a> toolkit's state-of-the-art facial recognition algorithms. The model has an accuracy of 99.38% on the <a href="http://vis-www.cs.umass.edu/lfw/">Label Faces in the Wild</a> benchmark</p>
     }
-
 </div>
+
+@*  </div>
+    </section>*@
 
 @section Scripts {
 @*<partial name="_ValidationScriptsPartial" />*@
