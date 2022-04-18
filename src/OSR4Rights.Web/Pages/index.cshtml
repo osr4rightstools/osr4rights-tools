@@ -31,16 +31,23 @@
     <div class="box-text">
         <h2 class="text-xl">Try HateSpeech Detection</h2>
 
-        <form method="post">
+        <form method="get" action="/">
 
             <div>
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
             </div>
-            <input class="input text-sm" type="text" id="hateSpeech" placeholder="asdf" value="Please type hate speech here to analyse">
+            <input class="input text-sm" type="text" id="hateSpeech" placeholder="asdf" value="Please type hate speech here to analyse" name="q">
+
+            @if (Model.HsResult != null)
+            {
+                <div class="hs-result text-green text-sm">
+                    <p>@Model.HsResult</p>
+                </div>
+            }
 
             <div class="py-md">
                 <!-- submit the form -->
-                <button type="submit" class="btn btn-blue" disabled="disabled">Analyse Text Above (coming soon)</button>
+                <button type="submit" class="btn btn-blue">Analyse Text Above</button>
             </div>
         </form>
         <div>
