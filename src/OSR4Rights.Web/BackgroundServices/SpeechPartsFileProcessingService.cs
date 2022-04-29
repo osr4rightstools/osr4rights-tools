@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -426,7 +427,7 @@ namespace OSR4Rights.Web.BackgroundServices
                         shellStream.WriteLine("cd /home/dave/OSR4Rights/AudioTools");
                         shellStream.Expect(promptFSC);
 
-                        Log.Information("SP encodeToWAV.sh which encodes all files in input diretory to WAV");
+                        Log.Information("SP encodeToWAV.sh which encodes all files in input directory to WAV");
                         shellStream.WriteLine($"./encodeToWAV.sh");
 
                         // above command may take a while
@@ -452,7 +453,7 @@ namespace OSR4Rights.Web.BackgroundServices
                         }
 
 
-                        Log.Information("SP - run.sh which runs: python3 audiofile_reduce_to_speechparts.py -i /home/dave/OSR4Rights/AudioTools/input/ -j 123   ");
+                        Log.Information("SP - run.sh which runs: python3 audiofile_reduce_to_speechparts.py -i /home/dave/OSR4Rights/AudioTools/input/ -j 123 >log.txt");
                         shellStream.WriteLine($"./run.sh");
 
                         // above command may take a while
@@ -542,9 +543,11 @@ namespace OSR4Rights.Web.BackgroundServices
                     //}
 
                     // download zip results file from remote 
+                    var pathLocalZipFile = "";
                     {
                         string pathRemoteFile = "/home/dave/OSR4Rights/AudioTools/input/results_123.zip";
 
+                        // TODO put in a nice switch like in startup for dev/live
                         // dev
                         // Path where the file should be saved once downloaded (locally)
                         //var pathLocalDestinationDirectory = Path.Combine(Environment.CurrentDirectory, $"downloads/{jobId}");
@@ -571,6 +574,42 @@ namespace OSR4Rights.Web.BackgroundServices
                         }
 
                         Log.Information($"zip downloaded to {pathLocalFile}");
+                        pathLocalZipFile = pathLocalFile;
+                    }
+                    // download log.txt which is the output of the python app above
+                    {
+                        string pathRemoteFile = "/home/dave/OSR4Rights/AudioTools/input/log.txt";
+
+                        // dev
+                        // Path where the file should be saved once downloaded (locally)
+                        //var pathLocalDestinationDirectory = Path.Combine(Environment.CurrentDirectory, $"downloads/{jobId}");
+
+                        // live
+                        // Azure File Share - created in the build scripts so that we can rebuild the VM (and updated code)
+                        // without data loss and users can still download their results
+                        var pathLocalDestinationDirectory = Path.Combine("/mnt/osrshare/", $"downloads/{jobId}");
+
+                        var logFileName = $"log{jobId}.txt";
+                        var pathLocalFile = Path.Combine(pathLocalDestinationDirectory, logFileName);
+                        Log.Information($"Remote file to read from: {pathRemoteFile}");
+                        Log.Information($"Local path to save to: {pathLocalFile}");
+
+                        using (Stream fileStream = File.OpenWrite(pathLocalFile))
+                        {
+                            sftp.DownloadFile(pathRemoteFile, fileStream);
+                        }
+
+                        Log.Information($"log downloaded to {pathLocalFile}");
+
+                        // add the log file to the zip file
+                        using (FileStream zipToOpen = new FileStream(pathLocalZipFile, FileMode.Open))
+                        {
+                            using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
+                            {
+                                var fileInfo = new FileInfo(pathLocalFile);
+                                archive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
+                            }
+                        }
                     }
                 }
                 catch (Exception e)
