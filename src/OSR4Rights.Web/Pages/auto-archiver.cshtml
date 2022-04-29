@@ -1,0 +1,93 @@
+﻿@page
+@model OSR4Rights.Web.Pages.AutoArchiverModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
+@{
+    ViewData["Title"] = "Speech Parts";
+}
+
+@* bootstrap for tus progress bar*@
+@section Styles {
+@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
+<link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="container-tool">
+    <h2 class="text-xl">Auto Archiver of Web URLs</h2>
+
+    <p class="py-md">Given a list of Web URL links from a Google Spreadsheet, we can automate the process of archiving that page, so that you have a safe copy.</p>
+
+    <p><img src="img/auto-archiver/spread.jpg" alt="" /></p>
+
+    <p class="py-md">Our archiver is automatic and every minute looks to see if there are links which need to be processed. Below shows the archiver working on some Twitter URL's which contain images.</p>
+
+    <p><img src="img/auto-archiver/spread2.jpg" alt="" /></p>
+
+    <p class="py-md">The result of the archiver </p>
+
+    <ul class="normal-ul">
+        <li>Gets Images from the <b>Link</b></li>
+        <li>Save the image to the <b>Archive Location</b> either Google Drive or Digital Ocean Spaces </li>
+        <li>Save a <b>Screenshot</b></li>
+        <li>Save a <b>Hash</b> of everything for veracity</li>
+        <li>Create a <b>Thumbnail</b> of the image</li>
+        <li>Create a <b>Upload timestamp</b></li>
+    </ul>
+
+
+    <p class="py-md">We can</p>
+
+    <ul class="normal-ul">
+        <li>Twitter</li>
+        <li>YouTube</li>
+        <li>Facebook</li>
+        <li>Telegram</li>
+        <li>Telegram</li>
+    </ul>
+
+
+    <p class="py-md">We use the excellent <a href="https://github.com/bellingcat/auto-archiver">https://github.com/bellingcat/auto-archiver</a> code. Our fork is on <a href="https://github.com/djhmateer/auto-archiver">https://github.com/djhmateer/auto-archiver</a> </p>
+
+    <p>Please contact us <a href="https://osr4rights.org/contact-us/">here</a> and we can do a demo for you</p>
+    <!-- not logged in -->
+    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    {
+        @*<h2 class="text-md py-md">If you wouldn't mind...</h2>*@
+
+        @*<p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>*@
+
+        @*<p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>*@
+
+        @*<img src="img/sp.jpg" alt="">*@
+
+    }
+    else
+    {
+        <!-- tier 2-->
+        @if (Model.IsAllowedToUpload)
+        {
+            <br />
+        }
+        else
+        {
+            <!-- tier 1-->
+            @*<p class="text-danger">We need to manually approve you before you can upload your own files. </p>*@
+        }
+
+        <h1 class="py-md">Further Information</h1>
+
+        <p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>
+
+    }
+</div>
+
+@section Scripts {
+@*<partial name="_ValidationScriptsPartial" />*@
+
+@* jquery needed for tus script - todo refactor out*@
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
+<script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
+<script src="~/js/upload-tus.js" asp-append-version="true"></script>
+}
+
+
