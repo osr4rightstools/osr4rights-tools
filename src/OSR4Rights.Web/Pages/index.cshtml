@@ -36,18 +36,19 @@
             <div>
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
             </div>
-            <input class="input text-sm" type="text" id="hateSpeech" placeholder="asdf" value="Please type hate speech here to analyse" name="q">
+            <input class="input text-sm" type="text" id="hateSpeech" placeholder="type hatespeech here" value="Were all stars to disappear or die, I should learn to look at an empty sky" name="q">
 
-            @if (Model.HsResult != null)
+            @if (Model.Prediction != null)
             {
                 <div class="hs-result text-green text-sm">
-                    <p>@Model.HsResult</p>
+                    <p>Score is: @Model.Score</p>
+                    <p>Prediction is: @Model.Prediction</p>
                 </div>
             }
 
             <div class="py-md">
                 <!-- submit the form -->
-                <button type="submit" class="btn btn-blue" disabled="disabled" >Analyse Text Above (coming soon)</button>
+                <button type="submit" class="btn btn-blue">Analyse Text (takes 15seconds)</button>
             </div>
         </form>
         <div>
@@ -124,7 +125,7 @@
     <!-- col 2  - Get Started -->
     <div>
         <!-- <img src="img/box-f2.jpg" alt=""> -->
-       @* <img src="img/start.jpg" alt="">*@
+        @* <img src="img/start.jpg" alt="">*@
         @*<iframe width="560" height="315" src="https://www.youtube.com/embed/5JUdVXVq4wk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
         <iframe width="640" height="385" src="https://www.youtube.com/embed/5JUdVXVq4wk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 

@@ -36,6 +36,7 @@ pip3 install transformers
 
 pip3 install sentencepiece
 
+# warnings but I think okay
 sudo -u dave python3 -m nltk.downloader stopwords
 sudo -u dave python3 -m nltk.downloader punkt
 
