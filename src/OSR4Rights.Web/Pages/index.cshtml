@@ -36,11 +36,12 @@
             <div>
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
             </div>
-            <input class="input text-sm" type="text" id="hateSpeech" placeholder="type hatespeech here" value="Were all stars to disappear or die, I should learn to look at an empty sky" name="q">
+            <input class="input text-sm" type="text" id="hateSpeech" placeholder="Type hatespeech here" value="" name="q">
 
             @if (Model.Prediction != null)
             {
                 <div class="hs-result text-green text-sm">
+                    <p>Text is: @Model.Text</p>
                     <p>Score is: @Model.Score</p>
                     <p>Prediction is: @Model.Prediction</p>
                 </div>

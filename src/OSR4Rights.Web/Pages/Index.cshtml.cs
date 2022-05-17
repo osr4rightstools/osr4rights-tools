@@ -10,6 +10,7 @@ namespace OSR4Rights.Web.Pages
 {
     public class IndexModel : PageModel
     {
+        public string? Text { get; set; }
         public string? Score { get; set; }
         public string? Prediction { get; set; }
 
@@ -33,6 +34,7 @@ namespace OSR4Rights.Web.Pages
 
                 var foo = await response.Content.ReadFromJsonAsync<HSDto>();
 
+                Text = foo.Text;
                 Score = foo.Score;
                 Prediction = foo.Prediction;
             }
