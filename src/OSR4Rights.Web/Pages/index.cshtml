@@ -36,22 +36,23 @@
             <div>
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
             </div>
-            <input class="input text-sm" type="text" id="hateSpeech" placeholder="Type hatespeech here" value="" name="q">
+            <input class="input text-sm" type="text" id="hateSpeech" placeholder="eg This is really not hate speech, even though I said hate" value="" name="q">
+            <input type="hidden" name="route" value="hate"/>
 
-            @if (Model.Prediction != null)
+            @if (Model.HSPrediction != null)
             {
                 <div class="hs-result text-green text-sm">
-                    <p>Text is: @Model.Text</p>
-                    <p>Score is: @Model.Score</p>
-                    <p>Prediction is: @Model.Prediction</p>
+                    <p>Text is: @Model.HSText</p>
+                    <p>Score is: @Model.HSScore</p>
+                    <p>Prediction is: @Model.HSPrediction</p>
                 </div>
             }
 
             <div class="py-md">
                 <!-- submit the form -->
                 <button type="submit" class="btn btn-blue">Analyse Text</button>
-                <a href="/?q=extra+yellow" class="btn btn-dark">extra yellow</a>
-                <a href="/?q=hate+trailer+trash" class="btn btn-dark">hate trailer trash</a>
+                <a href="/?route=hate&q=extra+yellow" class="btn btn-dark">extra yellow</a>
+                <a href="/?route=hate&q=hate+trailer+trash" class="btn btn-dark">hate trailer trash</a>
             </div>
         </form>
         <div>
@@ -65,6 +66,49 @@
         <p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
 
         <p class="text-sm">Languages currently supported by this tool are English, Arabic and Russian</p>
+    </div>
+</section>
+
+<!-- Box B2 - Auto-archive -->
+<section class="box box-b grid-col-2 ">
+    <!-- <img src="img/box-b.png" alt=""> -->
+    <div class="box-text">
+        <h2 class="text-xl">Try Auto-archive</h2>
+
+        <form method="get" action="/">
+
+            <div>
+                <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
+            </div>
+            <input class="input text-sm" type="text" id="hateSpeech" placeholder="eg https://twitter.com/dave_mateer/status/1505876265504546817" value="" name="q">
+            <input type="hidden" name="route" value="auto"/>
+
+            @if (Model.AAText != null)
+            {
+              <div class="hs-result text-green text-sm">
+                    <p>@Model.AAText</p>
+                </div>
+            }
+
+            <div class="py-md">
+                <!-- submit the form -->
+                <button type="submit" class="btn btn-blue">Analyse URL</button>
+                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Twitter Image</a>
+                <a href="/?route=auto&q=https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="btn btn-dark">YouTube Video</a>
+                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Facebook Image</a>
+                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Telegram Image</a>
+                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Website Video</a>
+            </div>
+        </form>
+        <div>
+            <a href="/auto-archive" class="btn btn-light">More Info</a>
+        </div>
+
+    </div>
+
+    <div class="box-text">
+        <p class="text-sm">A tool for automatically archiving web page links and saving the images and videos </p>
+        <p class="text-sm">Currently used by organisations monitoring human rights situations in Ukraine and Myanmar</p>
     </div>
 </section>
 

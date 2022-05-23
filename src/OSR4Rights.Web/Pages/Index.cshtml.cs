@@ -10,16 +10,17 @@ namespace OSR4Rights.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        public string? Text { get; set; }
-        public string? Score { get; set; }
-        public string? Prediction { get; set; }
+        public string? HSText { get; set; }
+        public string? AAText { get; set; }
+        public string? HSScore { get; set; }
+        public string? HSPrediction { get; set; }
 
-        public async Task OnGet(string? q)
+        public async Task OnGet(string? route, string? q)
         {
-            if (q == null) { }
-            else
+            if (route == "hate")
             {
-                Log.Information($"q is {q}");
+                Log.Information($"route is hate");
+                q ??= "This is really not hate speech, even though I said hate";
 
                 // call webservice
                 // http://hmsoftware.org/hs
@@ -35,17 +36,28 @@ namespace OSR4Rights.Web.Pages
                     var response = await httpClient.PostAsJsonAsync<HSDto>(url, data);
                     var foo = await response.Content.ReadFromJsonAsync<HSDto>();
 
-                    Text = foo.Text;
-                    Score = foo.Score;
-                    Prediction = foo.Prediction;
+                    HSText = foo.Text;
+                    HSScore = foo.Score;
+                    HSPrediction = foo.Prediction;
 
                 }
                 catch (Exception ex)
                 {
-                    Text = "Sorry there was a problem - please try again later";
-                    Score = "";
-                    Prediction = "";
+                    HSText = "Sorry there was a problem - please try again later";
+                    HSScore = "";
+                    HSPrediction = "";
+                    Log.Error($"Problem with webservice {ex}");
                 }
+            }
+            else if (route == "auto")
+            {
+                Log.Information($"route is auto");
+                q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
+
+                Log.Information($"q is {q}");
+
+                AAText = $"Coming soon - archiving: {q}";
+
             }
         }
     }
