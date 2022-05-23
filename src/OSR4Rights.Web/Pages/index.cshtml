@@ -37,7 +37,7 @@
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
             </div>
             <input class="input text-sm" type="text" id="hateSpeech" placeholder="eg This is really not hate speech, even though I said hate" value="" name="q">
-            <input type="hidden" name="route" value="hate"/>
+            <input type="hidden" name="route" value="hate" />
 
             @if (Model.HSPrediction != null)
             {
@@ -81,11 +81,11 @@
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
             </div>
             <input class="input text-sm" type="text" id="hateSpeech" placeholder="eg https://twitter.com/dave_mateer/status/1505876265504546817" value="" name="q">
-            <input type="hidden" name="route" value="auto"/>
+            <input type="hidden" name="route" value="auto" />
 
             @if (Model.AAText != null)
             {
-              <div class="hs-result text-green text-sm">
+                <div class="hs-result text-green text-sm">
                     <p>@Model.AAText</p>
                 </div>
             }
@@ -95,12 +95,15 @@
                 <button type="submit" class="btn btn-blue">Analyse URL</button>
                 <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Twitter Image</a>
                 <a href="/?route=auto&q=https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="btn btn-dark">YouTube Video</a>
+            </div>
+
+            <div class="py-md">
                 <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Facebook Image</a>
                 <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Telegram Image</a>
                 <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Website Video</a>
             </div>
         </form>
-        <div>
+        <div class="py-md">
             <a href="/auto-archive" class="btn btn-light">More Info</a>
         </div>
 
