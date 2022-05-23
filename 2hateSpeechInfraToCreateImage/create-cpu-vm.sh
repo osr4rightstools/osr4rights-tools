@@ -54,6 +54,7 @@ sudo apt install unzip -y
 # cd /home/dave/hatespeech
 # wget https://functionsdm2storage.blob.core.windows.net/outputfiles/_all_train_results-20210712T152424Z-001.zip
 # unzip _all_train_results-20210712T152424Z-001.zip -d /home/dave/hatespeech
+# this creates a new directory of _all_train_results
 
 # cd /home/dave/hatespeech
 

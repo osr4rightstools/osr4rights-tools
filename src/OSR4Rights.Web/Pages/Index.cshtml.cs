@@ -30,13 +30,22 @@ namespace OSR4Rights.Web.Pages
                 var url = "http://hmsoftware.org/hs";
                 var data = new HSDto { Text = q };
 
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync<HSDto>(url, data);
+                try
+                {
+                    var response = await httpClient.PostAsJsonAsync<HSDto>(url, data);
+                    var foo = await response.Content.ReadFromJsonAsync<HSDto>();
 
-                var foo = await response.Content.ReadFromJsonAsync<HSDto>();
+                    Text = foo.Text;
+                    Score = foo.Score;
+                    Prediction = foo.Prediction;
 
-                Text = foo.Text;
-                Score = foo.Score;
-                Prediction = foo.Prediction;
+                }
+                catch (Exception ex)
+                {
+                    Text = "Sorry there was a problem - please try again later";
+                    Score = "";
+                    Prediction = "";
+                }
             }
         }
     }
