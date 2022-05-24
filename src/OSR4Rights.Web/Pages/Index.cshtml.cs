@@ -57,7 +57,6 @@ namespace OSR4Rights.Web.Pages
                 Log.Information($"q is {q}");
 
                 AAText = $"Coming soon - archiving: {q}";
-
             }
         }
     }

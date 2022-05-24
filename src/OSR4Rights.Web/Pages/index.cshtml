@@ -29,7 +29,7 @@
 <section class="box box-b grid-col-2 ">
     <!-- <img src="img/box-b.png" alt=""> -->
     <div class="box-text">
-        <h2 class="text-xl">Try HateSpeech Detection</h2>
+        <h2 class="text-xl" id="hs">Try HateSpeech Detection</h2>
 
         <form method="get" action="/">
 
@@ -51,8 +51,9 @@
             <div class="py-md">
                 <!-- submit the form -->
                 <button type="submit" class="btn btn-blue">Analyse Text</button>
-                <a href="/?route=hate&q=extra+yellow" class="btn btn-dark">extra yellow</a>
-                <a href="/?route=hate&q=hate+trailer+trash" class="btn btn-dark">hate trailer trash</a>
+                @*<a href="/?route=hate&q=extra+yellow" class="btn btn-dark">extra yellow</a>*@
+                @*<a href="/?route=hate&q=extra+yellow#hs">Try: extra yellow</a>*@
+                @*<a href="/?route=hate&q=hate+trailer+trash#hs">Try: hate trailer trash</a>*@
             </div>
         </form>
         <div>
@@ -66,6 +67,8 @@
         <p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
 
         <p class="text-sm">Languages currently supported by this tool are English, Arabic and Russian</p>
+
+        <p class="text-sm">eg hate trailer trash</p>
     </div>
 </section>
 
@@ -93,15 +96,8 @@
             <div class="py-md">
                 <!-- submit the form -->
                 <button type="submit" class="btn btn-blue">Analyse URL</button>
-                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Twitter Image</a>
-                <a href="/?route=auto&q=https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="btn btn-dark">YouTube Video</a>
             </div>
 
-            <div class="py-md">
-                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Facebook Image</a>
-                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Telegram Image</a>
-                <a href="/?route=auto&q=https://twitter.com/dave_mateer/status/12345" class="btn btn-dark">Website Video</a>
-            </div>
         </form>
         <div class="py-md">
             <a href="/auto-archive" class="btn btn-light">More Info</a>
@@ -112,6 +108,7 @@
     <div class="box-text">
         <p class="text-sm">A tool for automatically archiving web page links and saving the images and videos </p>
         <p class="text-sm">Currently used by organisations monitoring human rights situations in Ukraine and Myanmar</p>
+        <p class="text-sm">Facebook, YouTube, Twitter, Telegram, TikTok and archive.org are all supported.</p>
     </div>
 </section>
 
