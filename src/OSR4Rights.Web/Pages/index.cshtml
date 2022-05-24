@@ -16,7 +16,7 @@
             <h2 class="text-xl">Free Open Source Tools for Human Rights Investigators</h2>
             <p class="text-sm">Right here on this website - User friendly, secure, free tools to help human rights investigators in conducting open source investigations. The system runs using virtual machines that are deleted after every use for maximum security.</p>
 
-            <p class="text-sm">Funded by the Research Wales Innovation Fund, the OSR4Rights Tools Hub developed from <a href="https://www.osr4rights.org">OSR4Rights</a>, a collaboration between <a href="https://www.swansea.ac.uk/">Swansea University</a>, <a href="https://www.manchester.ac.uk/">University of Manchester</a>, <a href="https://www.hw.ac.uk/">Heriot Watt University</a>, <a href="https://www.essex.ac.uk/">University of Essex </a> and <a href="https://www.berkeley.edu/">University of California Berkeley</a> in collaboration with <a href="https://www.amnesty.org/">Amnesty International</a>, which was funded by the UK's <a href="https://esrc.ukri.org/">Economic and Social Research Council</a> from 2018-2021.</p>
+            <p class="text-sm" id="foo">Funded by the Research Wales Innovation Fund, the OSR4Rights Tools Hub developed from <a href="https://www.osr4rights.org">OSR4Rights</a>, a collaboration between <a href="https://www.swansea.ac.uk/">Swansea University</a>, <a href="https://www.manchester.ac.uk/">University of Manchester</a>, <a href="https://www.hw.ac.uk/">Heriot Watt University</a>, <a href="https://www.essex.ac.uk/">University of Essex </a> and <a href="https://www.berkeley.edu/">University of California Berkeley</a> in collaboration with <a href="https://www.amnesty.org/">Amnesty International</a>, which was funded by the UK's <a href="https://esrc.ukri.org/">Economic and Social Research Council</a> from 2018-2021.</p>
 
         </div>
     </div>
@@ -31,7 +31,8 @@
     <div class="box-text">
         <h2 class="text-xl" id="hs">Try HateSpeech Detection</h2>
 
-        <form method="get" action="/">
+        <!-- go to hs fragment - so that it scrolls nicely -->
+        <form method="get" action="/#foo">
 
             <div>
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
@@ -66,7 +67,7 @@
         <p class="text-sm">We define "hate speech" as text that contains hateful, offensive and toxic language. </p>
         <p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
 
-        <p class="text-sm">Languages currently supported by this tool are English, Arabic and Russian</p>
+        <p class="text-sm" id="bar">Languages currently supported by this tool are English, Arabic and Russian</p>
 
         <p class="text-sm">eg hate trailer trash</p>
     </div>
@@ -76,9 +77,9 @@
 <section class="box box-b grid-col-2 ">
     <!-- <img src="img/box-b.png" alt=""> -->
     <div class="box-text">
-        <h2 class="text-xl">Try Auto-archive</h2>
+        <h2 class="text-xl" id="aa">Try Auto-archive</h2>
 
-        <form method="get" action="/">
+        <form method="get" action="/#bar">
 
             <div>
                 <!-- <label for="hateSpeech">Enter hatespeech:</label> -->
@@ -99,7 +100,7 @@
             </div>
 
         </form>
-        <div class="py-md">
+        <div>
             <a href="/auto-archive" class="btn btn-light">More Info</a>
         </div>
 

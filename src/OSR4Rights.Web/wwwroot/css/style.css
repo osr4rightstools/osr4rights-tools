@@ -574,6 +574,7 @@ img {
 }
 
 /* YouTube*/
+/*https://stackoverflow.com/questions/15844500/shrink-a-youtube-video-to-responsive-width*/
 .videowrapper {
     float: none;
     clear: both;
@@ -593,6 +594,7 @@ img {
 }
 
 
+/* Media Queries */
 /* 768 or less  */
 @media (max-width: 768px) {
     .hamburger {
