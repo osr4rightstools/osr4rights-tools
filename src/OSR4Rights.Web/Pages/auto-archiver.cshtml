@@ -7,106 +7,108 @@
 
 @* bootstrap for tus progress bar*@
 @section Styles {
-@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
-<link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
 }
 
-<div class="container-tool">
-    <h2 class="text-xl">Auto Archiver of Web URLs</h2>
+    <div class="container-tool">
+        <h2 class="text-xl">Auto Archiver of Web URLs</h2>
 
-    <p>A tool for automatically archiving web page links and saving the images and videos. Currently used by organisations monitoring human rights situations in Ukraine and Myanmar</p>
-    
-    <br/>
+        <p>A tool for automatically archiving web page links and saving the images and videos. Currently used by organisations monitoring human rights situations in Ukraine and Myanmar</p>
+
+        <br />
 
 
-    @*<iframe width="560" height="315" src="https://www.youtube.com/embed/4HkDmulcxis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
-    <iframe width="853" height="505" src="https://www.youtube.com/embed/4HkDmulcxis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        @*<iframe width="560" height="315" src="https://www.youtube.com/embed/4HkDmulcxis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
+        <div class="videowrapper">
+            <iframe width="853" height="505" src="https://www.youtube.com/embed/4HkDmulcxis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
 
-    <br />
-    <p class="py-md">Given a list of Web URL links entered into a Google Spreadsheet, we archive that page, so that you have a safe copy.</p>
+        <br />
+        <p class="py-md">Given a list of Web URL links entered into a Google Spreadsheet, we archive that page, so that you have a safe copy.</p>
 
-    <p><img src="img/auto-archiver/spread.jpg" alt="" /></p>
+        <p><img src="img/auto-archiver/spread.jpg" alt="" /></p>
 
-    <p class="py-md">Our archiver is automatic and every minute looks to see if there are links which need to be processed. Below shows the archiver working on some Twitter URL's which contain images.</p>
+        <p class="py-md">Our archiver is automatic and every minute looks to see if there are links which need to be processed. Below shows the archiver working on some Twitter URL's which contain images.</p>
 
-    <p><img src="img/auto-archiver/spread2.jpg" alt="" /></p>
+        <p><img src="img/auto-archiver/spread2.jpg" alt="" /></p>
 
-    <p class="py-md">The results of the archiver for row 4 in the spreadsheet above are: </p>
+        <p class="py-md">The results of the archiver for row 4 in the spreadsheet above are: </p>
 
-    <ul class="normal-ul">
-        <li>Gets Images from the <b>Link</b></li>
-        <li>Save the image to the <b>Archive Location</b> either Google Drive or Digital Ocean Spaces </li>
-        <li>Save a <b>Screenshot</b></li>
-        <li>Save a <b>Hash</b> of everything for veracity</li>
-        <li>Create a <b>Thumbnail</b> of the image</li>
-        <li>Create a <b>Upload timestamp</b></li>
-    </ul>
+        <ul class="normal-ul">
+            <li>Gets Images from the <b>Link</b></li>
+            <li>Save the image to the <b>Archive Location</b> either Google Drive or Digital Ocean Spaces </li>
+            <li>Save a <b>Screenshot</b></li>
+            <li>Save a <b>Hash</b> of everything for veracity</li>
+            <li>Create a <b>Thumbnail</b> of the image</li>
+            <li>Create a <b>Upload timestamp</b></li>
+        </ul>
 
-    <br />
+        <br />
 
-    <h2>1. Twitter Image</h2>
+        <h2>1. Twitter Image</h2>
 
-    <p class="py-md"><a href="https://twitter.com/minmyatnaing13/status/1499415562937503751">https://twitter.com/minmyatnaing13/status/1499415562937503751</a> is the entered Link</p>
+        <p class="py-md"><a href="https://twitter.com/minmyatnaing13/status/1499415562937503751">https://twitter.com/minmyatnaing13/status/1499415562937503751</a> is the entered Link</p>
 
-    <img class="py-md" src="/img/auto-archiver/screen.jpg" />
+        <img class="py-md" src="/img/auto-archiver/screen.jpg" />
 
-    <p>Screenshot we took of that Tweet and saved to our cloud storage in case it is every deleted from Twitter.</p>
+        <p>Screenshot we took of that Tweet and saved to our cloud storage in case it is every deleted from Twitter.</p>
 
-    <img class="py-md" src="/img/auto-archiver/image.jpg" />
+        <img class="py-md" src="/img/auto-archiver/image.jpg" />
 
-    <p>Image embedded in the Tweet which we have saved to our cloud storage</p>
+        <p>Image embedded in the Tweet which we have saved to our cloud storage</p>
 
-    <br />
+        <br />
 
-    <img src="/img/auto-archiver/hash.jpg" />
+        <img src="/img/auto-archiver/hash.jpg" />
 
-    <p>Raw twitter data, link to saved image (with hash). And this page is hashed and result populated in the spreadsheet</p>
+        <p>Raw twitter data, link to saved image (with hash). And this page is hashed and result populated in the spreadsheet</p>
 
-    <br />
+        <br />
 
-    <h2>2. Facebook Video</h2>
+        <h2>2. Facebook Video</h2>
 
-    <p class="py-md"><a href="https://www.facebook.com/Karenni-Free-Burma-Rangers-111193108038684/videos/343188674422293/">https://www.facebook.com/Karenni-Free-Burma-Rangers-111193108038684/videos/343188674422293/</a> is the entered Link</p>
+        <p class="py-md"><a href="https://www.facebook.com/Karenni-Free-Burma-Rangers-111193108038684/videos/343188674422293/">https://www.facebook.com/Karenni-Free-Burma-Rangers-111193108038684/videos/343188674422293/</a> is the entered Link</p>
 
-    <p><img src="img/auto-archiver/spread3.jpg" alt="" /></p>
+        <p><img src="img/auto-archiver/spread3.jpg" alt="" /></p>
 
-    <p>Showing the successful archiving of the link</p>
+        <p>Showing the successful archiving of the link</p>
 
-    <img class="py-md" src="/img/auto-archiver/screen3.jpg" />
+        <img class="py-md" src="/img/auto-archiver/screen3.jpg" />
 
-    <p>Automated screenshot of the Facebook page. </p>
+        <p>Automated screenshot of the Facebook page. </p>
 
-    <p><a href="https://functionsdm2storage.file.core.windows.net/testfileshare/video.mkv?sv=2020-10-02&st=2022-04-30T15%3A51%3A17Z&se=2022-05-01T15%3A51%3A17Z&sr=f&sp=r&sig=CEhVnhPYOlz3qb2SAs2KqbQoOQhz4dgoBpdEZRVDrrU%3D">video.mkv</a> is the raw video downloaded from Facebook.</p>
+        <p><a href="https://functionsdm2storage.file.core.windows.net/testfileshare/video.mkv?sv=2020-10-02&st=2022-04-30T15%3A51%3A17Z&se=2022-05-01T15%3A51%3A17Z&sr=f&sp=r&sig=CEhVnhPYOlz3qb2SAs2KqbQoOQhz4dgoBpdEZRVDrrU%3D">video.mkv</a> is the raw video downloaded from Facebook.</p>
 
-    <p><img src="img/auto-archiver/thumb.jpg" alt="" /></p>
+        <p><img src="img/auto-archiver/thumb.jpg" alt="" /></p>
 
-    <p>Thumbnails of parts of the video so can see at a glance what happened.</p>
+        <p>Thumbnails of parts of the video so can see at a glance what happened.</p>
 
-    <br />
+        <br />
 
-    <h2>Archivers</h2>
+        <h2>Archivers</h2>
 
-    <p class="py-md">We have specific archivers for</p>
+        <p class="py-md">We have specific archivers for</p>
 
-    <ul class="normal-ul">
-        <li>Twitter</li>
-        <li>YouTube</li>
-        <li>Facebook</li>
-        <li>Telegram</li>
-        <li>TikTok</li>
-    </ul>
+        <ul class="normal-ul">
+            <li>Twitter</li>
+            <li>YouTube</li>
+            <li>Facebook</li>
+            <li>Telegram</li>
+            <li>TikTok</li>
+        </ul>
 
-    <p class="py-md">There is a fallback archiver (which uses archive.org) for any other site.</p>
+        <p class="py-md">There is a fallback archiver (which uses archive.org) for any other site.</p>
 
-    <h2>Conclusion</h2>
+        <h2>Conclusion</h2>
 
-    <p>This tool can save a huge amount of manual time archiving data from sites. It is being used by organisations capturing media for safeguarding. </p>
+        <p>This tool can save a huge amount of manual time archiving data from sites. It is being used by organisations capturing media for safeguarding. </p>
 
-    <p class="py-md">We use the excellent <a href="https://github.com/bellingcat/auto-archiver">https://github.com/bellingcat/auto-archiver</a> code.</p>
+        <p class="py-md">We use the excellent <a href="https://github.com/bellingcat/auto-archiver">https://github.com/bellingcat/auto-archiver</a> code.</p>
 
-    <p>Please contact us <a href="https://osr4rights.org/contact-us/">here</a> and we can do a demo for you</p>
-    <!-- not logged in -->
-    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+        <p>Please contact us <a href="https://osr4rights.org/contact-us/">here</a> and we can do a demo for you</p>
+        <!-- not logged in -->
+        @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
     {
         @*<h2 class="text-md py-md">If you wouldn't mind...</h2>*@
 
@@ -138,13 +140,13 @@
 </div>
 
 @section Scripts {
-@*<partial name="_ValidationScriptsPartial" />*@
+    @*<partial name="_ValidationScriptsPartial" />*@
 
-@* jquery needed for tus script - todo refactor out*@
-<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    @* jquery needed for tus script - todo refactor out*@
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 
-<script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
-<script src="~/js/upload-tus.js" asp-append-version="true"></script>
+    <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
+    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
 }
 
 
