@@ -39,6 +39,7 @@
             </div>
             <input class="input text-sm" type="text" id="hateSpeech" placeholder="eg This is really not hate speech, even though I said hate" value="" name="q">
             <input type="hidden" name="route" value="hate" />
+            <input type="hidden" name="cachebust" value="@Model.CacheBust" />
 
             @if (Model.HSPrediction != null)
             {
@@ -86,6 +87,7 @@
             </div>
             <input class="input text-sm" type="text" id="hateSpeech" placeholder="eg https://twitter.com/dave_mateer/status/1505876265504546817" value="" name="q">
             <input type="hidden" name="route" value="auto" />
+            <input type="hidden" name="cachebust" value="@Model.CacheBust" />
 
             @if (Model.AAText != null)
             {

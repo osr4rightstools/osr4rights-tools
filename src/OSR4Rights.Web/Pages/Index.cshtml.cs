@@ -11,12 +11,16 @@ namespace OSR4Rights.Web.Pages
     public class IndexModel : PageModel
     {
         public string? HSText { get; set; }
-        public string? AAText { get; set; }
         public string? HSScore { get; set; }
         public string? HSPrediction { get; set; }
 
+        public string? AAText { get; set; }
+
+        public Guid? CacheBust { get; set; }
         public async Task OnGet(string? route, string? q)
         {
+            CacheBust = Guid.NewGuid();
+
             if (route == "hate")
             {
                 Log.Information($"route is hate");
@@ -33,7 +37,7 @@ namespace OSR4Rights.Web.Pages
 
                 try
                 {
-                    var response = await httpClient.PostAsJsonAsync<HSDto>(url, data);
+                    var response = await httpClient.PostAsJsonAsync(url, data);
                     var foo = await response.Content.ReadFromJsonAsync<HSDto>();
 
                     HSText = foo.Text;
@@ -46,19 +50,64 @@ namespace OSR4Rights.Web.Pages
                     HSText = "Sorry there was a problem - please try again later";
                     HSScore = "";
                     HSPrediction = "";
-                    Log.Error($"Problem with webservice {ex}");
+                    Log.Error($"Problem with HS webservice {ex}");
                 }
             }
+
             else if (route == "auto")
             {
                 Log.Information($"route is auto");
                 q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
 
-                Log.Information($"q is {q}");
+                var httpClient = new HttpClient();
+                var url = "http://hmsoftware.org/api/aa";
 
-                AAText = $"Coming soon - archiving: {q}";
+                if (!ValidateUrl(q))
+                {
+                    AAText = $"Please check url: {q}";
+                    return;
+                }
+
+
+                try
+                {
+                    var data = new AADto { url = q };
+                    var response = await httpClient.PostAsJsonAsync(url, data);
+                    var foo = await response.Content.ReadFromJsonAsync<AADto>();
+
+                    AAText = foo.guid + ": " + foo.status;
+
+                }
+                catch (Exception ex)
+                {
+                    AAText = "Sorry there was a problem - please try again later";
+                    Log.Error($"Problem with AA webservice {ex}");
+                }
             }
         }
+
+        private bool ValidateUrl(string url)
+        {
+            //Uri validatedUri;
+
+            if (Uri.TryCreate(url, UriKind.Absolute, out Uri validatedUri)) //.NET URI validation.
+            {
+                //If true: validatedUri contains a valid Uri. Check for the scheme in addition.
+                return (validatedUri.Scheme == Uri.UriSchemeHttp || validatedUri.Scheme == Uri.UriSchemeHttps);
+            }
+            return false;
+        }
+
+    }
+
+    class AADto
+    {
+        public Guid? guid { get; set; }
+        public string? url { get; set; }
+        public string? cdn_url { get; set; }
+        public string? screenshot { get; set; }
+        public string? thumbnail { get; set; }
+        public string status { get; set; }
     }
 
     class HSDto
