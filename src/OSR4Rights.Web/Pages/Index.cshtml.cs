@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Azure.ResourceManager.Network.Models;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 namespace OSR4Rights.Web.Pages
@@ -19,7 +20,8 @@ namespace OSR4Rights.Web.Pages
         public string? AAGuid { get; set; }
 
         public string? CacheBust { get; set; }
-        public async Task OnGet(string? route, string? q)
+        //public async Task OnGet(string? route, string? q)
+        public async Task<IActionResult> OnGet(string? route, string? q)
         {
             var base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             CacheBust = base64Guid;
@@ -60,35 +62,77 @@ namespace OSR4Rights.Web.Pages
             else if (route == "auto")
             {
                 Log.Information($"route is auto");
-                q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
+                //q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
 
-                var httpClient = new HttpClient();
-                var url = "http://hmsoftware.org/api/aa";
+                //var httpClient = new HttpClient();
+                //var url = "http://hmsoftware.org/api/aa";
 
-                if (!ValidateUrl(q))
-                {
-                    AAText = $"Please check url: {q}";
-                    return;
-                }
+                //if (!ValidateUrl(q))
+                //{
+                //    AAText = $"Please check url: {q}";
+                //    return Page();
+                //}
 
 
-                try
-                {
-                    var data = new AADto { url = q };
-                    var response = await httpClient.PostAsJsonAsync(url, data);
-                    var foo = await response.Content.ReadFromJsonAsync<AADto>();
+                //try
+                //{
+                //    var data = new AADto { url = q };
+                //    var response = await httpClient.PostAsJsonAsync(url, data);
+                //    var foo = await response.Content.ReadFromJsonAsync<AADto>();
 
-                    AAText = "Processing";
-                    AAGuid = foo.guid.ToString();
+                //    AAText = "Processing";
+                //    AAGuid = foo.guid.ToString();
+                //    // redirect to aaresults
+                //    return LocalRedirect($"/aaresults/{foo.guid}");
 
-                }
-                catch (Exception ex)
-                {
-                    AAText = "Sorry there was a problem - please try again later";
-                    Log.Error($"Problem with AA webservice {ex}");
-                }
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    AAText = "Sorry there was a problem - please try again later";
+                //    Log.Error($"Problem with AA webservice {ex}");
+                //}
             }
+
+            return Page();
         }
+
+        public async Task<IActionResult> OnPost(string q)
+        {
+            q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
+
+            var httpClient = new HttpClient();
+            var url = "http://hmsoftware.org/api/aa";
+
+            if (!ValidateUrl(q))
+            {
+                AAText = $"Please check url: {q}";
+                return Page();
+            }
+
+
+            try
+            {
+                var data = new AADto { url = q };
+                var response = await httpClient.PostAsJsonAsync(url, data);
+                var foo = await response.Content.ReadFromJsonAsync<AADto>();
+
+                AAText = "Processing";
+                AAGuid = foo.guid.ToString();
+                // redirect to aaresults
+                return LocalRedirect($"/aaresult/{foo.guid}");
+
+
+            }
+            catch (Exception ex)
+            {
+                AAText = "Sorry there was a problem - please try again later";
+                Log.Error($"Problem with AA webservice {ex}");
+            }
+            // PRG
+            return Page();
+        }
+
 
         private bool ValidateUrl(string url)
         {

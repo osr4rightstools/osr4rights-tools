@@ -1,0 +1,56 @@
+﻿@page "{aaguid:guid}"
+@model OSR4Rights.Web.Pages.AAResultModel
+@{
+    ViewData["Title"] = "Auto Archiver Result";
+}
+
+@section Styles {
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+}
+
+
+    <div class="container-tool">
+        <h2 class="text-xl">Auto Archive Results</h2>
+
+        <!-- not logged in -->
+        @*  @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    {*@
+        <h2 class="text-md py-md">Status: @Model.aadto.status</h2>
+
+        @if (Model.aadto.status == "processing")
+    {
+        <p>Please wait (12 seconds for a tweet depending on load, and many minutes for a large YouTube video).</p>
+        <p><a href="/aaresult/@Model.aadto.guid">refresh this page.</a></p>
+    }
+    else
+    {
+        <p class="text-md py-md"><a href="@Model.aadto.cdn_url">Archive (if images) or Raw Video</a> If images it includes all images from the url which you can download. Hashes of these assets, and an overall hash. </p>
+        <p class="text-md py-md"><a href="@Model.aadto.screenshot">Screenshot of website</a> </p>
+        <img src="@Model.aadto.screenshot"/>
+        <p class="text-md py-md"><a href="@Model.aadto.thumbnail">Thumbnail</a> show below (first image or screenshot of video):</p>
+        <img src="@Model.aadto.thumbnail"/>
+    }
+
+
+
+    @*<p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>*@
+
+    @*<p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>*@
+
+    @*<img src="img/fs.jpg" alt="">*@
+
+    @*@if (Model.IsAllowedToUpload)*@
+</div>
+
+
+@section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
+
+    @* jquery needed for tus script - todo refactor out*@
+    @*<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>*@
+
+    @*<script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>*@
+    @*<script src="~/js/upload-tus.js" asp-append-version="true"></script>*@
+    }
+
+

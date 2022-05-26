@@ -11,9 +11,14 @@ using Serilog;
 namespace OSR4Rights.Web.Pages
 {
     //[Authorize(Roles = "Tier1, Tier2, Admin")]
-    public class AAResultsModel : PageModel
+    public class AAResultModel : PageModel
     {
         public AADto aadto { get; set; }
+
+        //public async Task<IActionResult> OnPost(Guid aaguid)
+        //{
+           
+        //}
 
         public async Task OnGet(Guid aaguid)
         {
@@ -36,7 +41,7 @@ namespace OSR4Rights.Web.Pages
                 //AAText = "Sorry there was a problem - please try again later";
                 Log.Error($"Problem with AA webservice {ex}");
             }
-
+            //return Page();
             //var isAllowed = false;
             //foreach (var claim in User.FindAll(ClaimTypes.Role))
             //{
@@ -45,6 +50,7 @@ namespace OSR4Rights.Web.Pages
             //}
 
             //IsAllowedToUpload = isAllowed;
+            //return Page();
         }
 
         public class AADto
