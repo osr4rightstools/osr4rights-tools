@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Azure.ResourceManager.Network.Models;
 using Serilog;
 
 namespace OSR4Rights.Web.Pages
@@ -15,11 +16,13 @@ namespace OSR4Rights.Web.Pages
         public string? HSPrediction { get; set; }
 
         public string? AAText { get; set; }
+        public string? AAGuid { get; set; }
 
-        public Guid? CacheBust { get; set; }
+        public string? CacheBust { get; set; }
         public async Task OnGet(string? route, string? q)
         {
-            CacheBust = Guid.NewGuid();
+            var base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+            CacheBust = base64Guid;
 
             if (route == "hate")
             {
@@ -75,7 +78,8 @@ namespace OSR4Rights.Web.Pages
                     var response = await httpClient.PostAsJsonAsync(url, data);
                     var foo = await response.Content.ReadFromJsonAsync<AADto>();
 
-                    AAText = foo.guid + ": " + foo.status;
+                    AAText = "Processing";
+                    AAGuid = foo.guid.ToString();
 
                 }
                 catch (Exception ex)

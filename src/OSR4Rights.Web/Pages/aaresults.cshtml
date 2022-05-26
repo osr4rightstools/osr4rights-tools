@@ -1,0 +1,41 @@
+﻿@page "{aaguid:guid}"
+@model OSR4Rights.Web.Pages.AAResultsModel
+@{
+    ViewData["Title"] = "Auto Archiver Results";
+}
+
+@section Styles {
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+}
+
+
+    <div class="container-tool">
+        <h2 class="text-xl">Auto Archive Results</h2>
+
+        <!-- not logged in -->
+        @*  @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    {*@
+        <h2 class="text-md py-md">Status: @Model.aadto.status</h2>
+        <p class="text-md py-md">cdn_url: <a href="@Model.aadto.cdn_url">@Model.aadto.cdn_url</a> </p>
+
+        <p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>
+
+        <p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>
+
+        @*<img src="img/fs.jpg" alt="">*@
+
+        @*@if (Model.IsAllowedToUpload)*@
+    </div>
+
+
+    @section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
+
+    @* jquery needed for tus script - todo refactor out*@
+    @*<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>*@
+
+    @*<script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>*@
+    @*<script src="~/js/upload-tus.js" asp-append-version="true"></script>*@
+    }
+
+
