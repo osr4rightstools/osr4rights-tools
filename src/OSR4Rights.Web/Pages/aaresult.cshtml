@@ -17,10 +17,12 @@
     {*@
         <h2 class="text-md py-md">Status: @Model.aadto.status</h2>
 
+        <p class="text-md"><a href="@Model.aadto.url">@Model.aadto.url</a> </p>
+
         @if (Model.aadto.status == "processing")
     {
         <p>Please wait (12 seconds for a tweet depending on load, and many minutes for a large YouTube video).</p>
-        <p><a href="/aaresult/@Model.aadto.guid">refresh this page.</a></p>
+        <p><a href="/aaresult/@Model.aadto.guid">Refresh this page.</a></p>
     }
     else
     {

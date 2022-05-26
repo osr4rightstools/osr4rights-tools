@@ -20,7 +20,7 @@ namespace OSR4Rights.Web.Pages
         public string? AAGuid { get; set; }
 
         public string? CacheBust { get; set; }
-        //public async Task OnGet(string? route, string? q)
+
         public async Task<IActionResult> OnGet(string? route, string? q)
         {
             var base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
@@ -109,7 +109,6 @@ namespace OSR4Rights.Web.Pages
                 AAText = $"Please check url: {q}";
                 return Page();
             }
-
 
             try
             {
