@@ -2,7 +2,7 @@
 @model OSR4Rights.Web.Pages.AutoArchiverModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
 @{
-    ViewData["Title"] = "Speech Parts";
+    ViewData["Title"] = "Auto-Archiver";
 }
 
 @* bootstrap for tus progress bar*@
@@ -14,8 +14,12 @@
     <div class="container-tool">
         <h2 class="text-xl">Auto Archiver of Web URLs</h2>
 
-        <p>A tool for automatically archiving web page links and saving the images and videos. Currently used by organisations monitoring human rights situations in Ukraine and Myanmar</p>
+        <p>A tool for automatically archiving web page links and saving the images and videos. Currently used in monitoring human rights situations in Ukraine, Myanmar and Afghanistan</p>
 
+        <p class="py-md">Thanks to <a href="https://www.info-res.org/">The Centre for Information Resilience</a> for providing the datasets and to <a href="https://github.com/bellingcat/auto-archiver">Bellingcat's</a> excellent open source code to which we are contributing back.</p>
+
+        
+        <p class="py-md">As of 15th July 2022 we have archived 7,672 links totally over 37GB of images and video which would have had to be done by hand. This is a huge time saver and we are proud to support the work of organisations like <a href="https://www.info-res.org/">The Centre for Information Resilience</a></p>
         <br />
 
 
@@ -104,7 +108,6 @@
 
         <p>This tool can save a huge amount of manual time archiving data from sites. It is being used by organisations capturing media for safeguarding. </p>
 
-        <p class="py-md">We use the excellent <a href="https://github.com/bellingcat/auto-archiver">https://github.com/bellingcat/auto-archiver</a> code.</p>
 
         <p>Please contact us <a href="https://osr4rights.org/contact-us/">here</a> and we can do a demo for you</p>
         <!-- not logged in -->
