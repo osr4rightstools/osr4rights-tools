@@ -44,7 +44,7 @@ sudo cp /home/dave/source/fire-map-infra/php74.ini /etc/php/7.4/apache2/php.ini
 sudo rm /var/www/html/index.html
 
 sudo cp /home/dave/source/fire-map-infra/index.html /var/www/html
-sudo cp /home/dave/source/fire-map-infra/phpinfo.php /var/www/html
+sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html
 
 # sudo chmod 755 /var/www
 

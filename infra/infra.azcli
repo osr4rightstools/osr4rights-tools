@@ -38,7 +38,7 @@ publicIPName=publicIP${int}
 nsgname=nsg${int}
 nicName=nic${int}
 
-echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
+# echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
 
 # resource group
 az group create \
