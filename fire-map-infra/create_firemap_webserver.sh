@@ -21,7 +21,7 @@ cd /home/dave
 sudo git clone https://github.com/djhmateer/osr4rights-tools.git source
 
 # AllowOverride in web root for url rewriting
-sudo cp /home/dave/source/infra/apache.conf /etc/apache2/sites-available
+sudo cp /home/dave/source/fire-map-infra/apache.conf /etc/apache2/sites-available
 
 # don't need ssl yet
 
