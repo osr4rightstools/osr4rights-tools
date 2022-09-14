@@ -41,11 +41,17 @@ sudo cp php.ini phpoldini.txt
 sudo cp /home/dave/source/fire-map-infra/php74.ini /etc/php/7.4/apache2/php.ini
 
 # delete the apache default index.html
-# sudo rm /var/www/html/index.html
+sudo rm /var/www/html/index.html
+
+sudo cp /home/dave/source/fire-map-infra/index.html /var/www/
+sudo cp /home/dave/source/fire-map-infra/phpinfo.php /var/www/
+
+# sudo chmod 755 /var/www
 
 # checks for syntax errors in apache conf
-# sudo apache2ctl configtest
-# sudo systemctl restart apache2
+#sudo apache2ctl configtest
+
+sudo systemctl restart apache2
 
 
 # go with newer apt which gets dependency updates too (like linux-azure)
