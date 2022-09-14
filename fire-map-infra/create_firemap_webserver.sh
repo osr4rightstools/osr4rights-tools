@@ -20,8 +20,9 @@ cd /home/dave
 # could copy files or do this way
 sudo git clone https://github.com/djhmateer/osr4rights-tools.git source
 
+# 000-default.conf is the filename created by apache2 on install
 # AllowOverride in web root for url rewriting
-sudo cp /home/dave/source/fire-map-infra/apache.conf /etc/apache2/sites-available
+sudo cp /home/dave/source/fire-map-infra/000-default.conf /etc/apache2/sites-available
 
 # don't need ssl yet
 
