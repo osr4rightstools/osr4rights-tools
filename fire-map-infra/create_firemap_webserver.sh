@@ -26,6 +26,27 @@ sudo cp /home/dave/source/fire-map-infra/000-default.conf /etc/apache2/sites-ava
 
 # don't need ssl yet
 
+# an example of adding a module
+sudo a2enmod rewrite
+sudo service apache2 restart
+
+# PHP7.4.3 is included in 20.04 so no need to point to this new repo unless want PHP8
+sudo apt install php -y
+# install other php modules here - see wordpress install
+sudo apt install libapache2-mod-php -y
+
+
+cd /etc/php/7.4/apache2
+sudo cp php.ini phpoldini.txt
+sudo cp /home/dave/source/fire-map-infra/php74.ini /etc/php/7.4/apache2/php.ini
+
+# delete the apache default index.html
+# sudo rm /var/www/html/index.html
+
+# checks for syntax errors in apache conf
+# sudo apache2ctl configtest
+# sudo systemctl restart apache2
+
 
 # go with newer apt which gets dependency updates too (like linux-azure)
 # sudo apt update -y
