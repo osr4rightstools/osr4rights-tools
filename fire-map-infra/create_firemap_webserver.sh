@@ -14,6 +14,18 @@ EOT
 
 sudo mv /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
+sudo apt install apache2 -y
+
+cd /home/dave
+# could copy files or do this way
+sudo git clone https://github.com/djhmateer/osr4rights-tools.git source
+
+# AllowOverride in web root for url rewriting
+sudo cp /home/dave/source/infra/apache.conf /etc/apache2/sites-available
+
+# don't need ssl yet
+
+
 # go with newer apt which gets dependency updates too (like linux-azure)
 # sudo apt update -y
 # sudo apt upgrade -y
