@@ -4,8 +4,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace OSR4Rights.Web.Pages.Account
@@ -176,6 +179,34 @@ namespace OSR4Rights.Web.Pages.Account
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
+
+
+                //TEST
+                var opt = HttpContext.RequestServices
+                    .GetRequiredService<IOptionsMonitor<CookieAuthenticationOptions>>()
+                    .Get(CookieAuthenticationDefaults.AuthenticationScheme); //or use .Get("Cookies")
+
+                // TWO - Get the encrypted cookie value
+                var cookie = opt.CookieManager.GetRequestCookie(HttpContext, opt.Cookie.Name);
+
+                // THREE - decrypt it
+                var asdf = opt.TicketDataFormat.Unprotect(cookie);
+
+                // would like to know the xml filename of the cookie file saved
+
+                // https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.cookies.cookieauthenticationoptions.cookie?view=aspnetcore-6.0
+                // .AspNetCore.Cookies
+                //var asdf = HttpContext.Request.Cookies.
+                //// ONE - grab the CookieAuthenticationOptions instance
+                //var opt = HttpContext.RequestServices
+                //    .GetService<IOptionsMonitor<CookieAuthenticationOptions>>()
+                //    .Get(CookieAuthenticationDefaults.AuthenticationScheme); //or use .Get("Cookies")
+
+                //// TWO - Get the encrypted cookie value
+                //var cookie = opt.CookieManager.GetRequestCookie(httpContext, opt.Cookie.Name);
+
+                //// THREE - decrypt it
+                //return opt.TicketDataFormat.Unprotect(cookie);
 
                 // creates a 302 Found which then redirects to the resource
                 return LocalRedirect(returnUrl ?? "/");

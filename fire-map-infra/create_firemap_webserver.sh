@@ -33,6 +33,35 @@ sudo service apache2 restart
 # PHP7.4.3 is included in 20.04 so no need to point to this new repo unless want PHP8
 sudo apt install php -y
 # install other php modules here - see wordpress install
+
+# for MSSQL
+# https://docs.microsoft.com/en-us/sql/connect/php/installation-tutorial-linux-mac?view=sql-server-ver16
+sudo apt install php-dev -y
+
+# ODBC
+sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+
+sudo su
+curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
+exit
+
+sudo apt-get update
+
+sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+# optional but need for pecl next
+sudo apt-get install -y unixodbc-dev
+
+sudo pecl install pdo_sqlsrv
+
+sudo su
+printf "; priority=20\nextension=sqlsrv.so\n" > /etc/php/7.4/mods-available/sqlsrv.ini
+printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/7.4/mods-available/pdo_sqlsrv.ini
+exit
+
+sudo phpenmod sqlsrv pdo_sqlsrv
+
+# apache
 sudo apt install libapache2-mod-php -y
 
 
