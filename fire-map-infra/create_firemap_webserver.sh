@@ -38,13 +38,12 @@ sudo apt install php -y
 # for MSSQL
 # https://docs.microsoft.com/en-us/sql/connect/php/installation-tutorial-linux-mac?view=sql-server-ver16
 sudo apt install php-dev -y
+sudo apt install php-xml -y
 
 # ODBC
 sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 
-# sudo su
 sudo su -c "curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list"
-# exit
 
 sudo apt-get update
 
@@ -53,6 +52,7 @@ sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
 # optional but need for pecl next
 sudo apt-get install -y unixodbc-dev
 
+sudo pecl install sqlsrv
 sudo pecl install pdo_sqlsrv
 
 sudo su -c "printf \"; priority=20\nextension=sqlsrv.so\n\" > /etc/php/7.4/mods-available/sqlsrv.ini"
