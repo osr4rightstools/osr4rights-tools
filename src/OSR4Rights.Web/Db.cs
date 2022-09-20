@@ -966,5 +966,41 @@ namespace OSR4Rights.Web
             public const int TusFiles = 7;
             public const int Downloads = 8;
         }
+
+        public static async Task InsertUpdateCookie(string connectionString,
+            string? cookieValue,
+            string? loginId,
+            DateTimeOffset? issuedUtc,
+            DateTimeOffset? expiresUtc)
+        {
+            using var conn = GetOpenConnection(connectionString);
+
+            await conn.ExecuteAsyncWithRetry(@"
+             -- The same cookie is in the db already
+             IF EXISTS (SELECT 1 FROM Cookie WHERE LoginId = @LoginId AND expiresUtc = @ExpiresUtc)
+             BEGIN
+                -- do nothing
+                SELECT 1
+             END
+             ELSE
+             BEGIN
+                 -- There may be an expired cookie so delete
+                 DELETE FROM Cookie WHERE LoginId = @LoginID
+
+                 INSERT INTO Cookie
+                    (CookieValue,LoginId,IssuedUtc,ExpiresUtc)
+                 VALUES (@CookieValue, @LoginId, @IssuedUtc, @ExpiresUtc)
+             END
+
+            ", new
+            {
+                cookieValue,
+                loginId,
+                issuedUtc,
+                expiresUtc
+            });
+
+        }
+
     }
 }

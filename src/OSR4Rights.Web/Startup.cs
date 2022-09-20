@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Azure.ResourceManager.Compute.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using OSR4Rights.Web.BackgroundServices;
 using Serilog;
@@ -122,6 +124,49 @@ public class Startup
             await next.Invoke();
 
             // This is the last in the pipeline
+
+            // Cookie TEST
+            string cookieValue = context.Request.Cookies[".AspNetCore.Cookies"];
+
+            // ONE - grab the CookieAuthenticationOptions instance
+            var opt = context.RequestServices
+                .GetRequiredService<IOptionsMonitor<CookieAuthenticationOptions>>()
+                .Get(CookieAuthenticationDefaults.AuthenticationScheme); //or use .Get("Cookies")
+
+            // TWO - Get the encrypted cookie value
+            var cookie = opt.CookieManager.GetRequestCookie(context, opt.Cookie.Name);
+
+            if (cookie == null)
+            {
+            }
+            else
+            {
+                // THREE - decrypt it
+                var asdf = opt.TicketDataFormat.Unprotect(cookie);
+
+                var issuedUtc = asdf.Properties.IssuedUtc;
+                var expiresUtc = asdf.Properties.ExpiresUtc;
+
+                var foo = asdf.Principal.Claims;
+
+                // eg davemateer@gmail.com
+                var name = foo.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                // eg Tier1, Tier2, Admin
+                var role = foo.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+                // eg 46
+                var loginId = foo.FirstOrDefault(x => x.Type == "LoginId")?.Value;
+
+                var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
+
+                // Cookie table (for fire-map)
+                await Db.InsertUpdateCookie(connectionString,
+                    cookieValue,
+                    loginId,
+                    issuedUtc,
+                    expiresUtc
+                );
+
+            }
 
             // Custom Logging
             var message = "";
@@ -312,7 +357,6 @@ public class Startup
                 // swallow
             }
         });
-
 
 
         if (env.IsDevelopment())

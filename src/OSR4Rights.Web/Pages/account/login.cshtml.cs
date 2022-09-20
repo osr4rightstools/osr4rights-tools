@@ -182,15 +182,15 @@ namespace OSR4Rights.Web.Pages.Account
 
 
                 //TEST
-                var opt = HttpContext.RequestServices
-                    .GetRequiredService<IOptionsMonitor<CookieAuthenticationOptions>>()
-                    .Get(CookieAuthenticationDefaults.AuthenticationScheme); //or use .Get("Cookies")
+                //var opt = HttpContext.RequestServices
+                //    .GetRequiredService<IOptionsMonitor<CookieAuthenticationOptions>>()
+                //    .Get(CookieAuthenticationDefaults.AuthenticationScheme); //or use .Get("Cookies")
 
-                // TWO - Get the encrypted cookie value
-                var cookie = opt.CookieManager.GetRequestCookie(HttpContext, opt.Cookie.Name);
+                //// TWO - Get the encrypted cookie value
+                //var cookie = opt.CookieManager.GetRequestCookie(HttpContext, opt.Cookie.Name);
 
-                // THREE - decrypt it
-                var asdf = opt.TicketDataFormat.Unprotect(cookie);
+                //// THREE - decrypt it
+                //var asdf = opt.TicketDataFormat.Unprotect(cookie);
 
                 // would like to know the xml filename of the cookie file saved
 
