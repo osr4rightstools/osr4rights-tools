@@ -27,8 +27,8 @@ rg=${rgprefix}${int}
 # Don't put capitals in dns name below and it needs to be unique (ie not used in azure at the moment)
 dnsname=alphafiremap${int}
 
-# adminusername=dave
-# adminpassword=${password}
+adminusername=dave
+adminpassword=${password}
 
 region=westeurope
 vmname=${dnsname}vm
