@@ -20,7 +20,7 @@ sudo git clone https://github.com/djhmateer/osr4rights-tools.git source
 
 # 000-default.conf is the filename created by apache2 on install
 # AllowOverride in web root for url rewriting
-sudo cp /home/dave/source/fire-map-infra/000-default.conf /etc/apache2/sites-available
+sudo cp /home/dave/source/alpha-fire-map-infra/000-default.conf /etc/apache2/sites-available
 
 # don't need ssl yet
 
@@ -64,13 +64,13 @@ sudo apt install libapache2-mod-php -y
 
 cd /etc/php/7.4/apache2
 sudo cp php.ini phpoldini.txt
-sudo cp /home/dave/source/fire-map-infra/php74.ini /etc/php/7.4/apache2/php.ini
+sudo cp /home/dave/source/alpha-fire-map-infra/php74.ini /etc/php/7.4/apache2/php.ini
 
 # delete the apache default index.html
 sudo rm /var/www/html/index.html
 
-sudo cp /home/dave/source/fire-map-infra/index.html /var/www/html
-sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html
+sudo cp /home/dave/source/alpha-fire-map-infra/index.html /var/www/html
+sudo cp /home/dave/source/alpha-fire-map-infra/*.php /var/www/html
 
 # sudo chmod 755 /var/www
 
