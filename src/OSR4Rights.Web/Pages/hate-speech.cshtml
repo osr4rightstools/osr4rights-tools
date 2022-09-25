@@ -13,6 +13,15 @@
 
 <div class="container-tool">
     <h2 class="text-xl">Hate Speech</h2>
+    
+    <div class="">
+        <p class="text-sm">We define "hate speech" as text that contains hateful, offensive and toxic language. </p>
+        <p class="text-sm"> We will produce a score (between 0 and 100) indicative of the extent of hate speech contained in the input text.</p>
+
+        <p class="text-sm" id="bar">Languages currently supported by this tool are English, Arabic and Russian</p>
+
+        <p class="text-sm">eg hate trailer trash</p>
+    </div>
 
     <!-- not logged in -->
     @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)

@@ -13,44 +13,9 @@
 <div class="container-tool">
     <h2 class="text-xl">FireMap</h2>
 
-    <p>Welcome to the fire-map test page</p>
+        <p>We are currently developing a tool that can be used to monitor real-time fire data within set geographical parameters, incorporating NASA's Fire Information for Resource Management System (FIRMS) with a user-friendly map interface. Contact us at Yvonne.Mcdermottrees@swansea.ac.uk to find out more.</p>
 
-    <!-- not logged in -->
-    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-    {
-        <h2 class="text-md py-md">If you wouldn't mind...</h2>
-
-        <p class="">Please Tell Us who you are by <a href="/account/register">Registering</a></p>
-
-        <p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>
-
-
-    }
-    else
-    {
-        <!-- tier 2 -->
-        @if (Model.IsAllowedToUpload)
-        {
-            <p>Tier 2 - full access</p>
-            <br />
-        }
-        else
-        {
-            <!-- tier 1-->
-            <p class="text-danger">Tier 1 - limited access (pending approval)</p>
-        }
-
-        <h4 id="samples">Samples</h4>
-
-        <form method="post" asp-page-handler="run1barack">
-            <input type="submit" class="btn btn-light" value="Go to fire-map" />
-        </form>
-
-        <form method="post" asp-page-handler="run6lfwsmall">
-            <input type="submit" class="btn btn-light" value="Go to fire-map sample" />
-        </form>
-    }
-</div>
+    </div>
 
 @*  </div>
     </section>*@
