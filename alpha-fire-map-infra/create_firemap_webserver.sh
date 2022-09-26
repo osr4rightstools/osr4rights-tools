@@ -79,6 +79,8 @@ sudo cp /home/dave/source/alpha-fire-map-infra/*.php /var/www/html
 
 sudo systemctl restart apache2
 
+# **SEE PB notes for next steps *****
+
 
 # go with newer apt which gets dependency updates too (like linux-azure)
 # sudo apt update -y

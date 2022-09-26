@@ -62,36 +62,36 @@ namespace OSR4Rights.Web.Pages
             else if (route == "auto")
             {
                 Log.Information($"route is auto");
-                //q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
+                q ??= "https://twitter.com/dave_mateer/status/1505876265504546817";
 
-                //var httpClient = new HttpClient();
-                //var url = "http://hmsoftware.org/api/aa";
+                var httpClient = new HttpClient();
+                var url = "http://hmsoftware.org/api/aa";
 
-                //if (!ValidateUrl(q))
-                //{
-                //    AAText = $"Please check url: {q}";
-                //    return Page();
-                //}
-
-
-                //try
-                //{
-                //    var data = new AADto { url = q };
-                //    var response = await httpClient.PostAsJsonAsync(url, data);
-                //    var foo = await response.Content.ReadFromJsonAsync<AADto>();
-
-                //    AAText = "Processing";
-                //    AAGuid = foo.guid.ToString();
-                //    // redirect to aaresults
-                //    return LocalRedirect($"/aaresults/{foo.guid}");
+                if (!ValidateUrl(q))
+                {
+                    AAText = $"Please check url: {q}";
+                    return Page();
+                }
 
 
-                //}
-                //catch (Exception ex)
-                //{
-                //    AAText = "Sorry there was a problem - please try again later";
-                //    Log.Error($"Problem with AA webservice {ex}");
-                //}
+                try
+                {
+                    var data = new AADto { url = q };
+                    var response = await httpClient.PostAsJsonAsync(url, data);
+                    var foo = await response.Content.ReadFromJsonAsync<AADto>();
+
+                    AAText = "Processing";
+                    AAGuid = foo.guid.ToString();
+                    // redirect to aaresults
+                    return LocalRedirect($"/aaresults/{foo.guid}");
+
+
+                }
+                catch (Exception ex)
+                {
+                    AAText = "Sorry there was a problem - please try again later";
+                    Log.Error($"Problem with AA webservice {ex}");
+                }
             }
 
             return Page();
