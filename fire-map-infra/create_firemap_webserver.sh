@@ -71,8 +71,9 @@ sudo cp /home/dave/source/fire-map-infra/php74.ini /etc/php/7.4/apache2/php.ini
 # delete the apache default index.html
 sudo rm /var/www/html/index.html
 
-sudo cp /home/dave/source/fire-map-infra/index.html /var/www/html
-sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html
+sudo mkdir /var/www/html/test
+sudo cp /home/dave/source/fire-map-infra/index.html /var/www/html/test
+sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html/test
 
 # sudo chmod 755 /var/www
 
@@ -85,6 +86,17 @@ sudo systemctl restart apache2
 cd /home/dave
 
 git clone https://github.com/spatial-intelligence/firemapscanner.git 
+sudo cp -r /home/dave/firemapscanner/firemapweb/. /var/www/html/
+
+# install postgres and postgis extension
+sudo apt -y install gnupg2
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+sudo apt update
+sudo apt install postgis postgresql-13-postgis-3 -y
+
+
+
 
 
 # go with newer apt which gets dependency updates too (like linux-azure)
