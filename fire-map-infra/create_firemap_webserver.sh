@@ -95,7 +95,28 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" 
 sudo apt update
 sudo apt install postgis postgresql-13-postgis-3 -y
 
+# create Db, User etc..
+# -a is to print all the output including data to stdout (useful for debugging)
+cd /home/dave/source/infra
+sudo -u postgres psql -a -f postgres.sql
 
+
+sudo apt install php7.4-pgsql -y
+sudo service apache2 restart
+
+cd /var/www/html
+sudo mkdir uploads
+sudo chmod 777 uploads
+
+# install ogr2ogr tools for spatial data conversions
+sudo apt install gdal-bin -y
+sudo apt install unzip -y
+
+
+# postgres client authentication file
+# phil do we need the extra in ipv4
+# host    all             all             all                     md5
+# top 2 go from peer to md5 and user posgres
 
 
 
