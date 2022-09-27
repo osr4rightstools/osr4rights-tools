@@ -1,16 +1,3 @@
-
-
--- createuser firemapusr
-
---ALTER USER firemapusr WITH PASSWORD 'verysecret123!';
-CREATE USER firemapusr WITH PASSWORD 'verysecret123!';
-
-ALTER USER postgres PASSWORD 'verysecret123!!';
-
-
-CREATE DATABASE nasafiremap;
-
-
 --------------CREATE TABLES
 
 CREATE TABLE IF NOT EXISTS public.interaction_history
@@ -29,9 +16,6 @@ ALTER TABLE IF EXISTS public.interaction_history
     OWNER to postgres;
 
 
--- otherwise will get error
--- ERROR:  type "geometry" does not exist
--- when creating table modis
 CREATE EXTENSION postgis;
 
 CREATE  TABLE IF NOT EXISTS public.modis

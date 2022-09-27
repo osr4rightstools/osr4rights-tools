@@ -96,9 +96,16 @@ sudo apt update
 sudo apt install postgis postgresql-13-postgis-3 -y
 
 # create Db, User etc..
-# -a is to print all the output including data to stdout (useful for debugging)
-cd /home/dave/source/infra
-sudo -u postgres psql -a -f postgres.sql
+# https://www.postgresql.org/docs/current/app-psql.html
+cd /home/dave/source/fire-map-infra
+
+# ****************HERE*********
+exit
+
+
+sudo -u postgres psql --echo-all --file=postgres-create-db.sql
+
+sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
 
 sudo apt install php7.4-pgsql -y
