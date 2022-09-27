@@ -118,6 +118,18 @@ sudo apt install unzip -y
 sudo apt update
 sudo apt upgrade -y
 
+# as PB's version has firemapweb hard coded
+sudo cp /home/dave/source/fire-map-infra/do_fileupload.php /var/www/html
+
+# copy new version of ph_hba.conf
+sudo mv /etc/postgresql/13/main/pg_hba.conf OLD_pg_hba.conf
+sudo cp /home/dave/source/fire-map-infra/pg_hba.conf /etc/postgresql/13/main
+sudo service postgresql restart
+
+
+
+
+
 # postgres client authentication file
 # phil do we need the extra in ipv4
 # host    all             all             all                     md5

@@ -1,4 +1,4 @@
-DBTest
+PGTest
 <?php
 
 // show php errors otherwise will silently fail with no warnings on screen
@@ -49,7 +49,7 @@ try {
 	// echo "c is " . $c;
 } catch (PDOException $e) {
 
-	echo "error";
+	echo "exception";
 	die($e->getMessage());
 }
 
