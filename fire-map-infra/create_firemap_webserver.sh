@@ -99,14 +99,10 @@ sudo apt install postgis postgresql-13-postgis-3 -y
 # https://www.postgresql.org/docs/current/app-psql.html
 cd /home/dave/source/fire-map-infra
 
-# ****************HERE*********
-exit
-
 
 sudo -u postgres psql --echo-all --file=postgres-create-db.sql
 
 sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
-
 
 sudo apt install php7.4-pgsql -y
 sudo service apache2 restart
@@ -119,6 +115,8 @@ sudo chmod 777 uploads
 sudo apt install gdal-bin -y
 sudo apt install unzip -y
 
+sudo apt update
+sudo apt upgrade -y
 
 # postgres client authentication file
 # phil do we need the extra in ipv4
