@@ -119,28 +119,25 @@ az network nsg rule create \
     --access allow
 # /certs directory has been created above
 
-# I have seen this timeout so retry until it works
-# https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times
-# n=0
-# until [ "$n" -ge 5 ]
-# do
-#    scp -o StrictHostKeyChecking=no ../secrets/www_osr4rightstools_org.pem dave@${dnsname}.westeurope.cloudapp.azure.com:/certs/ && break
-#    n=$((n+1)) 
-#    sleep 15
-# done
 
-# scp -o StrictHostKeyChecking=no ../secrets/www_osr4rightstools_org.key dave@${dnsname}.westeurope.cloudapp.azure.com:/certs/
+# copy db create script with secret password in it
+# could use the run-command way like fire-map-apaache-envvars.sh below
+n=0
+until [ "$n" -ge 5 ]
+do
+   scp -o StrictHostKeyChecking=no ../secrets/postgres-create-db.sql dave@${dnsname}.westeurope.cloudapp.azure.com:/home/dave && break
+   n=$((n+1)) 
+   sleep 15
+done
 
-# gets .NET, clones source code, does a release build, starts systemd kestrel service
-# systemd reads from file created on the vm above
-# and sets environmental variables and starts kestrel webserver
+
 az vm run-command invoke \
     -g ${rg} \
     -n ${vmname} \
     --command-id RunShellScript \
     --scripts @create_firemap_webserver.sh
 
-# adds to end of apache2/envvars the database env variables ie secrets
+# adds to end of apache2/envvars 
 az vm run-command invoke \
     -g ${rg} \
     -n ${vmname} \

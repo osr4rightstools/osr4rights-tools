@@ -101,7 +101,7 @@ if ($uploadOk == 0) {
 
 
       //delete the temp pg tables
-      $link = pg_Connect("dbname=nasafiremap user=username password=$password");
+      $link = pg_Connect("dbname=nasafiremap user=$username password=$password");
       $query = "drop table $u;";
       $result = pg_exec($link,$query);
 

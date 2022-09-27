@@ -97,11 +97,13 @@ sudo apt install postgis postgresql-13-postgis-3 -y
 
 # create Db, User etc..
 # https://www.postgresql.org/docs/current/app-psql.html
-cd /home/dave/source/fire-map-infra
 
+# copy from local /secrets/postgres-create-db.sql
 
+cd /home/dave
 sudo -u postgres psql --echo-all --file=postgres-create-db.sql
 
+cd /home/dave/source/fire-map-infra
 sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
 sudo apt install php7.4-pgsql -y
@@ -122,7 +124,7 @@ sudo apt upgrade -y
 sudo cp /home/dave/source/fire-map-infra/do_fileupload.php /var/www/html
 
 # copy new version of ph_hba.conf
-sudo mv /etc/postgresql/13/main/pg_hba.conf OLD_pg_hba.conf
+sudo mv /etc/postgresql/13/main/pg_hba.conf /etc/postgresql/13/main/OLD_pg_hba.conf
 sudo cp /home/dave/source/fire-map-infra/pg_hba.conf /etc/postgresql/13/main
 sudo service postgresql restart
 
