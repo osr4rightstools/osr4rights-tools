@@ -1,4 +1,4 @@
-<?
+<?php
 // if not authenticated redirect to /fire-map
 
 function exception_handler($exception)
@@ -28,12 +28,12 @@ function formatErrors($errors)
 //
 $cookie_name = "_AspNetCore_Cookies";
 
-// $_COOKIE[$cookie_name] = "for testing put a real cookie in here";
+$_COOKIE[$cookie_name] = "for testing put a real cookie in here";
 
 if (!isset($_COOKIE[$cookie_name])) {
 	echo "Cookie named '" . $cookie_name . "' is not set! You should not be here. Redirect to /fire-map perhaps";
-	header('Location: /fire-map');
-	die();
+	// header('Location: /fire-map');
+	// die();
 } else {
 
 	$cookie_value = $_COOKIE[$cookie_name];
@@ -87,7 +87,7 @@ if (!isset($_COOKIE[$cookie_name])) {
 
 	if ($row_count == 0) {
 		// unusual - cookie problem in the database
-		echo "not authenticated!";
+		echo "unusual - cookie problem in the db - not authenticated!";
 		
 	} else {
 		// success

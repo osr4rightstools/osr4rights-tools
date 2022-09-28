@@ -1,6 +1,5 @@
-<?
+<?php
 // if not authenticated redirect to /fire-map
-require("auth.php");
+include("auth.php");
 
 echo "hello this is foo.php";
-?>
