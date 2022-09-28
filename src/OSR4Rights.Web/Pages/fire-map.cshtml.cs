@@ -18,8 +18,9 @@ namespace OSR4Rights.Web.Pages
             {
                 // if there is any type of claim then they are logged in so can redirect
 
-                return LocalRedirect($"/fire-mapx");
                 //if (claim.Value == "Tier2") isAllowed = true;
+                //if (claim.Value == "Tier2") isAllowed = true;
+                //return LocalRedirect($"/fire-mapx");
                 //else if (claim.Value == "Admin") isAllowed = true;
             }
             //IsAllowedToUpload = isAllowed;
