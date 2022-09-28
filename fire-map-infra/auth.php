@@ -23,18 +23,25 @@ function formatErrors($errors)
 	}
 }
 
-//
-// Get Cookie 
-//
+// Get .NET Cookie 
 $cookie_name = "_AspNetCore_Cookies";
 
-$_COOKIE[$cookie_name] = "for testing put a real cookie in here";
+$_COOKIE[$cookie_name] = "CfDJ8DvrQ7tcJMNCjjCn_rjeXcVcU5n8gOfXo8Yd6JVsDHWlEdNgbv5z1hcWneB4eXxBPU_fCi_qUaEQPC5pBkoHSI_ynkWOjnDujKa9TOXgTex1ZaYCnRkcjJXrL8AqxoeRu32MKOZlX0GHbkquhlklMWvHrDVb_qPe3GlWje8QUS5Y6x3lgeD0FrnGC5v_ADiwVQDnp0mjlVlaM4XUqxjYWnA-5J36E-sLOCTBKqVMAxycgwCT4eYUTCc0tskASlN5feXy_BGCtxtN5BhE8-FZZCyzX7Tj1EbRRnnHRn0EgM8r1V4ycgyTgCdLe6Kwi1y7oIIq4FRpdWdS4jk49grDOLuoNVBuIwABlpyHK7G1t1Wb7XFm1xTQ1S_kRTkFRAR3p1vh9_9zcYvam0AyMIkaw7c8IoWiLPrF1Vatt1s99ONWeeGMA5GW73Sya8yTv7QVQgWoaCciaKWubhPzLWMWqHM";
 
 if (!isset($_COOKIE[$cookie_name])) {
-	echo "Cookie named '" . $cookie_name . "' is not set! You should not be here. Redirect to /fire-map perhaps";
-	// header('Location: /fire-map');
-	// die();
+	// No .NET cookie so redirect to login page on .NET side with a return url
+
+	// header('Location: /login');
+	header('Location: /');
+	die();
 } else {
+
+	session_start();
+	if(isset($_SESSION['usercode']))
+	{
+		// Have a PHP session already so don't need to check .NET cookie validity
+		return;
+	}
 
 	$cookie_value = $_COOKIE[$cookie_name];
 
@@ -49,12 +56,6 @@ if (!isset($_COOKIE[$cookie_name])) {
 	$username = getenv('DB_USERNAME');
 	$password = getenv('DB_PASSWORD');
 
-	// localhost testing
-	// $serverName = "127.0.0.1";
-	// $database = "OSR4Rights" ;
-	// $username = "sa";
-	// $password = "zpsecret";
-
 	$connectionOptions = array(
 		"database" => $database,
 		"uid" => $username,
@@ -65,6 +66,9 @@ if (!isset($_COOKIE[$cookie_name])) {
 	// Establishes db connection
 	$conn = sqlsrv_connect($serverName, $connectionOptions);
 	if ($conn === false) {
+		// unfriendly error here to user..
+		// but can't access mssql db
+		// todo make more friendly
 		die(formatErrors(sqlsrv_errors()));
 	}
 
@@ -80,6 +84,8 @@ if (!isset($_COOKIE[$cookie_name])) {
 
 	if ($stmt === false) {
 		// database query problem
+		// again we are dying
+		// need to make more friendly
 		die(formatErrors(sqlsrv_errors()));
 	}
 
@@ -88,17 +94,28 @@ if (!isset($_COOKIE[$cookie_name])) {
 	if ($row_count == 0) {
 		// unusual - cookie problem in the database
 		echo "unusual - cookie problem in the db - not authenticated!";
+		echo "can't do a redirect as displaying this error!";
+		die();
 		
 	} else {
-		// success
-		echo "authenticated - but not authorised yet ie could be tier1,2,or admin";
+		// success - assume only 1 row
+		// echo "authenticated - but not authorised yet ie could be tier1,2,or admin";
 
-		// while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-		// 	$loginId = $row['LoginId'];
-		// 	$email = $row['Email'];
-		// 	echo "<br/><br/>loginId is " . $loginId;
-		// 	echo "<br/><br/>email is " . $email;
-		// }
+		while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+			$loginId = $row['LoginId'];
+			$email = $row['Email'];
+
+			echo "<br/><br/>loginId is " . $loginId;
+			echo "<br/><br/>email is " . $email;
+
+			session_start();
+			// eg loginId 5 is davemateer@gmail.com from mssql side
+			// so use that on this PHP side
+			$_SESSION['usercode']=$loginId;
+
+			// PB uses this in code as include is called on every private page
+			$userid=$loginId;
+		}
 	}
 
 	sqlsrv_free_stmt($stmt);
