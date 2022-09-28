@@ -11,15 +11,19 @@ namespace OSR4Rights.Web.Pages
     {
         public bool IsAllowedToUpload { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
             var isAllowed = false;
             foreach (var claim in User.FindAll(ClaimTypes.Role))
             {
-                if (claim.Value == "Tier2") isAllowed = true;
-                else if (claim.Value == "Admin") isAllowed = true;
+                // if there is any type of claim then they are logged in so can redirect
+
+                return LocalRedirect($"/fire-mapx");
+                //if (claim.Value == "Tier2") isAllowed = true;
+                //else if (claim.Value == "Admin") isAllowed = true;
             }
-            IsAllowedToUpload = isAllowed;
+            //IsAllowedToUpload = isAllowed;
+            return Page();
         }
 
         // For user file uploads javascript handles the post
