@@ -73,6 +73,7 @@ sudo rm /var/www/html/index.html
 
 sudo mkdir /var/www/html/test
 sudo cp /home/dave/source/fire-map-infra/index.html /var/www/html/test
+
 sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html/test
 
 # sudo chmod 755 /var/www
@@ -120,8 +121,15 @@ sudo apt install unzip -y
 sudo apt update
 sudo apt upgrade -y
 
-# as PB's version has firemapweb hard coded
+# fix for PB's version has firemapweb hard coded
 sudo cp /home/dave/source/fire-map-infra/do_fileupload.php /var/www/html
+# fix for PB's version put in our cookie auth 
+sudo cp /home/dave/source/fire-map-infra/header_alerts.php /var/www/html
+
+# don't want files in the /test directory as would be confusing
+sudo rm /var/www/html/test/header_alerts.php
+sudo rm /var/www/html/test/do_fileupload.php
+
 
 # copy new version of ph_hba.conf
 sudo mv /etc/postgresql/13/main/pg_hba.conf /etc/postgresql/13/main/OLD_pg_hba.conf

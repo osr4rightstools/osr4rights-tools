@@ -1,7 +1,10 @@
 <?php
 // if not authenticated redirect to /fire-map
-include("auth.php");
+// require("auth.php");
+require("/header_alerts.php");
 
 echo "<br />hello this is foo.php";
 echo "<br />SESSION usercode is " . $_SESSION['usercode'];
-echo "<br />userid is " . $userId;
+echo "<br />SESSION email is " . $_SESSION['email'];
+
+echo "<br />userid is " . $userid;

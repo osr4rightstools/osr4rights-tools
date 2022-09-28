@@ -171,14 +171,25 @@ az network nsg rule create \
     --destination-port-range 80 \
     --access allow
 
+# nginx forwards on port 80 so don't need this
 # allow port 443
+# az network nsg rule create \
+#     --resource-group ${rg} \
+#     --nsg-name ${nsgname} \
+#     --name nsgGroupRuleWeb443 \
+#     --protocol tcp \
+#     --priority 1002 \
+#     --destination-port-range 443 \
+#     --access allow
+
+# allow postgres
 az network nsg rule create \
     --resource-group ${rg} \
     --nsg-name ${nsgname} \
-    --name nsgGroupRuleWeb443 \
+    --name nsgGroupRulePostgres5432 \
     --protocol tcp \
-    --priority 1002 \
-    --destination-port-range 443 \
+    --priority 1003 \
+    --destination-port-range 5432 \
     --access allow
 
 # generate dns here.. had trouble doing inside next if statement

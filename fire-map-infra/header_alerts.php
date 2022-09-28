@@ -1,5 +1,13 @@
 <?php
+	// session_start();
+	// if(!isset($_SESSION['usercode']))
+	// {
+	// 	header("location: login_user.php");
+	// 	die();
+	// }
+	// $userid=$_SESSION['usercode'];
 
+	
 function exception_handler($exception)
 {
 	echo "<h1>Failure</h1>";
@@ -121,4 +129,8 @@ if (!isset($_COOKIE[$cookie_name])) {
 
 // PB uses this in code as include is called on every private page
 $userid=$_SESSION['usercode'];
+?>
 
+<link rel="stylesheet" href="style.css" />
+<p style = "font-size: 75%"> Menu: [Logged in as: <?php echo $userid; echo $_SESSION['email'];?>]&nbsp&nbsp&nbsp&nbsp<a href="projectlist_you.php">[Your Projects]</a>&nbsp&nbsp&nbsp&nbsp<a href="addproject.php">[Add Project]</a>&nbsp&nbsp&nbsp&nbsp<a href="/">[Home]</a>&nbsp&nbsp&nbsp&nbsp<a href="/logout">[Log out]</a>
+</p>
