@@ -43,86 +43,84 @@ if (!isset($_COOKIE[$cookie_name])) {
 	die();
 } else {
 
+	// we always need to check the .NET cookie even though a PHP cookie is there
+	// as it is the canonical version of the truth
+	// ie if the user logs out on the .NET side, or changes to a different user
+	// then the PHP should follow
 	session_start();
-	if (isset($_SESSION['usercode'])) {
-		// Have a PHP session already so don't need to check .NET cookie validity
-	} else {
-		$cookie_value = $_COOKIE[$cookie_name];
 
-		//
-		// Call database to see if this is a real cookie that we know about
-		//
+	$cookie_value = $_COOKIE[$cookie_name];
 
-		// env variables are set in /etc/apache2/envvars
-		// which are copied in the deploy script to the server 
-		$serverName = getenv('DB_SERVERNAME');
-		$database = getenv('DB_DATABASE');
-		$username = getenv('DB_USERNAME');
-		$password = getenv('DB_PASSWORD');
+	//
+	// Call database to see if this is a real cookie that we know about
+	//
 
-		$connectionOptions = array(
-			"database" => $database,
-			"uid" => $username,
-			"pwd" => $password,
-			"TrustServerCertificate" => true
-		);
+	// env variables are set in /etc/apache2/envvars
+	// which are copied in the deploy script to the server 
+	$serverName = getenv('DB_SERVERNAME');
+	$database = getenv('DB_DATABASE');
+	$username = getenv('DB_USERNAME');
+	$password = getenv('DB_PASSWORD');
 
-		// Establishes db connection
-		$conn = sqlsrv_connect($serverName, $connectionOptions);
-		if ($conn === false) {
-			// unfriendly error here to user..
-			// but can't access mssql db
-			// todo make more friendly
-			die(formatErrors(sqlsrv_errors()));
-		}
+	$connectionOptions = array(
+		"database" => $database,
+		"uid" => $username,
+		"pwd" => $password,
+		"TrustServerCertificate" => true
+	);
 
-		$tsql = "
+	// Establishes db connection
+	$conn = sqlsrv_connect($serverName, $connectionOptions);
+	if ($conn === false) {
+		// unfriendly error here to user..
+		// but can't access mssql db
+		// todo make more friendly
+		die(formatErrors(sqlsrv_errors()));
+	}
+
+	$tsql = "
 	SELECT c.LoginId, l.Email 
 	FROM Cookie c 
 	JOIN Login l on c.LoginId = l.LoginId
 	WHERE CookieValue = ? 
 	AND ExpiresUtc > GETUTCDATE()";
 
-		$params = array($cookie_value);
-		$stmt = sqlsrv_query($conn, $tsql, $params, array("Scrollable" => 'static'));
+	$params = array($cookie_value);
+	$stmt = sqlsrv_query($conn, $tsql, $params, array("Scrollable" => 'static'));
 
-		if ($stmt === false) {
-			// database query problem
-			// again we are dying
-			// need to make more friendly
-			die(formatErrors(sqlsrv_errors()));
-		}
-
-		$row_count = sqlsrv_num_rows($stmt);
-
-		if ($row_count == 0) {
-			// unusual - cookie problem in the database
-			echo "unusual - cookie problem in the db - not authenticated!";
-			echo "can't do a redirect as displaying this error!";
-			die();
-		} else {
-			// success - assume only 1 row
-			// echo "authenticated - but not authorised yet ie could be tier1,2,or admin";
-
-			while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-				$loginId = $row['LoginId'];
-				$email = $row['Email'];
-
-				// echo "<br/>loginId is " . $loginId;
-				// echo "<br/>email is " . $email;
-
-				// session_start();
-				// eg loginId 5 is davemateer@gmail.com from mssql side
-				// so use that on this PHP side
-				$_SESSION['usercode'] = $loginId;
-				$_SESSION['email'] = $email;
-			}
-		}
-
-		sqlsrv_free_stmt($stmt);
-		sqlsrv_close($conn);
+	if ($stmt === false) {
+		// database query problem
+		// again we are dying
+		// need to make more friendly
+		die(formatErrors(sqlsrv_errors()));
 	}
+
+	$row_count = sqlsrv_num_rows($stmt);
+
+	if ($row_count == 0) {
+		// unusual - cookie problem in the database
+		echo "unusual - cookie problem in the db - not authenticated!";
+		echo "can't do a redirect as displaying this error!";
+		die();
+	} else {
+		// success - assume only 1 row
+		// echo "authenticated - but not authorised yet ie could be tier1,2,or admin";
+
+		while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+			$loginId = $row['LoginId'];
+			$email = $row['Email'];
+
+			// eg loginId 5 is davemateer@gmail.com from mssql side
+			// so use that on this PHP side
+			$_SESSION['usercode'] = $loginId;
+			$_SESSION['email'] = $email;
+		}
+	}
+
+	sqlsrv_free_stmt($stmt);
+	sqlsrv_close($conn);
 }
+// }
 
 // PB uses this in code as include is called on every private page
 $userid = $_SESSION['usercode'];
@@ -130,5 +128,5 @@ $userid = $_SESSION['usercode'];
 
 <link rel="stylesheet" href="style.css" />
 <p style="font-size: 75%"> Menu: [Logged in as: <?php echo $userid;
-?> - <?php echo $_SESSION['email']; ?>]&nbsp&nbsp&nbsp&nbsp<a href="projectlist_you.php">[Your Projects]</a>&nbsp&nbsp&nbsp&nbsp<a href="addproject.php">[Add Project]</a>&nbsp&nbsp&nbsp&nbsp<a href="/">[Home]</a>&nbsp&nbsp&nbsp&nbsp<a href="/account/logout">[Log out]</a>
+																								?> - <?php echo $_SESSION['email']; ?>]&nbsp&nbsp&nbsp&nbsp<a href="projectlist_you.php">[Your Projects]</a>&nbsp&nbsp&nbsp&nbsp<a href="addproject.php">[Add Project]</a>&nbsp&nbsp&nbsp&nbsp<a href="/">[Home]</a>&nbsp&nbsp&nbsp&nbsp<a href="/account/logout">[Log out]</a>
 </p>
