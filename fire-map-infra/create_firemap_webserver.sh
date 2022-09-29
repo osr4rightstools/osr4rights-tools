@@ -134,6 +134,11 @@ sudo rm /var/www/html/test/do_fileupload.php
 # copy new version of ph_hba.conf
 sudo mv /etc/postgresql/13/main/pg_hba.conf /etc/postgresql/13/main/OLD_pg_hba.conf
 sudo cp /home/dave/source/fire-map-infra/pg_hba.conf /etc/postgresql/13/main
+
+# update postgres.conf to allow connections from anywhere (default is localhost)
+# \x27 is hex for '
+sudo sed -i -e 's/#listen_addresses = \x27localhost\x27/listen_addresses = \x27*\x27 /g' /etc/postgresql/13/main/postgresql.conf
+
 sudo service postgresql restart
 
 
