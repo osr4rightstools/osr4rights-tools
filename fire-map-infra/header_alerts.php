@@ -114,6 +114,16 @@ if (!isset($_COOKIE[$cookie_name])) {
 			// so use that on this PHP side
 			$_SESSION['usercode'] = $loginId;
 			$_SESSION['email'] = $email;
+
+			// make sure the users table is populated with this user on postgresql side
+			$pg_username = getenv('DBFIRE_USERNAME');
+			$pg_password = getenv('DBFIRE_PASSWORD');
+			$pg_pdo = new PDO('pgsql:host=127.0.0.1;dbname=nasafiremap', $pg_username, $pg_password);
+			$pg_sql = "INSERT into users (userid,password) values (?,'a');";
+			$pg_stmt = $pg_pdo->prepare($pg_sql);
+			$pg_stmt->execute([$loginId]);
+
+			// don't care if fails as that means the user is already there
 		}
 	}
 
@@ -127,6 +137,5 @@ $userid = $_SESSION['usercode'];
 ?>
 
 <link rel="stylesheet" href="style.css" />
-<p style="font-size: 75%"> Menu: [Logged in as: <?php echo $userid;
-																								?> - <?php echo $_SESSION['email']; ?>]&nbsp&nbsp&nbsp&nbsp<a href="projectlist_you.php">[Your Projects]</a>&nbsp&nbsp&nbsp&nbsp<a href="addproject.php">[Add Project]</a>&nbsp&nbsp&nbsp&nbsp<a href="/">[Home]</a>&nbsp&nbsp&nbsp&nbsp<a href="/account/logout">[Log out]</a>
+<p style="font-size: 75%"> Menu: [Logged in as: <?php echo $userid;?> - <?php echo $_SESSION['email']; ?>]&nbsp&nbsp&nbsp&nbsp<a href="projectlist_you.php">[Your Projects]</a>&nbsp&nbsp&nbsp&nbsp<a href="addproject.php">[Add Project]</a>&nbsp&nbsp&nbsp&nbsp<a href="/">[Home]</a>&nbsp&nbsp&nbsp&nbsp<a href="/account/logout">[Log out]</a>
 </p>

@@ -190,7 +190,7 @@ GRANT USAGE, SELECT ON SEQUENCE users_userid_seq TO firemapusr;
 
 -- dummy data
 
-insert into users values(101,'e105fc3091927de105f7b55c7a9c263e4e665935d441e03c060f4f2c6af58fc1');
+-- insert into users values(101,'e105fc3091927de105f7b55c7a9c263e4e665935d441e03c060f4f2c6af58fc1');
 
-insert into userproject values (101,117);
-insert into project values ('test project','1 Jan 2022',True,117,'test@123.com',101)
+-- insert into userproject values (101,117);
+-- insert into project values ('test project','1 Jan 2022',True,117,'test@123.com',101)
