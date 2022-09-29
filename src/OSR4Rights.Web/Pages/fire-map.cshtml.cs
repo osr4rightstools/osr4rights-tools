@@ -13,14 +13,16 @@ namespace OSR4Rights.Web.Pages
 
         public IActionResult OnGet()
         {
-            var isAllowed = false;
+            //var isAllowed = false;
             foreach (var claim in User.FindAll(ClaimTypes.Role))
             {
                 // if there is any type of claim then they are logged in so can redirect
 
                 //if (claim.Value == "Tier2") isAllowed = true;
                 //if (claim.Value == "Tier2") isAllowed = true;
-                //return LocalRedirect($"/fire-mapx");
+                if (claim.Value == "Admin")
+                    return LocalRedirect($"/fire-mapx");
+
                 //else if (claim.Value == "Admin") isAllowed = true;
             }
             //IsAllowedToUpload = isAllowed;
@@ -30,10 +32,10 @@ namespace OSR4Rights.Web.Pages
         // For user file uploads javascript handles the post
 
         // Sample data buttons
-        public IActionResult OnPostRun1Barack() => 
-            LocalRedirect($"/face-search-go?createdFileName=1barackTIER1.zip");
+        //public IActionResult OnPostRun1Barack() =>
+        //    LocalRedirect($"/face-search-go?createdFileName=1barackTIER1.zip");
 
-        public IActionResult OnPostRun6lfwsmall() => 
-            LocalRedirect($"/face-search-go?createdFileName=6lfwsmallTIER1.zip");
+        //public IActionResult OnPostRun6lfwsmall() =>
+        //    LocalRedirect($"/face-search-go?createdFileName=6lfwsmallTIER1.zip");
     }
 }
