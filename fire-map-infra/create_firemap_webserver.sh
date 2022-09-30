@@ -146,11 +146,28 @@ sudo sed -i -e 's/#effective_cache_size = 4GB/effective_cache_size = 6GB/g' /etc
 
 sudo sed -i -e 's/#maintenance_work_mem = 64MB/maintenance_work_mem = 512MB/g' /etc/postgresql/13/main/postgresql.conf
 
-# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
-# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
-# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
-# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
-# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
+sudo sed -i -e 's/#checkpoint_completion_target = 0.5/checkpoint_completion_target = 0.9/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#wal_buffers = -1/wal_buffers = 16MB/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#default_statistics_target = 100/default_statistics_target = 100/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#random_page_cost = 4.0/random_page_cost = 1.1/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#effective_io_concurrency = 1/effective_io_concurrency = 200/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#work_mem = 4MB/work_mem = 20971kb/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/min_wal_size = 80MB/min_wal_size = 1GB/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/max_wal_size = 1GB/max_wal_size = 4GB/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#max_worker_processes = 8/max_worker_processes = 2/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#max_parallel_workers_per_gather = 2/max_parallel_workers_per_gather = 1/g' /etc/postgresql/13/main/postgresql.conf
+sudo sed -i -e 's/#max_parallel_workers = 8/max_parallel_workers = 2/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#max_parallel_maintenance_workers = 2/max_parallel_maintenance_workers = 1/g' /etc/postgresql/13/main/postgresql.conf
 
 sudo service postgresql restart
 
