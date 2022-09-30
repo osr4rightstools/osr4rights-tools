@@ -139,6 +139,19 @@ sudo cp /home/dave/source/fire-map-infra/pg_hba.conf /etc/postgresql/13/main
 # \x27 is hex for '
 sudo sed -i -e 's/#listen_addresses = \x27localhost\x27/listen_addresses = \x27*\x27 /g' /etc/postgresql/13/main/postgresql.conf
 
+# https://pgtune.leopard.in.ua/
+sudo sed -i -e 's/shared_buffers = 128MB/shared_buffers = 2GB/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#effective_cache_size = 4GB/effective_cache_size = 6GB/g' /etc/postgresql/13/main/postgresql.conf
+
+sudo sed -i -e 's/#maintenance_work_mem = 64MB/maintenance_work_mem = 512MB/g' /etc/postgresql/13/main/postgresql.conf
+
+# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
+# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
+# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
+# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
+# sudo sed -i -e 's///g' /etc/postgresql/13/main/postgresql.conf
+
 sudo service postgresql restart
 
 
