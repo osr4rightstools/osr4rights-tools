@@ -86,7 +86,7 @@ az vm create \
     --location ${region} \
     --nics ${nicName} \
     --image ${image} \
-    --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/sshkey-4790-1804.pub ../secrets/sshkey-4790-2004.pub \
+    --ssh-key-values ../secrets/sshkey-homelenovo.pub ../secrets/pb_id_rsa.pub ../secrets/sshkey-4790-2004.pub \
     --size Standard_B2s
 else
  echo "ping"
@@ -130,8 +130,7 @@ do
    sleep 15
 done
 
-
-az vm run-command invoke \
+Az vm run-command invoke \
     -g ${rg} \
     -n ${vmname} \
     --command-id RunShellScript \

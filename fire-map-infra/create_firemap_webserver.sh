@@ -156,7 +156,7 @@ sudo sed -i -e 's/#random_page_cost = 4.0/random_page_cost = 1.1/g' /etc/postgre
 
 sudo sed -i -e 's/#effective_io_concurrency = 1/effective_io_concurrency = 200/g' /etc/postgresql/13/main/postgresql.conf
 
-sudo sed -i -e 's/#work_mem = 4MB/work_mem = 20971kb/g' /etc/postgresql/13/main/postgresql.conf
+sudo sed -i -e 's/#work_mem = 4MB/work_mem = 20971kB/g' /etc/postgresql/13/main/postgresql.conf
 
 sudo sed -i -e 's/min_wal_size = 80MB/min_wal_size = 1GB/g' /etc/postgresql/13/main/postgresql.conf
 
