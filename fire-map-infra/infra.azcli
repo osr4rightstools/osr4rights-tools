@@ -130,7 +130,7 @@ do
    sleep 15
 done
 
-Az vm run-command invoke \
+az vm run-command invoke \
     -g ${rg} \
     -n ${vmname} \
     --command-id RunShellScript \
