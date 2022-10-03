@@ -122,13 +122,13 @@ sudo apt update
 sudo apt upgrade -y
 
 # fix for PB's version has firemapweb hard coded
-sudo cp /home/dave/source/fire-map-infra/do_fileupload.php /var/www/html
+# sudo cp /home/dave/source/fire-map-infra/do_fileupload.php /var/www/html
 # fix for PB's version put in our cookie auth 
-sudo cp /home/dave/source/fire-map-infra/header_alerts.php /var/www/html
+# sudo cp /home/dave/source/fire-map-infra/header_alerts.php /var/www/html
 
 # don't want files in the /test directory as would be confusing
-sudo rm /var/www/html/test/header_alerts.php
-sudo rm /var/www/html/test/do_fileupload.php
+# sudo rm /var/www/html/test/header_alerts.php
+# sudo rm /var/www/html/test/do_fileupload.php
 
 
 # copy new version of ph_hba.conf
