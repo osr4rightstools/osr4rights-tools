@@ -169,8 +169,105 @@ Alter table userproject add foreign key (userid) references users on update casc
 
 Alter table monitorzones add foreign key (projectid) references project on update cascade on delete cascade;
 
--- DB PERMISSIONS
+---
+--- Loading Historical data
+--- MODIS data load 
+---
+CREATE TABLE IF NOT EXISTS public.datatablesindex
+(
+    tablename text COLLATE pg_catalog."default" NOT NULL,
+    sensor text COLLATE pg_catalog."default",
+    dt_added date,
+    geom_mbr geometry,
+    CONSTRAINT datatablesindex_pkey PRIMARY KEY (tablename)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
 
+-- myanmar 2019
+CREATE TABLE IF NOT EXISTS myanmar_modis_2019
+(
+    latitude double precision,
+    longitude double precision,
+    brightness double precision,
+    scan double precision,
+    track double precision,
+    acq_date text COLLATE pg_catalog."default",
+    acq_time bigint,
+    satellite text COLLATE pg_catalog."default",
+    instrument text COLLATE pg_catalog."default",
+    confidence bigint,
+    version double precision,
+    bright_t31 double precision,
+    frp double precision,
+    daynight text COLLATE pg_catalog."default",
+    type bigint
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+
+--alter table modis rename to myanmar_modis_2019
+
+alter table myanmar_modis_2019 add column geom geometry;
+update myanmar_modis_2019 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+create index on myanmar_modis_2019 using gist(geom);
+
+alter table myanmar_modis_2019 add column acqdate date;
+update myanmar_modis_2019 set acqdate = acq_date::date;
+create index on myanmar_modis_2019 using btree(acqdate);
+
+insert into datatablesindex (tablename,sensor,dt_added,geom_mbr)
+values ('myanmar_modis_2019','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2019) );
+
+
+-- for VIIRS SNPP layer
+CREATE TABLE IF NOT EXISTS public.myanmar_viirs_snpp_2019
+(
+    latitude double precision,
+    longitude double precision,
+    bright_ti4 double precision,
+    scan double precision,
+    track double precision,
+    acq_date text COLLATE pg_catalog."default",
+    acq_time bigint,
+    satellite text COLLATE pg_catalog."default",
+    instrument text COLLATE pg_catalog."default",
+    confidence text COLLATE pg_catalog."default",
+    version bigint,
+    bright_ti5 double precision,
+    frp double precision,
+    daynight text COLLATE pg_catalog."default",
+    type bigint
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+-- alter table viirs_snpp rename to myanmar_viirs_snpp_2019
+
+alter table myanmar_viirs_snpp_2019 add column geom geometry;
+update myanmar_viirs_snpp_2019 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+create index on myanmar_viirs_snpp_2019 using gist(geom);
+
+alter table myanmar_viirs_snpp_2019 add column acqdate date;
+update myanmar_viirs_snpp_2019 set acqdate = acq_date::date;
+create index on myanmar_viirs_snpp_2019 using btree(acqdate);
+
+
+insert into datatablesindex (tablename,sensor,dt_added,geom_mbr)
+values ('myanmar_viirs_snpp_2019','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2019) );
+
+
+
+---
+-- DB PERMISSIONS
+---
 REVOKE ALL
 ON ALL TABLES IN SCHEMA public
 FROM PUBLIC;
@@ -188,7 +285,9 @@ GRANT USAGE, SELECT ON SEQUENCE project_projectid_seq TO firemapusr;
 GRANT USAGE, SELECT ON SEQUENCE users_userid_seq TO firemapusr;
 
 
+---
 -- dummy data
+---
 
 -- insert into users values(101,'e105fc3091927de105f7b55c7a9c263e4e665935d441e03c060f4f2c6af58fc1');
 
