@@ -134,6 +134,7 @@ az vm run-command invoke \
     -g ${rg} \
     -n ${vmname} \
     --command-id RunShellScript \
+    --debug \
     --scripts @create_firemap_webserver.sh
 
 # adds to end of apache2/envvars 
