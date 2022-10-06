@@ -104,8 +104,15 @@ sudo apt install postgis postgresql-13-postgis-3 -y
 cd /home/dave
 sudo -u postgres psql --echo-all --file=postgres-create-db.sql
 
+# sql needs these files to be unzipped
+# todo - use the source and not /var/www/html
+# and don't copy those files over
+sudo unzip /var/www/html/fd/viirs_snpp/'*.zip'
+
 cd /home/dave/source/fire-map-infra
-sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
+# **HERE********
+# ********TEST*****
+#sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
 sudo apt install php7.4-pgsql -y
 sudo service apache2 restart
@@ -170,8 +177,6 @@ sudo sed -i -e 's/#max_parallel_workers = 8/max_parallel_workers = 2/g' /etc/pos
 sudo sed -i -e 's/#max_parallel_maintenance_workers = 2/max_parallel_maintenance_workers = 1/g' /etc/postgresql/13/main/postgresql.conf
 
 sudo service postgresql restart
-
-
 
 
 
