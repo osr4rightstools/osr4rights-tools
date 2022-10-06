@@ -108,7 +108,11 @@ sudo -u postgres psql --echo-all --file=postgres-create-db.sql
 # todo - use the source and not /var/www/html
 # and don't copy those files over
 cd /var/www/html/fd/viirs_snpp
-sudo unzip '*.zip'
+# sudo unzip '*.zip'
+sudo unzip viirs-snpp_2019_Myanmar.csv.zip
+sudo unzip viirs-snpp_2020_Myanmar.csv.zip
+sudo unzip viirs-snpp_2021_Myanmar.csv.zip
+
 
 cd /home/dave/source/fire-map-infra
 # **HERE********
