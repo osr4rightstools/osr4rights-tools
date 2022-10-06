@@ -1,0 +1,466 @@
+[main 5f5dc65] auto
+ 2 files changed, 1 insertion(+)
+ create mode 100644 fire-map-infra/out.txt
+{
+  "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717",
+  "location": "westeurope",
+  "managedBy": null,
+  "name": "fireMapOsr4RightsTools717",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+{
+  "newVNet": {
+    "addressSpace": {
+      "addressPrefixes": [
+        "10.0.0.0/16"
+      ]
+    },
+    "bgpCommunities": null,
+    "ddosProtectionPlan": null,
+    "dhcpOptions": {
+      "dnsServers": []
+    },
+    "enableDdosProtection": false,
+    "enableVmProtection": null,
+    "etag": "W/\"37313036-a81f-4925-aab3-bb6a364863fe\"",
+    "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/virtualNetworks/vnet717",
+    "location": "westeurope",
+    "name": "vnet717",
+    "provisioningState": "Succeeded",
+    "resourceGroup": "fireMapOsr4RightsTools717",
+    "resourceGuid": "18393dea-c9ba-4454-8b61-c23040ea4000",
+    "subnets": [
+      {
+        "addressPrefix": "10.0.0.0/24",
+        "addressPrefixes": null,
+        "delegations": [],
+        "etag": "W/\"37313036-a81f-4925-aab3-bb6a364863fe\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/virtualNetworks/vnet717/subnets/subnet717",
+        "ipConfigurationProfiles": null,
+        "ipConfigurations": null,
+        "name": "subnet717",
+        "natGateway": null,
+        "networkSecurityGroup": null,
+        "privateEndpointNetworkPolicies": "Disabled",
+        "privateEndpoints": null,
+        "privateLinkServiceNetworkPolicies": "Enabled",
+        "provisioningState": "Succeeded",
+        "purpose": null,
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "resourceNavigationLinks": null,
+        "routeTable": null,
+        "serviceAssociationLinks": null,
+        "serviceEndpointPolicies": null,
+        "serviceEndpoints": null,
+        "type": "Microsoft.Network/virtualNetworks/subnets"
+      }
+    ],
+    "tags": {},
+    "type": "Microsoft.Network/virtualNetworks",
+    "virtualNetworkPeerings": []
+  }
+}
+{
+  "NewNSG": {
+    "defaultSecurityRules": [
+      {
+        "access": "Allow",
+        "description": "Allow inbound traffic from all VMs in VNET",
+        "destinationAddressPrefix": "VirtualNetwork",
+        "destinationAddressPrefixes": [],
+        "destinationApplicationSecurityGroups": null,
+        "destinationPortRange": "*",
+        "destinationPortRanges": [],
+        "direction": "Inbound",
+        "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/defaultSecurityRules/AllowVnetInBound",
+        "name": "AllowVnetInBound",
+        "priority": 65000,
+        "protocol": "*",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "sourceAddressPrefix": "VirtualNetwork",
+        "sourceAddressPrefixes": [],
+        "sourceApplicationSecurityGroups": null,
+        "sourcePortRange": "*",
+        "sourcePortRanges": [],
+        "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+      },
+      {
+        "access": "Allow",
+        "description": "Allow inbound traffic from azure load balancer",
+        "destinationAddressPrefix": "*",
+        "destinationAddressPrefixes": [],
+        "destinationApplicationSecurityGroups": null,
+        "destinationPortRange": "*",
+        "destinationPortRanges": [],
+        "direction": "Inbound",
+        "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/defaultSecurityRules/AllowAzureLoadBalancerInBound",
+        "name": "AllowAzureLoadBalancerInBound",
+        "priority": 65001,
+        "protocol": "*",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "sourceAddressPrefix": "AzureLoadBalancer",
+        "sourceAddressPrefixes": [],
+        "sourceApplicationSecurityGroups": null,
+        "sourcePortRange": "*",
+        "sourcePortRanges": [],
+        "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+      },
+      {
+        "access": "Deny",
+        "description": "Deny all inbound traffic",
+        "destinationAddressPrefix": "*",
+        "destinationAddressPrefixes": [],
+        "destinationApplicationSecurityGroups": null,
+        "destinationPortRange": "*",
+        "destinationPortRanges": [],
+        "direction": "Inbound",
+        "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/defaultSecurityRules/DenyAllInBound",
+        "name": "DenyAllInBound",
+        "priority": 65500,
+        "protocol": "*",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "sourceAddressPrefix": "*",
+        "sourceAddressPrefixes": [],
+        "sourceApplicationSecurityGroups": null,
+        "sourcePortRange": "*",
+        "sourcePortRanges": [],
+        "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+      },
+      {
+        "access": "Allow",
+        "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+        "destinationAddressPrefix": "VirtualNetwork",
+        "destinationAddressPrefixes": [],
+        "destinationApplicationSecurityGroups": null,
+        "destinationPortRange": "*",
+        "destinationPortRanges": [],
+        "direction": "Outbound",
+        "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/defaultSecurityRules/AllowVnetOutBound",
+        "name": "AllowVnetOutBound",
+        "priority": 65000,
+        "protocol": "*",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "sourceAddressPrefix": "VirtualNetwork",
+        "sourceAddressPrefixes": [],
+        "sourceApplicationSecurityGroups": null,
+        "sourcePortRange": "*",
+        "sourcePortRanges": [],
+        "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+      },
+      {
+        "access": "Allow",
+        "description": "Allow outbound traffic from all VMs to Internet",
+        "destinationAddressPrefix": "Internet",
+        "destinationAddressPrefixes": [],
+        "destinationApplicationSecurityGroups": null,
+        "destinationPortRange": "*",
+        "destinationPortRanges": [],
+        "direction": "Outbound",
+        "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/defaultSecurityRules/AllowInternetOutBound",
+        "name": "AllowInternetOutBound",
+        "priority": 65001,
+        "protocol": "*",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "sourceAddressPrefix": "*",
+        "sourceAddressPrefixes": [],
+        "sourceApplicationSecurityGroups": null,
+        "sourcePortRange": "*",
+        "sourcePortRanges": [],
+        "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+      },
+      {
+        "access": "Deny",
+        "description": "Deny all outbound traffic",
+        "destinationAddressPrefix": "*",
+        "destinationAddressPrefixes": [],
+        "destinationApplicationSecurityGroups": null,
+        "destinationPortRange": "*",
+        "destinationPortRanges": [],
+        "direction": "Outbound",
+        "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/defaultSecurityRules/DenyAllOutBound",
+        "name": "DenyAllOutBound",
+        "priority": 65500,
+        "protocol": "*",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "sourceAddressPrefix": "*",
+        "sourceAddressPrefixes": [],
+        "sourceApplicationSecurityGroups": null,
+        "sourcePortRange": "*",
+        "sourcePortRanges": [],
+        "type": "Microsoft.Network/networkSecurityGroups/defaultSecurityRules"
+      }
+    ],
+    "etag": "W/\"0eff860a-7065-401d-a098-008f4bfae79e\"",
+    "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717",
+    "location": "westeurope",
+    "name": "nsg717",
+    "networkInterfaces": null,
+    "provisioningState": "Succeeded",
+    "resourceGroup": "fireMapOsr4RightsTools717",
+    "resourceGuid": "6679abee-7e18-4a76-918c-1aac24223f31",
+    "securityRules": [],
+    "subnets": null,
+    "tags": null,
+    "type": "Microsoft.Network/networkSecurityGroups"
+  }
+}
+{
+  "publicIp": {
+    "ddosSettings": null,
+    "dnsSettings": {
+      "domainNameLabel": "firemaposr4rights717",
+      "fqdn": "firemaposr4rights717.westeurope.cloudapp.azure.com",
+      "reverseFqdn": null
+    },
+    "etag": "W/\"8444767f-8a45-4787-b524-0ea43f5ebd02\"",
+    "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/publicIPAddresses/publicIP717",
+    "idleTimeoutInMinutes": 4,
+    "ipAddress": "20.13.125.152",
+    "ipConfiguration": null,
+    "ipTags": [],
+    "location": "westeurope",
+    "name": "publicIP717",
+    "provisioningState": "Succeeded",
+    "publicIpAddressVersion": "IPv4",
+    "publicIpAllocationMethod": "Static",
+    "publicIpPrefix": null,
+    "resourceGroup": "fireMapOsr4RightsTools717",
+    "resourceGuid": "a7bf82f9-8bd5-4338-b6ac-cdd9fab319ad",
+    "sku": {
+      "name": "Standard"
+    },
+    "tags": null,
+    "type": "Microsoft.Network/publicIPAddresses",
+    "zones": [
+      "1"
+    ]
+  }
+}
+{
+  "NewNIC": {
+    "dnsSettings": {
+      "appliedDnsServers": [],
+      "dnsServers": [],
+      "internalDnsNameLabel": null,
+      "internalDomainNameSuffix": "3i4tsgf0zfkejc1byiyeb0saaa.ax.internal.cloudapp.net",
+      "internalFqdn": null
+    },
+    "enableAcceleratedNetworking": false,
+    "enableIpForwarding": false,
+    "etag": "W/\"cc17a8e2-183b-40f8-9a1b-59d51fbe5f8d\"",
+    "hostedWorkloads": [],
+    "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkInterfaces/nic717",
+    "ipConfigurations": [
+      {
+        "applicationGatewayBackendAddressPools": null,
+        "applicationSecurityGroups": null,
+        "etag": "W/\"cc17a8e2-183b-40f8-9a1b-59d51fbe5f8d\"",
+        "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkInterfaces/nic717/ipConfigurations/ipconfig1",
+        "loadBalancerBackendAddressPools": null,
+        "loadBalancerInboundNatRules": null,
+        "name": "ipconfig1",
+        "primary": true,
+        "privateIpAddress": "10.0.0.4",
+        "privateIpAddressVersion": "IPv4",
+        "privateIpAllocationMethod": "Dynamic",
+        "privateLinkConnectionProperties": null,
+        "provisioningState": "Succeeded",
+        "publicIpAddress": {
+          "ddosSettings": null,
+          "dnsSettings": null,
+          "etag": null,
+          "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/publicIPAddresses/publicIP717",
+          "idleTimeoutInMinutes": null,
+          "ipAddress": null,
+          "ipConfiguration": null,
+          "ipTags": null,
+          "location": null,
+          "name": null,
+          "provisioningState": null,
+          "publicIpAddressVersion": null,
+          "publicIpAllocationMethod": null,
+          "publicIpPrefix": null,
+          "resourceGroup": "fireMapOsr4RightsTools717",
+          "resourceGuid": null,
+          "sku": null,
+          "tags": null,
+          "type": null,
+          "zones": null
+        },
+        "resourceGroup": "fireMapOsr4RightsTools717",
+        "subnet": {
+          "addressPrefix": null,
+          "addressPrefixes": null,
+          "delegations": null,
+          "etag": null,
+          "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/virtualNetworks/vnet717/subnets/subnet717",
+          "ipConfigurationProfiles": null,
+          "ipConfigurations": null,
+          "name": null,
+          "natGateway": null,
+          "networkSecurityGroup": null,
+          "privateEndpointNetworkPolicies": null,
+          "privateEndpoints": null,
+          "privateLinkServiceNetworkPolicies": null,
+          "provisioningState": null,
+          "purpose": null,
+          "resourceGroup": "fireMapOsr4RightsTools717",
+          "resourceNavigationLinks": null,
+          "routeTable": null,
+          "serviceAssociationLinks": null,
+          "serviceEndpointPolicies": null,
+          "serviceEndpoints": null
+        },
+        "type": "Microsoft.Network/networkInterfaces/ipConfigurations",
+        "virtualNetworkTaps": null
+      }
+    ],
+    "location": "westeurope",
+    "macAddress": null,
+    "name": "nic717",
+    "networkSecurityGroup": {
+      "defaultSecurityRules": null,
+      "etag": null,
+      "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717",
+      "location": null,
+      "name": null,
+      "networkInterfaces": null,
+      "provisioningState": null,
+      "resourceGroup": "fireMapOsr4RightsTools717",
+      "resourceGuid": null,
+      "securityRules": null,
+      "subnets": null,
+      "tags": null,
+      "type": null
+    },
+    "primary": null,
+    "privateEndpoint": null,
+    "provisioningState": "Succeeded",
+    "resourceGroup": "fireMapOsr4RightsTools717",
+    "resourceGuid": "74f9491d-7adc-4ed4-8394-4ecb199885f9",
+    "tags": null,
+    "tapConfigurations": [],
+    "type": "Microsoft.Network/networkInterfaces",
+    "virtualMachine": null
+  }
+}
+{
+  "fqdns": "firemaposr4rights717.westeurope.cloudapp.azure.com",
+  "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Compute/virtualMachines/firemaposr4rights717vm",
+  "location": "westeurope",
+  "macAddress": "00-22-48-85-46-F5",
+  "powerState": "VM running",
+  "privateIpAddress": "10.0.0.4",
+  "publicIpAddress": "20.13.125.152",
+  "resourceGroup": "fireMapOsr4RightsTools717",
+  "zones": ""
+}
+{
+  "access": "Allow",
+  "description": null,
+  "destinationAddressPrefix": "*",
+  "destinationAddressPrefixes": [],
+  "destinationApplicationSecurityGroups": null,
+  "destinationPortRange": "22",
+  "destinationPortRanges": [],
+  "direction": "Inbound",
+  "etag": "W/\"d8d2a09a-b809-44f7-8889-f51060d21893\"",
+  "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/securityRules/nsgGroupRuleSSH22",
+  "name": "nsgGroupRuleSSH22",
+  "priority": 998,
+  "protocol": "Tcp",
+  "provisioningState": "Succeeded",
+  "resourceGroup": "fireMapOsr4RightsTools717",
+  "sourceAddressPrefix": "*",
+  "sourceAddressPrefixes": [],
+  "sourceApplicationSecurityGroups": null,
+  "sourcePortRange": "*",
+  "sourcePortRanges": [],
+  "type": "Microsoft.Network/networkSecurityGroups/securityRules"
+}
+{
+  "value": [
+    {
+      "code": "ProvisioningState/succeeded",
+      "displayStatus": "Provisioning succeeded",
+      "level": "Info",
+      "message": "Enable succeeded: \n[stdout]\n 45%\r(Reading database ... 50%\r(Reading database ... 55%\r(Reading database ... 60%\r(Reading database ... 65%\r(Reading database ... 70%\r(Reading database ... 75%\r(Reading database ... 80%\r(Reading database ... 85%\r(Reading database ... 90%\r(Reading database ... 95%\r(Reading database ... 100%\r(Reading database ... 72122 files and directories currently installed.)\r\nPreparing to unpack .../zlib1g_1%3a1.2.11.dfsg-2ubuntu1.4_amd64.deb ...\r\nUnpacking zlib1g:amd64 (1:1.2.11.dfsg-2ubuntu1.4) over (1:1.2.11.dfsg-2ubuntu1.3) ...\r\nSetting up zlib1g:amd64 (1:1.2.11.dfsg-2ubuntu1.4) ...\r\n(Reading database ... \r(Reading database ... 5%\r(Reading database ... 10%\r(Reading database ... 15%\r(Reading database ... 20%\r(Reading database ... 25%\r(Reading database ... 30%\r(Reading database ... 35%\r(Reading database ... 40%\r(Reading database ... 45%\r(Reading database ... 50%\r(Reading database ... 55%\r(Reading database ... 60%\r(Reading database ... 65%\r(Reading database ... 70%\r(Reading database ... 75%\r(Reading database ... 80%\r(Reading database ... 85%\r(Reading database ... 90%\r(Reading database ... 95%\r(Reading database ... 100%\r(Reading database ... 72122 files and directories currently installed.)\r\nPreparing to unpack .../0-isc-dhcp-client_4.4.1-2.1ubuntu5.20.04.4_amd64.deb ...\r\nUnpacking isc-dhcp-client (4.4.1-2.1ubuntu5.20.04.4) over (4.4.1-2.1ubuntu5.20.04.3) ...\r\nPreparing to unpack .../1-isc-dhcp-common_4.4.1-2.1ubuntu5.20.04.4_amd64.deb ...\r\nUnpacking isc-dhcp-common (4.4.1-2.1ubuntu5.20.04.4) over (4.4.1-2.1ubuntu5.20.04.3) ...\r\nPreparing to unpack .../2-ubuntu-advantage-tools_27.11.2~20.04.1_amd64.deb ...\r\nUnpacking ubuntu-advantage-tools (27.11.2~20.04.1) over (27.10.1~20.04.1) ...\r\nPreparing to unpack .../3-bind9-dnsutils_1%3a9.16.1-0ubuntu2.11_amd64.deb ...\r\nUnpacking bind9-dnsutils (1:9.16.1-0ubuntu2.11) over (1:9.16.1-0ubuntu2.10) ...\r\nPreparing to unpack .../4-bind9-libs_1%3a9.16.1-0ubuntu2.11_amd64.deb ...\r\nUnpacking bind9-libs:amd64 (1:9.16.1-0ubuntu2.11) over (1:9.16.1-0ubuntu2.10) ...\r\nPreparing to unpack .../5-bind9-host_1%3a9.16.1-0ubuntu2.11_amd64.deb ...\r\nUnpacking bind9-host (1:9.16.1-0ubuntu2.11) over (1:9.16.1-0ubuntu2.10) ...\r\nPreparing to unpack .../6-sosreport_4.3-1ubuntu0.20.04.2_amd64.deb ...\r\nUnpacking sosreport (4.3-1ubuntu0.20.04.2) over (4.3-1ubuntu0.20.04.1) ...\r\nSetting up bind9-libs:amd64 (1:9.16.1-0ubuntu2.11) ...\r\nSetting up isc-dhcp-client (4.4.1-2.1ubuntu5.20.04.4) ...\r\nSetting up systemd (245.4-4ubuntu3.18) ...\r\nSetting up libpcre2-16-0:amd64 (10.34-7ubuntu0.1) ...\r\nSetting up libpcre2-32-0:amd64 (10.34-7ubuntu0.1) ...\r\nSetting up udev (245.4-4ubuntu3.18) ...\r\nupdate-initramfs: deferring update (trigger activated)\r\nSetting up libpcre2-posix2:amd64 (10.34-7ubuntu0.1) ...\r\nSetting up sosreport (4.3-1ubuntu0.20.04.2) ...\r\nSetting up isc-dhcp-common (4.4.1-2.1ubuntu5.20.04.4) ...\r\nSetting up ubuntu-advantage-tools (27.11.2~20.04.1) ...\r\nInstalling new version of config file /etc/ubuntu-advantage/help_data.yaml ...\r\nInstalling new version of config file /etc/ubuntu-advantage/uaclient.conf ...\r\ndebconf: unable to initialize frontend: Dialog\r\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\r\ndebconf: falling back to frontend: Readline\r\nSetting up bind9-host (1:9.16.1-0ubuntu2.11) ...\r\nSetting up systemd-sysv (245.4-4ubuntu3.18) ...\r\nSetting up libpcre2-dev:amd64 (10.34-7ubuntu0.1) ...\r\nSetting up libnss-systemd:amd64 (245.4-4ubuntu3.18) ...\r\nSetting up libpam-systemd:amd64 (245.4-4ubuntu3.18) ...\r\ndebconf: unable to initialize frontend: Dialog\r\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\r\ndebconf: falling back to frontend: Readline\r\nSetting up bind9-dnsutils (1:9.16.1-0ubuntu2.11) ...\r\nProcessing triggers for man-db (2.9.1-1) ...\r\nProcessing triggers for dbus (1.12.16-2ubuntu2.2) ...\r\nProcessing triggers for libc-bin (2.31-0ubuntu9.9) ...\r\nProcessing triggers for initramfs-tools (0.136ubuntu6.7) ...\r\nupdate-initramfs: Generating /boot/initrd.img-5.15.0-1020-azure\r\n\n[stderr]\nPEAR/REST.php on line 187\nPHP Notice:  Trying to access array offset on value of type bool in /usr/share/php/PEAR/REST.php on line 187\nPHP Notice:  Trying to access array offset on value of type bool in /usr/share/php/PEAR/REST.php on line 187\nPHP Notice:  Trying to access array offset on value of type bool in /usr/share/php/PEAR/REST.php on line 187\n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \nCloning into 'firemapscanner'...\n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \nWarning: apt-key output should not be parsed (stdout is not a terminal)\n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \nsudo: unzip: command not found\nsudo: unzip: command not found\nsudo: unzip: command not found\n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\n\nWARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\ndebconf: unable to initialize frontend: Dialog\ndebconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)\ndebconf: falling back to frontend: Readline\ndebconf: unable to initialize frontend: Readline\ndebconf: (This frontend requires a controlling tty.)\ndebconf: falling back to frontend: Teletype\ndpkg-preconfigure: unable to re-open stdin: \n",
+      "time": null
+    }
+  ]
+}
+{
+  "value": [
+    {
+      "code": "ProvisioningState/succeeded",
+      "displayStatus": "Provisioning succeeded",
+      "level": "Info",
+      "message": "Enable succeeded: \n[stdout]\n\n[stderr]\n",
+      "time": null
+    }
+  ]
+}
+not deleting fireMapOsr4RightsTools717 as have just created it
+{
+  "access": "Allow",
+  "description": null,
+  "destinationAddressPrefix": "*",
+  "destinationAddressPrefixes": [],
+  "destinationApplicationSecurityGroups": null,
+  "destinationPortRange": "80",
+  "destinationPortRanges": [],
+  "direction": "Inbound",
+  "etag": "W/\"d6ea4121-66cd-4bb8-81f4-9f308e88aa59\"",
+  "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/securityRules/nsgGroupRuleWeb80",
+  "name": "nsgGroupRuleWeb80",
+  "priority": 1001,
+  "protocol": "Tcp",
+  "provisioningState": "Succeeded",
+  "resourceGroup": "fireMapOsr4RightsTools717",
+  "sourceAddressPrefix": "*",
+  "sourceAddressPrefixes": [],
+  "sourceApplicationSecurityGroups": null,
+  "sourcePortRange": "*",
+  "sourcePortRanges": [],
+  "type": "Microsoft.Network/networkSecurityGroups/securityRules"
+}
+{
+  "access": "Allow",
+  "description": null,
+  "destinationAddressPrefix": "*",
+  "destinationAddressPrefixes": [],
+  "destinationApplicationSecurityGroups": null,
+  "destinationPortRange": "5432",
+  "destinationPortRanges": [],
+  "direction": "Inbound",
+  "etag": "W/\"16939afb-2359-4d19-a2c8-a1684d4cfc72\"",
+  "id": "/subscriptions/10cb0eb6-b1e9-40c6-b721-ee2a754f166c/resourceGroups/fireMapOsr4RightsTools717/providers/Microsoft.Network/networkSecurityGroups/nsg717/securityRules/nsgGroupRulePostgres5432",
+  "name": "nsgGroupRulePostgres5432",
+  "priority": 1003,
+  "protocol": "Tcp",
+  "provisioningState": "Succeeded",
+  "resourceGroup": "fireMapOsr4RightsTools717",
+  "sourceAddressPrefix": "*",
+  "sourceAddressPrefixes": [],
+  "sourceApplicationSecurityGroups": null,
+  "sourcePortRange": "*",
+  "sourcePortRanges": [],
+  "type": "Microsoft.Network/networkSecurityGroups/securityRules"
+}
+http://firemaposr4rights717.westeurope.cloudapp.azure.com
