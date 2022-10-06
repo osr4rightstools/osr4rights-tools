@@ -107,7 +107,8 @@ sudo -u postgres psql --echo-all --file=postgres-create-db.sql
 # sql needs these files to be unzipped
 # todo - use the source and not /var/www/html
 # and don't copy those files over
-sudo unzip /var/www/html/fd/viirs_snpp/'*.zip'
+cd /var/www/html/fd/viirs_snpp
+sudo unzip '*.zip'
 
 cd /home/dave/source/fire-map-infra
 # **HERE********
