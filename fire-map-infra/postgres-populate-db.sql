@@ -158,261 +158,261 @@ TABLESPACE pg_default;
 
 --- 2019
 
-CREATE TABLE IF NOT EXISTS myanmar_modis_2019
-(
+-- CREATE TABLE IF NOT EXISTS myanmar_modis_2019
+-- (
    
-    latitude double precision,
-    longitude double precision,
-    brightness double precision,
-    scan double precision,
-    track double precision,
-    acq_date text COLLATE pg_catalog."default",
-    acq_time bigint,
-    satellite text COLLATE pg_catalog."default",
-    instrument text COLLATE pg_catalog."default",
-    confidence bigint,
-    version double precision,
-    bright_t31 double precision,
-    frp double precision,
-    daynight text COLLATE pg_catalog."default",
-    type bigint
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+--     latitude double precision,
+--     longitude double precision,
+--     brightness double precision,
+--     scan double precision,
+--     track double precision,
+--     acq_date text COLLATE pg_catalog."default",
+--     acq_time bigint,
+--     satellite text COLLATE pg_catalog."default",
+--     instrument text COLLATE pg_catalog."default",
+--     confidence bigint,
+--     version double precision,
+--     bright_t31 double precision,
+--     frp double precision,
+--     daynight text COLLATE pg_catalog."default",
+--     type bigint
+-- )
+-- WITH (
+--     OIDS = FALSE
+-- )
+-- TABLESPACE pg_default;
 
 
-copy modis FROM '/var/www/html/fd/modis/modis_2019_Myanmar.csv' delimiter ',' CSV header;
+-- copy modis FROM '/var/www/html/fd/modis/modis_2019_Myanmar.csv' delimiter ',' CSV header;
 
 
-alter table myanmar_modis_2019 add column geom geometry;
-update myanmar_modis_2019 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
-create index on myanmar_modis_2019 using gist(geom);
+-- alter table myanmar_modis_2019 add column geom geometry;
+-- update myanmar_modis_2019 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+-- create index on myanmar_modis_2019 using gist(geom);
 
-alter table myanmar_modis_2019 add column acqdate date;
-update myanmar_modis_2019 set acqdate = acq_date::date;
-create index on myanmar_modis_2019 using btree(acqdate);
-
-
-insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
-values ('myanmar_modis_2019','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2019); );
+-- alter table myanmar_modis_2019 add column acqdate date;
+-- update myanmar_modis_2019 set acqdate = acq_date::date;
+-- create index on myanmar_modis_2019 using btree(acqdate);
 
 
+-- insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
+-- values ('myanmar_modis_2019','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2019); );
 
---- 2020
 
-CREATE TABLE IF NOT EXISTS myanmar_modis_2020
-(
+
+-- --- 2020
+
+-- CREATE TABLE IF NOT EXISTS myanmar_modis_2020
+-- (
    
-    latitude double precision,
-    longitude double precision,
-    brightness double precision,
-    scan double precision,
-    track double precision,
-    acq_date text COLLATE pg_catalog."default",
-    acq_time bigint,
-    satellite text COLLATE pg_catalog."default",
-    instrument text COLLATE pg_catalog."default",
-    confidence bigint,
-    version double precision,
-    bright_t31 double precision,
-    frp double precision,
-    daynight text COLLATE pg_catalog."default",
-    type bigint
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+--     latitude double precision,
+--     longitude double precision,
+--     brightness double precision,
+--     scan double precision,
+--     track double precision,
+--     acq_date text COLLATE pg_catalog."default",
+--     acq_time bigint,
+--     satellite text COLLATE pg_catalog."default",
+--     instrument text COLLATE pg_catalog."default",
+--     confidence bigint,
+--     version double precision,
+--     bright_t31 double precision,
+--     frp double precision,
+--     daynight text COLLATE pg_catalog."default",
+--     type bigint
+-- )
+-- WITH (
+--     OIDS = FALSE
+-- )
+-- TABLESPACE pg_default;
 
 
-copy myanmar_modis_2020 FROM ‘/var/www/html/fd/modis/modis_2020_Myanmar.csv' delimiter ',' CSV header;
+-- copy myanmar_modis_2020 FROM '/var/www/html/fd/modis/modis_2020_Myanmar.csv' delimiter ',' CSV header;
 
 
-alter table myanmar_modis_2020 add column geom geometry;
-update myanmar_modis_2020 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
-create index on myanmar_modis_2020 using gist(geom);
+-- alter table myanmar_modis_2020 add column geom geometry;
+-- update myanmar_modis_2020 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+-- create index on myanmar_modis_2020 using gist(geom);
 
-alter table myanmar_modis_2020 add column acqdate date;
-update myanmar_modis_2020 set acqdate = acq_date::date;
-create index on myanmar_modis_2020 using btree(acqdate);
-
-
-insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
-values ('myanmar_modis_2020','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2020); );
+-- alter table myanmar_modis_2020 add column acqdate date;
+-- update myanmar_modis_2020 set acqdate = acq_date::date;
+-- create index on myanmar_modis_2020 using btree(acqdate);
 
 
+-- insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
+-- values ('myanmar_modis_2020','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2020); );
 
---- 2021
 
-CREATE TABLE IF NOT EXISTS myanmar_modis_2021
-(
+
+-- --- 2021
+
+-- CREATE TABLE IF NOT EXISTS myanmar_modis_2021
+-- (
    
-    latitude double precision,
-    longitude double precision,
-    brightness double precision,
-    scan double precision,
-    track double precision,
-    acq_date text COLLATE pg_catalog."default",
-    acq_time bigint,
-    satellite text COLLATE pg_catalog."default",
-    instrument text COLLATE pg_catalog."default",
-    confidence bigint,
-    version double precision,
-    bright_t31 double precision,
-    frp double precision,
-    daynight text COLLATE pg_catalog."default",
-    type bigint
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+--     latitude double precision,
+--     longitude double precision,
+--     brightness double precision,
+--     scan double precision,
+--     track double precision,
+--     acq_date text COLLATE pg_catalog."default",
+--     acq_time bigint,
+--     satellite text COLLATE pg_catalog."default",
+--     instrument text COLLATE pg_catalog."default",
+--     confidence bigint,
+--     version double precision,
+--     bright_t31 double precision,
+--     frp double precision,
+--     daynight text COLLATE pg_catalog."default",
+--     type bigint
+-- )
+-- WITH (
+--     OIDS = FALSE
+-- )
+-- TABLESPACE pg_default;
 
 
-copy myanmar_modis_2021 FROM '/var/www/html/fd/modis/modis_2021_Myanmar.csv' delimiter ',' CSV header;
+-- copy myanmar_modis_2021 FROM '/var/www/html/fd/modis/modis_2021_Myanmar.csv' delimiter ',' CSV header;
 
 
-alter table myanmar_modis_2021 add column geom geometry;
-update myanmar_modis_2021 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
-create index on myanmar_modis_2021 using gist(geom);
+-- alter table myanmar_modis_2021 add column geom geometry;
+-- update myanmar_modis_2021 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+-- create index on myanmar_modis_2021 using gist(geom);
 
-alter table myanmar_modis_2021 add column acqdate date;
-update myanmar_modis_2021 set acqdate = acq_date::date;
-create index on myanmar_modis_2021 using btree(acqdate);
-
-
-insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
-values ('myanmar_modis_2021','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2021); );
-
-------------------------------------------
--- for VIIRS SNPP layer
+-- alter table myanmar_modis_2021 add column acqdate date;
+-- update myanmar_modis_2021 set acqdate = acq_date::date;
+-- create index on myanmar_modis_2021 using btree(acqdate);
 
 
+-- insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
+-- values ('myanmar_modis_2021','modis',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_modis_2021); );
 
-CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2019
-(
-    latitude double precision,
-    longitude double precision,
-    bright_ti4 double precision,
-    scan double precision,
-    track double precision,
-    acq_date text COLLATE pg_catalog."default",
-    acq_time bigint,
-    satellite text COLLATE pg_catalog."default",
-    instrument text COLLATE pg_catalog."default",
-    confidence text COLLATE pg_catalog."default",
-    version bigint,
-    bright_ti5 double precision,
-    frp double precision,
-    daynight text COLLATE pg_catalog."default",
-    type bigint
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-
-copy myanmar_viirs_snpp_2019 FROM '/var/www/html/fd/modis/viirs-snpp_2019_Myanmar.csv' delimiter ',' CSV header;
-
-
-alter table myanmar_viirs_snpp_2019 add column geom geometry;
-update myanmar_viirs_snpp_2019 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
-create index on myanmar_viirs_snpp_2019 using gist(geom);
-
-alter table myanmar_viirs_snpp_2019 add column acqdate date;
-update myanmar_viirs_snpp_2019 set acqdate = acq_date::date;
-create index on myanmar_viirs_snpp_2019 using btree(acqdate);
-
-insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
-values ('myanmar_viirs_snpp_2019','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2019) );
-
-
---------2020
-
-
-CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2020
-(
-    latitude double precision,
-    longitude double precision,
-    bright_ti4 double precision,
-    scan double precision,
-    track double precision,
-    acq_date text COLLATE pg_catalog."default",
-    acq_time bigint,
-    satellite text COLLATE pg_catalog."default",
-    instrument text COLLATE pg_catalog."default",
-    confidence text COLLATE pg_catalog."default",
-    version bigint,
-    bright_ti5 double precision,
-    frp double precision,
-    daynight text COLLATE pg_catalog."default",
-    type bigint
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-
-copy myanmar_viirs_snpp_2020 FROM '/var/www/html/fd/modis/viirs-snpp_2020_Myanmar.csv' delimiter ',' CSV header;
-
-
-alter table myanmar_viirs_snpp_2020 add column geom geometry;
-update myanmar_viirs_snpp_2020 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
-create index on myanmar_viirs_snpp_2020 using gist(geom);
-
-alter table myanmar_viirs_snpp_2020 add column acqdate date;
-update myanmar_viirs_snpp_2020 set acqdate = acq_date::date;
-create index on myanmar_viirs_snpp_2019 using btree(acqdate);
-
-insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
-values ('myanmar_viirs_snpp_2020','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2020) );
-
-
----------2021
+-- ------------------------------------------
+-- -- for VIIRS SNPP layer
 
 
 
-CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2021
-(
-    latitude double precision,
-    longitude double precision,
-    bright_ti4 double precision,
-    scan double precision,
-    track double precision,
-    acq_date text COLLATE pg_catalog."default",
-    acq_time bigint,
-    satellite text COLLATE pg_catalog."default",
-    instrument text COLLATE pg_catalog."default",
-    confidence text COLLATE pg_catalog."default",
-    version bigint,
-    bright_ti5 double precision,
-    frp double precision,
-    daynight text COLLATE pg_catalog."default",
-    type bigint
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
+-- CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2019
+-- (
+--     latitude double precision,
+--     longitude double precision,
+--     bright_ti4 double precision,
+--     scan double precision,
+--     track double precision,
+--     acq_date text COLLATE pg_catalog."default",
+--     acq_time bigint,
+--     satellite text COLLATE pg_catalog."default",
+--     instrument text COLLATE pg_catalog."default",
+--     confidence text COLLATE pg_catalog."default",
+--     version bigint,
+--     bright_ti5 double precision,
+--     frp double precision,
+--     daynight text COLLATE pg_catalog."default",
+--     type bigint
+-- )
+-- WITH (
+--     OIDS = FALSE
+-- )
+-- TABLESPACE pg_default;
 
 
-copy myanmar_viirs_snpp_2021 FROM '/var/www/html/fd/modis/viirs-snpp_2021_Myanmar.csv' delimiter ',' CSV header;
+-- copy myanmar_viirs_snpp_2019 FROM '/var/www/html/fd/modis/viirs-snpp_2019_Myanmar.csv' delimiter ',' CSV header;
 
 
-alter table myanmar_viirs_snpp_2021 add column geom geometry;
-update myanmar_viirs_snpp_2021 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
-create index on myanmar_viirs_snpp_2021 using gist(geom);
+-- alter table myanmar_viirs_snpp_2019 add column geom geometry;
+-- update myanmar_viirs_snpp_2019 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+-- create index on myanmar_viirs_snpp_2019 using gist(geom);
 
-alter table myanmar_viirs_snpp_2021 add column acqdate date;
-update myanmar_viirs_snpp_2021 set acqdate = acq_date::date;
-create index on myanmar_viirs_snpp_2021 using btree(acqdate);
+-- alter table myanmar_viirs_snpp_2019 add column acqdate date;
+-- update myanmar_viirs_snpp_2019 set acqdate = acq_date::date;
+-- create index on myanmar_viirs_snpp_2019 using btree(acqdate);
 
-insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
-values ('myanmar_viirs_snpp_2021','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2021) );
+-- insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
+-- values ('myanmar_viirs_snpp_2019','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2019) );
+
+
+-- --------2020
+
+
+-- CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2020
+-- (
+--     latitude double precision,
+--     longitude double precision,
+--     bright_ti4 double precision,
+--     scan double precision,
+--     track double precision,
+--     acq_date text COLLATE pg_catalog."default",
+--     acq_time bigint,
+--     satellite text COLLATE pg_catalog."default",
+--     instrument text COLLATE pg_catalog."default",
+--     confidence text COLLATE pg_catalog."default",
+--     version bigint,
+--     bright_ti5 double precision,
+--     frp double precision,
+--     daynight text COLLATE pg_catalog."default",
+--     type bigint
+-- )
+-- WITH (
+--     OIDS = FALSE
+-- )
+-- TABLESPACE pg_default;
+
+
+-- copy myanmar_viirs_snpp_2020 FROM '/var/www/html/fd/modis/viirs-snpp_2020_Myanmar.csv' delimiter ',' CSV header;
+
+
+-- alter table myanmar_viirs_snpp_2020 add column geom geometry;
+-- update myanmar_viirs_snpp_2020 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+-- create index on myanmar_viirs_snpp_2020 using gist(geom);
+
+-- alter table myanmar_viirs_snpp_2020 add column acqdate date;
+-- update myanmar_viirs_snpp_2020 set acqdate = acq_date::date;
+-- create index on myanmar_viirs_snpp_2019 using btree(acqdate);
+
+-- insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
+-- values ('myanmar_viirs_snpp_2020','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2020) );
+
+
+-- ---------2021
+
+
+
+-- CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2021
+-- (
+--     latitude double precision,
+--     longitude double precision,
+--     bright_ti4 double precision,
+--     scan double precision,
+--     track double precision,
+--     acq_date text COLLATE pg_catalog."default",
+--     acq_time bigint,
+--     satellite text COLLATE pg_catalog."default",
+--     instrument text COLLATE pg_catalog."default",
+--     confidence text COLLATE pg_catalog."default",
+--     version bigint,
+--     bright_ti5 double precision,
+--     frp double precision,
+--     daynight text COLLATE pg_catalog."default",
+--     type bigint
+-- )
+-- WITH (
+--     OIDS = FALSE
+-- )
+-- TABLESPACE pg_default;
+
+
+-- copy myanmar_viirs_snpp_2021 FROM '/var/www/html/fd/modis/viirs-snpp_2021_Myanmar.csv' delimiter ',' CSV header;
+
+
+-- alter table myanmar_viirs_snpp_2021 add column geom geometry;
+-- update myanmar_viirs_snpp_2021 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
+-- create index on myanmar_viirs_snpp_2021 using gist(geom);
+
+-- alter table myanmar_viirs_snpp_2021 add column acqdate date;
+-- update myanmar_viirs_snpp_2021 set acqdate = acq_date::date;
+-- create index on myanmar_viirs_snpp_2021 using btree(acqdate);
+
+-- insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
+-- values ('myanmar_viirs_snpp_2021','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2021) );
 
 
 
