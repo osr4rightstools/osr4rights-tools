@@ -108,19 +108,17 @@ sudo -u postgres psql --echo-all --file=postgres-create-db.sql
 # todo - use the source and not /var/www/html
 # and don't copy those files over
 cd /var/www/html/fd/viirs_snpp
-# sudo unzip '*.zip'
 
 sudo apt install unzip -y
 
+# sudo unzip '*.zip'
 sudo unzip viirs-snpp_2019_Myanmar.csv.zip
 sudo unzip viirs-snpp_2020_Myanmar.csv.zip
 sudo unzip viirs-snpp_2021_Myanmar.csv.zip
 
 
 cd /home/dave/source/fire-map-infra
-# **HERE********
-# ********TEST*****
-#sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
+sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
 sudo apt install php7.4-pgsql -y
 sudo service apache2 restart
@@ -131,7 +129,6 @@ sudo chmod 777 uploads
 
 # install ogr2ogr tools for spatial data conversions
 sudo apt install gdal-bin -y
-sudo apt install unzip -y
 
 sudo apt update
 sudo apt upgrade -y
