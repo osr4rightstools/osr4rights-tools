@@ -185,16 +185,15 @@ sudo service postgresql restart
 
 
 
-# Python
-# 3.8.2 comes wiht Ubuntu 20_04
+# Python - PB Process to check firemap data
 
+# Python 3.8.2 comes with Ubuntu 20_04 but we want newer
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 
 sudo apt update -y
 
 # get Python 3.9
 sudo apt install python3.9 -y
-
 
 # to stop WARNING: The scripts pip, pip3 and pip3.8 are installed in '/home/dave/.local/bin' which is not on PATH.
 export PATH=/home/dave/.local/bin:$PATH
@@ -210,12 +209,24 @@ pip install --upgrade pip
 # pip install --user pipenv
 #sudo -H pip install -U pipenv
 
-# sudo pip3 install pandas
-# sudo apt install fiona -y
+# use non sudo?
+# or use pipenv
+sudo pip3 install pandas
+
+sudo apt install fiona -y
 
 # # to stop errors in psycopg2
-# sudo apt-get install --reinstall libpq-dev
+# https://stackoverflow.com/questions/71470989/python-setup-py-bdist-wheel-did-not-run-successfully
+sudo apt-get install --reinstall libpq-dev
 
-# pip3 install psycopg2
+pip3 install psycopg2
 
-# pip install SQLAlchemy
+pip3 install SQLAlchemy
+
+
+# Postmark email
+pip3 install postmarker
+
+
+# restart was required (just a prompt so may not need)
+sudo reboot now
