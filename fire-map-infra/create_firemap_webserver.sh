@@ -185,90 +185,37 @@ sudo service postgresql restart
 
 
 
-# postgres client authentication file
-# phil do we need the extra in ipv4
-# host    all             all             all                     md5
-# top 2 go from peer to md5 and user posgres
+# Python
+# 3.8.2 comes wiht Ubuntu 20_04
+
+sudo add-apt-repository ppa:deadsnakes/ppa -y
+
+sudo apt update -y
+
+# get Python 3.9
+sudo apt install python3.9 -y
 
 
+# to stop WARNING: The scripts pip, pip3 and pip3.8 are installed in '/home/dave/.local/bin' which is not on PATH.
+export PATH=/home/dave/.local/bin:$PATH
 
-# go with newer apt which gets dependency updates too (like linux-azure)
-# sudo apt update -y
-# sudo apt upgrade -y
-  
-# # Install packages for .NET for Ubutu 20.04 LTS
-# wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-# sudo dpkg -i packages-microsoft-prod.deb
-# rm packages-microsoft-prod.deb
+# python 3.9.14
+sudo apt install python3-pip -y
 
-# # nginx
-# sudo apt-get install nginx -y
+# update pip to 22.0.4
+pip install --upgrade pip
 
-# # .NET 6 SDK
-# sudo apt-get update; \
-#   sudo apt-get install -y apt-transport-https && \
-#   sudo apt-get update && \
-#   sudo apt-get install -y dotnet-sdk-6.0
+# We are calling pipenv from cron so need to install this way
+# https://stackoverflow.com/questions/46391721/pipenv-command-not-found
+# pip install --user pipenv
+#sudo -H pip install -U pipenv
 
-# # create document root for published files 
-# sudo mkdir /var/www
+# sudo pip3 install pandas
+# sudo apt install fiona -y
 
-# # create gitsource folder and clone
-# sudo mkdir /gitsource
-# cd /gitsource
-# sudo git clone https://github.com/osr4rightstools/osr4rights-tools .
+# # to stop errors in psycopg2
+# sudo apt-get install --reinstall libpq-dev
 
-# # nginx config
-# # ssl certs will already be in /certs
-# # copied in with create-kestrel-osr-with-secrets.sh file
-# sudo cp /gitsource/infra/nginx.conf /etc/nginx/sites-available/default
-# sudo nginx -s reload
+# pip3 install psycopg2
 
-# # compile and publish the web app
-# sudo dotnet publish /gitsource/src/OSR4Rights.Web --configuration Release --output /var/www
-
-# # change ownership of the published files to what it will run under
-# sudo chown -R www-data:www-data /var/www
-# # allow exective permissions
-# sudo chmod +x /var/www
-
-# # cookie keys to allow machine to restart and for it to 'remember' cookies
-# # todo - store these in blob storage?
-# sudo mkdir /var/osr-cookie-keys
-# sudo chown -R www-data:www-data /var/osr-cookie-keys
-# # allow read and write
-# sudo chmod +rw /var/osr-cookie-keys
-
-# # fileStores
-# sudo mkdir /tusFileStore
-# sudo chown -R www-data:www-data /tusFileStore
-# # todo - make less
-# # sudo chmod +rwx /tusFileStore
-# # sudo chmod +rw /tusFileStore
-
-# sudo mkdir /osrFileStore
-# sudo chown -R www-data:www-data /osrFileStore
-# # todo - make less
-# # sudo chmod +rwx /osrFileStore
-
-# # auto start on machine reboot
-# sudo systemctl enable kestrel-osr.service
-
-# # start the Kestrel web app using systemd using kestrel-blc.service text files
-# sudo systemctl start kestrel-osr.service
-
-# # https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0#configure-the-firewall
-# sudo apt-get install ufw
-
-# sudo ufw allow 22/tcp
-# sudo ufw allow 80/tcp
-# sudo ufw allow 443/tcp
-
-# sudo ufw enable
-
-#   # a nice shortcut sym link
-# # sudo ln -s /usr/local/openresty/nginx/ /home/dave/nginx
-# sudo ln -s /var/www/logs/ /home/dave/logs
-
-# # sudo snap install bpytop
-
+# pip install SQLAlchemy
