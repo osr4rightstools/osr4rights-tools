@@ -12,6 +12,9 @@ WITH (
 )
 TABLESPACE pg_default;
 
+ALTER TABLE IF EXISTS public.dailyreport_polyhistory
+    OWNER to postgres;
+
 CREATE INDEX IF NOT EXISTS dailyreport_polyhistory_geompoly_idx
     ON public.dailyreport_polyhistory USING gist
     (geompoly);
@@ -40,12 +43,16 @@ WITH (
 )
 TABLESPACE pg_default;
 
+ALTER TABLE IF EXISTS public.dailyreporthistory
+    OWNER to postgres;
+
 CREATE INDEX on dailyreporthistory using gist(geom);
 CREATE INDEX on dailyreporthistory using btree(acq_date);
 CREATE INDEX on dailyreporthistory using btree(polyid);
 CREATE INDEX on dailyreporthistory using btree(projectid);
 
 
+-- works from here down
 CREATE TABLE IF NOT EXISTS public.interaction_history
 (
     sid bigint NOT NULL,
