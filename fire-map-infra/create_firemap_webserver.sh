@@ -118,9 +118,7 @@ sudo unzip viirs-snpp_2021_Myanmar.csv.zip
 
 
 cd /home/dave/source/fire-map-infra
-# HERE******
 sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
-
 
 #php
 sudo apt install php7.4-pgsql -y
@@ -217,18 +215,17 @@ pip install --upgrade pip
 
 
 # sudo pip3 install pandas
-# pip3 install pandas
+pip3 install pandas
 
-# sudo apt install fiona -y
-# apt install fiona -y
+sudo apt install fiona -y
 
 # # # to stop errors in psycopg2
 # # https://stackoverflow.com/questions/71470989/python-setup-py-bdist-wheel-did-not-run-successfully
-# sudo apt-get install --reinstall libpq-dev
+sudo apt-get install --reinstall libpq-dev
 
-# pip3 install psycopg2
+pip3 install psycopg2
 
-# pip3 install SQLAlchemy
+pip3 install SQLAlchemy
 
 # # Postmark email
 pip3 install postmarker
