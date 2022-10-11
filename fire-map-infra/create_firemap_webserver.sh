@@ -201,32 +201,29 @@ export PATH=/home/dave/.local/bin:$PATH
 # python 3.9.14
 sudo apt install python3-pip -y
 
-# update pip to 22.0.4
+# update pip to 22.2.2
 pip install --upgrade pip
 
 # We are calling pipenv from cron so need to install this way
 # https://stackoverflow.com/questions/46391721/pipenv-command-not-found
 # pip install --user pipenv
-#sudo -H pip install -U pipenv
-
-# use non sudo?
-# or use pipenv
-sudo pip3 install pandas
-
-sudo apt install fiona -y
-
-# # to stop errors in psycopg2
-# https://stackoverflow.com/questions/71470989/python-setup-py-bdist-wheel-did-not-run-successfully
-sudo apt-get install --reinstall libpq-dev
-
-pip3 install psycopg2
-
-pip3 install SQLAlchemy
+# sudo -H pip install -U pipenv
 
 
-# Postmark email
-pip3 install postmarker
+# sudo pip3 install pandas
 
+# sudo apt install fiona -y
 
-# restart was required (just a prompt so may not need)
-sudo reboot now
+# # # to stop errors in psycopg2
+# # https://stackoverflow.com/questions/71470989/python-setup-py-bdist-wheel-did-not-run-successfully
+# sudo apt-get install --reinstall libpq-dev
+
+# pip3 install psycopg2
+
+# pip3 install SQLAlchemy
+
+# # Postmark email
+# pip3 install postmarker
+
+# # restart was required (just a prompt so may not need)
+# sudo reboot now
