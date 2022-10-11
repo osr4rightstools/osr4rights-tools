@@ -188,17 +188,19 @@ sudo service postgresql restart
 # Python - PB Process to check firemap data
 
 # Python 3.8.2 comes with Ubuntu 20_04 but we want newer
-sudo add-apt-repository ppa:deadsnakes/ppa -y
+# not doing this as pip will install to python 3.8
+# https://stackoverflow.com/questions/65644782/how-to-install-pip-for-python-3-9-on-ubuntu-20-04
+# sudo add-apt-repository ppa:deadsnakes/ppa -y
 
-sudo apt update -y
+# sudo apt update -y
 
-# get Python 3.9
-sudo apt install python3.9 -y
+# get Python 3.9.14 (11th Oct 2022)
+# sudo apt install python3.9 -y
 
 # to stop WARNING: The scripts pip, pip3 and pip3.8 are installed in '/home/dave/.local/bin' which is not on PATH.
 export PATH=/home/dave/.local/bin:$PATH
 
-# python 3.9.14
+# **HERE**
 sudo apt install python3-pip -y
 
 # update pip to 22.2.2
