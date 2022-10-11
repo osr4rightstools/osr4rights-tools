@@ -187,8 +187,9 @@ sudo service postgresql restart
 
 # Python - PB Process to check firemap data
 
-# Python 3.8.2 comes with Ubuntu 20_04 but we want newer
-# not doing this as pip will install to python 3.8
+# Python 3.8.10 comes with Ubuntu 20_04 but we want newer
+# **not doing this as pip will install to python 3.8 so keeping things simple for now
+
 # https://stackoverflow.com/questions/65644782/how-to-install-pip-for-python-3-9-on-ubuntu-20-04
 # sudo add-apt-repository ppa:deadsnakes/ppa -y
 
@@ -213,8 +214,10 @@ pip install --upgrade pip
 
 
 # sudo pip3 install pandas
+# pip3 install pandas
 
 # sudo apt install fiona -y
+# apt install fiona -y
 
 # # # to stop errors in psycopg2
 # # https://stackoverflow.com/questions/71470989/python-setup-py-bdist-wheel-did-not-run-successfully
@@ -225,7 +228,7 @@ pip install --upgrade pip
 # pip3 install SQLAlchemy
 
 # # Postmark email
-# pip3 install postmarker
+pip3 install postmarker
 
 # # restart was required (just a prompt so may not need)
 # sudo reboot now

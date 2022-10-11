@@ -1,5 +1,28 @@
 
 --------------CREATE TABLES
+CREATE TABLE IF NOT EXISTS public.dailyreporthistory
+(
+    source text COLLATE pg_catalog."default" NOT NULL,
+    acq_date date NOT NULL,
+    acq_time character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    confidence text COLLATE pg_catalog."default",
+    daynight character varying(1) COLLATE pg_catalog."default",
+    geom geometry(Point,4326) NOT NULL,
+    projectid integer,
+    notification_emailaddress text COLLATE pg_catalog."default",
+    polyid bigint NOT NULL,
+    CONSTRAINT dailyreporthistory_pkey PRIMARY KEY (source, acq_date, acq_time, geom, polyid)
+)
+WITH (
+    OIDS = FALSE
+)
+
+
+CREATE INDEX on dailyreporthistory using gist(geom);
+CREATE INDEX on dailyreporthistory using btree(acq_date);
+CREATE INDEX on dailyreporthistory using btree(polyid);
+CREATE INDEX on dailyreporthistory using btree(projectid);
+
 
 CREATE TABLE IF NOT EXISTS public.interaction_history
 (
