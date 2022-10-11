@@ -119,7 +119,7 @@ sudo unzip viirs-snpp_2021_Myanmar.csv.zip
 
 cd /home/dave/source/fire-map-infra
 # HERE******
-# sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
+sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
 
 #php

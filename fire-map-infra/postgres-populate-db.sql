@@ -1,3 +1,5 @@
+-- needed for geometry type
+CREATE EXTENSION postgis;
 
 --------------CREATE TABLES
 CREATE TABLE IF NOT EXISTS public.dailyreport_polyhistory
@@ -9,11 +11,11 @@ CREATE TABLE IF NOT EXISTS public.dailyreport_polyhistory
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.dailyreport_polyhistory
-    OWNER to postgres;
+-- ALTER TABLE IF EXISTS public.dailyreport_polyhistory
+--     OWNER to postgres;
 
 CREATE INDEX IF NOT EXISTS dailyreport_polyhistory_geompoly_idx
     ON public.dailyreport_polyhistory USING gist
@@ -22,7 +24,6 @@ CREATE INDEX IF NOT EXISTS dailyreport_polyhistory_geompoly_idx
 CREATE INDEX IF NOT EXISTS dailyreport_polyhistory_polyid_idx
     ON public.dailyreport_polyhistory USING btree
     (polyid ASC NULLS LAST);
-
 
 
 CREATE TABLE IF NOT EXISTS public.dailyreporthistory
@@ -40,11 +41,11 @@ CREATE TABLE IF NOT EXISTS public.dailyreporthistory
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.dailyreporthistory
-    OWNER to postgres;
+-- ALTER TABLE IF EXISTS public.dailyreporthistory
+--     OWNER to postgres;
 
 CREATE INDEX on dailyreporthistory using gist(geom);
 CREATE INDEX on dailyreporthistory using btree(acq_date);
@@ -62,15 +63,11 @@ CREATE TABLE IF NOT EXISTS public.interaction_history
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.interaction_history
-    OWNER to postgres;
-
-
-CREATE EXTENSION postgis;
-
+-- ALTER TABLE IF EXISTS public.interaction_history
+--     OWNER to postgres;
 
 
 CREATE TABLE IF NOT EXISTS public.project
@@ -84,11 +81,10 @@ CREATE TABLE IF NOT EXISTS public.project
 )
 WITH (
     OIDS = FALSE
-)
- TABLESPACE pg_default;
+);
+--  TABLESPACE pg_default;
 
 ALTER TABLE  project ADD PRIMARY KEY (projectid);
-
 
 COMMENT ON COLUMN public.project.notification_emailaddress IS 'who to send alert emails to';
 COMMENT ON COLUMN public.project.owner_userid IS 'user who created the project and owner';
@@ -101,12 +97,10 @@ CREATE TABLE IF NOT EXISTS public.monitorzones
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 ALTER TABLE monitorzones ADD foreign key (projectid) references project ON update cascade ON delete cascade;
-
-
 
 
 CREATE TABLE IF NOT EXISTS public.userproject
@@ -117,13 +111,11 @@ CREATE TABLE IF NOT EXISTS public.userproject
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.userproject
-    OWNER to postgres;
-
-
+-- ALTER TABLE IF EXISTS public.userproject
+--     OWNER to postgres;
 
 
 CREATE TABLE IF NOT EXISTS public.users
@@ -133,13 +125,11 @@ CREATE TABLE IF NOT EXISTS public.users
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.users
-    OWNER to postgres;
-
-
+-- ALTER TABLE IF EXISTS public.users
+--     OWNER to postgres;
 
 CREATE TABLE IF NOT EXISTS public.viirs_snpp
 (
@@ -162,28 +152,22 @@ CREATE TABLE IF NOT EXISTS public.viirs_snpp
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.viirs_snpp
-    OWNER to postgres;
--- Index: ix_viirs-snpp_index
-
--- DROP INDEX IF EXISTS public."ix_viirs-snpp_index";
+-- ALTER TABLE IF EXISTS public.viirs_snpp
+--     OWNER to postgres;
 
 CREATE INDEX IF NOT EXISTS "ix_viirs-snpp_index"
     ON public.viirs_snpp USING btree
     (index ASC NULLS LAST)
     TABLESPACE pg_default;
 
-
 ------
 Alter table users add primary key (userid);
 
 Alter table userproject add primary key (userid,projectid);
 Alter table userproject add foreign key (userid) references users on update cascade on delete set null;
-
-
 Alter table monitorzones add foreign key (projectid) references project on update cascade on delete cascade;
 
 ---
@@ -200,8 +184,8 @@ CREATE TABLE IF NOT EXISTS public.datatablesindex
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 ---------------------------------
@@ -231,8 +215,8 @@ CREATE TABLE IF NOT EXISTS myanmar_modis_2019
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 copy myanmar_modis_2019 FROM '/var/www/html/fd/modis/modis_2019_Myanmar.csv' delimiter ',' CSV header;
@@ -275,8 +259,8 @@ CREATE TABLE IF NOT EXISTS myanmar_modis_2020
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 copy myanmar_modis_2020 FROM '/var/www/html/fd/modis/modis_2020_Myanmar.csv' delimiter ',' CSV header;
@@ -319,8 +303,8 @@ CREATE TABLE IF NOT EXISTS myanmar_modis_2021
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 copy myanmar_modis_2021 FROM '/var/www/html/fd/modis/modis_2021_Myanmar.csv' delimiter ',' CSV header;
@@ -363,8 +347,8 @@ CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2019
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 copy myanmar_viirs_snpp_2019 FROM '/var/www/html/fd/viirs_snpp/viirs-snpp_2019_Myanmar.csv' delimiter ',' CSV header;
@@ -405,12 +389,11 @@ CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2020
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 copy myanmar_viirs_snpp_2020 FROM '/var/www/html/fd/viirs_snpp/viirs-snpp_2020_Myanmar.csv' delimiter ',' CSV header;
-
 
 alter table myanmar_viirs_snpp_2020 add column geom geometry;
 update myanmar_viirs_snpp_2020 set geom = st_setsrid(st_makepoint(longitude,latitude),   4326);
@@ -448,8 +431,8 @@ CREATE TABLE IF NOT EXISTS myanmar_viirs_snpp_2021
 )
 WITH (
     OIDS = FALSE
-)
-TABLESPACE pg_default;
+);
+-- TABLESPACE pg_default;
 
 
 copy myanmar_viirs_snpp_2021 FROM '/var/www/html/fd/viirs_snpp/viirs-snpp_2021_Myanmar.csv' delimiter ',' CSV header;
@@ -465,11 +448,6 @@ create index on myanmar_viirs_snpp_2021 using btree(acqdate);
 
 insert into datatablesindex (tablename,sensor,dt_added,geom_mbr) 
 values ('myanmar_viirs_snpp_2021','viirs_snpp',now(),  (select st_setsrid (st_extent(st_transform(geom,4326)),4326)  from myanmar_viirs_snpp_2021) );
-
-
-
-
-
 
 
 ---
