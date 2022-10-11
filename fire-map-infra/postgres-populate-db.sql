@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS public.dailyreporthistory
 WITH (
     OIDS = FALSE
 )
-
+TABLESPACE pg_default;
 
 CREATE INDEX on dailyreporthistory using gist(geom);
 CREATE INDEX on dailyreporthistory using btree(acq_date);
