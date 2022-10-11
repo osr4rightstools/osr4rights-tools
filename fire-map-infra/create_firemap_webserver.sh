@@ -118,8 +118,11 @@ sudo unzip viirs-snpp_2021_Myanmar.csv.zip
 
 
 cd /home/dave/source/fire-map-infra
-sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
+# HERE******
+# sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
+
+#php
 sudo apt install php7.4-pgsql -y
 sudo service apache2 restart
 
