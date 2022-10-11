@@ -1,5 +1,27 @@
 
 --------------CREATE TABLES
+CREATE TABLE IF NOT EXISTS public.dailyreport_polyhistory
+(
+    polyid bigint NOT NULL,
+    dt date,
+    geompoly geometry,
+    CONSTRAINT dailyreport_polyhistory_pkey PRIMARY KEY (polyid)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+CREATE INDEX IF NOT EXISTS dailyreport_polyhistory_geompoly_idx
+    ON public.dailyreport_polyhistory USING gist
+    (geompoly);
+
+CREATE INDEX IF NOT EXISTS dailyreport_polyhistory_polyid_idx
+    ON public.dailyreport_polyhistory USING btree
+    (polyid ASC NULLS LAST);
+
+
+
 CREATE TABLE IF NOT EXISTS public.dailyreporthistory
 (
     source text COLLATE pg_catalog."default" NOT NULL,
