@@ -230,5 +230,11 @@ pip3 install SQLAlchemy
 # # Postmark email
 pip3 install postmarker
 
+
+# for the python service to write files from nasa
+sudo mkdir /var/datadownloads
+# todo make leaner
+sudo chmod -R 777 /var/datadownloads/
+
 # # restart was required (just a prompt so may not need)
 # sudo reboot now
