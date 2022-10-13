@@ -84,10 +84,13 @@ WITH (
 );
 --  TABLESPACE pg_default;
 
-ALTER TABLE  project ADD PRIMARY KEY (projectid);
+ALTER TABLE project ADD PRIMARY KEY (projectid);
 
 COMMENT ON COLUMN public.project.notification_emailaddress IS 'who to send alert emails to';
 COMMENT ON COLUMN public.project.owner_userid IS 'user who created the project and owner';
+
+Create index on project using btree (projectid);
+
 
 CREATE TABLE IF NOT EXISTS public.monitorzones
 (
@@ -101,6 +104,9 @@ WITH (
 -- TABLESPACE pg_default;
 
 ALTER TABLE monitorzones ADD foreign key (projectid) references project ON update cascade ON delete cascade;
+
+Create index on monitorzones using btree(projectid);
+Create index on monitorzones using gist (geom);
 
 
 CREATE TABLE IF NOT EXISTS public.userproject
