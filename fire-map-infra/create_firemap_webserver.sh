@@ -236,5 +236,21 @@ sudo mkdir /var/datadownloads
 # todo make leaner
 sudo chmod -R 777 /var/datadownloads/
 
-# # restart was required (just a prompt so may not need)
-# sudo reboot now
+## CRON RUN EVERY x 
+
+# so the cron job can execute the shell script (running as user dave)
+sudo chmod +x /home/dave/source/fire-map-infra/cron.sh
+
+# don't want it to run until after the reboot
+sudo service cron stop
+
+# runs the script every x
+# notice put in a # to disable so will have to manually start it.
+# https://crontab.guru/every-10-minutes
+cat <<EOT >> run-python-download
+* /10 * * * dave /home/dave/source/fire-map-infra/cron.sh
+EOT
+
+sudo mv run-python-download /etc/cron.d
+
+sudo reboot now
