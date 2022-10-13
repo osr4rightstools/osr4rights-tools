@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# so cron loads the env variables
+# https://unix.stackexchange.com/questions/27289/how-can-i-run-a-cron-command-with-existing-environmental-variables
+source $HOME/.profile
+
 # chmod +x cron.sh
 
 # run cron.sh every minute as user dave

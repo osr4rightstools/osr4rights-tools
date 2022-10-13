@@ -248,7 +248,7 @@ sudo service cron stop
 # notice put in a # to disable so will have to manually start it.
 # https://crontab.guru/every-10-minutes
 cat <<EOT >> run-python-download
-* /10 * * * dave /home/dave/source/fire-map-infra/cron.sh
+*/15 * * * * dave /home/dave/source/fire-map-infra/cron.sh
 EOT
 
 sudo mv run-python-download /etc/cron.d
