@@ -74,7 +74,7 @@ sudo rm /var/www/html/index.html
 sudo mkdir /var/www/html/test
 sudo cp /home/dave/source/fire-map-infra/index.html /var/www/html/test
 
-sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html/test
+# sudo cp /home/dave/source/fire-map-infra/*.php /var/www/html/test
 
 # sudo chmod 755 /var/www
 
@@ -244,13 +244,26 @@ sudo chmod +x /home/dave/source/fire-map-infra/cron.sh
 # don't want it to run until after the reboot
 sudo service cron stop
 
-# runs the script every x
-# notice put in a # to disable so will have to manually start it.
-# https://crontab.guru/every-10-minutes
+# python nasa script every x
 cat <<EOT >> run-python-download
-*/15 * * * * dave /home/dave/source/fire-map-infra/cron.sh
-EOT
+# every 15 minutes 
+#*/15 * * * * dave /home/dave/source/fire-map-infra/cron.sh
 
+# 02:00 UKTime run
+0 01 * * * dave /home/dave/source/fire-map-infra/cron.sh
+
+# 14:00 UKTime run
+0 13 * * * dave /home/dave/source/fire-map-infra/cron.sh
+EOT
 sudo mv run-python-download /etc/cron.d
+
+
+# db backup script 
+cat <<EOT >> postgres-cron-backup
+# 1500 UK time. nasa download happens at 0100 and 1300 UTC (which we don't want to clash with)
+0 14 * * *  dave   /home/dave/source/fire-map-infra/postgres-cron-backup.sh
+EOT
+sudo mv postgres-cron-backup /etc/cron.d
+
 
 sudo reboot now

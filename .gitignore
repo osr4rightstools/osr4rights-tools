@@ -352,3 +352,8 @@ password.txt
 delCurrentRg.sh
 sshCurrentVm.sh
 
+
+test.sh
+
+*.backup
+

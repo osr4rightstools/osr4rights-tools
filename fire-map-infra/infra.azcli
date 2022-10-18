@@ -136,7 +136,6 @@ az vm run-command invoke \
     --command-id RunShellScript \
     --scripts @create_firemap_webserver.sh
 
-    # --debug \
 # adds to end of apache2/envvars 
 az vm run-command invoke \
     -g ${rg} \
@@ -144,23 +143,7 @@ az vm run-command invoke \
     --command-id RunShellScript \
     --scripts @../secrets/fire-map-apache-envvars.sh
 
-
-# delete old resource groups
-groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
-
-for rgtodel in $groupstodel
-do
-    if [ "$rgtodel" = "$rg" ]; then  
-    echo "not deleting $rgtodel as have just created it"
-    else
-    # echo "asdf"
-	az group delete \
-            --name $rgtodel \
-            --no-wait \
-            --yes
-    fi
-done
-
+# nginx forwards on port 80 so don't need 443
 # allow port 80
 az network nsg rule create \
     --resource-group ${rg} \
@@ -170,17 +153,6 @@ az network nsg rule create \
     --priority 1001 \
     --destination-port-range 80 \
     --access allow
-
-# nginx forwards on port 80 so don't need this
-# allow port 443
-# az network nsg rule create \
-#     --resource-group ${rg} \
-#     --nsg-name ${nsgname} \
-#     --name nsgGroupRuleWeb443 \
-#     --protocol tcp \
-#     --priority 1002 \
-#     --destination-port-range 443 \
-#     --access allow
 
 # allow postgres
 az network nsg rule create \
@@ -192,33 +164,62 @@ az network nsg rule create \
     --destination-port-range 5432 \
     --access allow
 
-# generate dns here.. had trouble doing inside next if statement
-# generate_post_data()
-# {
-#   cat <<EOF
-# {
-#   "content": "${dnsname}.westeurope.cloudapp.azure.com",
-#   "ttl": 60
-# }
-# EOF
-# }
 
-# patch DNS through to the new VM only if the token file exist
-# filename=../secrets/dnsimpletoken.txt
-# if [ -f "$filename" ]; then
-#     echo "dnsimpletoken.txt file found"
+# backup the old vm DB and restore onto the new vm DB
+resourcegroups=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
 
-#     # get the first and only line
-#     token=$(head -n 1 $filename)
-#     echo "token is $token"
+# check 2 resource groups only 
+counter=0
+for resourcegroup in $resourcegroups
+do
+    let counter++
+    echo "counter is $counter"
+    if [ "$counter" = "3" ]; then  
+        echo "more than 2 resources groups so exiting - MANUAL intervention needed"
+        exit 1
+    else
+        echo "continuing"
+done
 
-#     # update DNS
-#     # osr4rightstools.org
-#     curl https://api.dnsimple.com/v2/63829/zones/osr4rightstools.org/records/25185791 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
+# backup db from old and restore to new
+for resourcegroup in $resourcegroups
+do
+    if [ "$resourcegroup" = "$rg" ]; then  
+        echo "have just created new vm on $resourecegroup"
+    else
+        echo "backing up database from old vm on $resourcegroup"
+        pgpassword=$(<../secrets/pgpassword.txt)
+        file_name=`date +%d-%m-%Y-%I-%M-%S-%p`.backup
+        # pg_dump -Fc -d postgres://postgres:${pgpassword}@firemaposr4rights214.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name
+        pg_dump -Fc -d postgres://postgres:${pgpassword}@$resourcegroup.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name
 
-#     # www.osr4rightstools.org
-#     curl https://api.dnsimple.com/v2/63829/zones/osr4rightstools.org/records/25185798 -H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" -X PATCH -d "$(generate_post_data)" 
-# fi
+        echo "restoring to new vm on $rg"
+
+        # ******HERE*******
+done
+
+
+
+
+
+
+
+# delete old resource groups
+groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
+
+for rgtodel in $groupstodel
+do
+    if [ "$rgtodel" = "$rg" ]; then  
+    echo "not deleting $rgtodel as have just created it"
+    else
+    echo "not deleting old rg"
+	# az group delete \
+    #         --name $rgtodel \
+    #         --no-wait \
+    #         --yes
+    # fi
+done
+
 
 
 # eg using ./osrSshCurrentVm.sh
