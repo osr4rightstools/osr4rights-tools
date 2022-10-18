@@ -21,7 +21,8 @@ int=$(shuf -i 1-1000 -n 1)
 # generate a 34 character password (normal, capitals and numbers)
 password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c34)
 
-rgprefix=fireMapOsr4RightsTools
+# rgprefix=fireMapOsr4RightsTools
+rgprefix=fireMapOsr4Rights
 rg=${rgprefix}${int}
 
 # Don't put capitals in dns name below and it needs to be unique (ie not used in azure at the moment)
