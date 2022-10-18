@@ -191,17 +191,19 @@ do
         echo "backing up database from old vm on $resourcegroup"
         pgpassword=$(<../secrets/pgpassword.txt)
         file_name=`date +%d-%m-%Y-%I-%M-%S-%p`.backup
-        # pg_dump -Fc -d postgres://postgres:${pgpassword}@firemaposr4rights214.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name
 
         # **HERE***
         # have changed dns name so need to do this bit manually
         #pg_dump -Fc -d postgres://postgres:${pgpassword}@$resourcegroup.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name
-
         echo "pg_dump -Fc -d postgres://postgres:${pgpassword}@$resourcegroup.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name"
 
-        echo "restoring to new vm on $rg"
 
-        # ******HERE*******
+        echo "restoring to new vm on $rg"
+        export PGPASSWORD=test
+        
+        # pg_restore -h $rg.westeurope.cloudapp.azure.com -U postgres -v -d "nasafiremap" $file_name
+        echo "pg_restore -h $rg.westeurope.cloudapp.azure.com -U postgres -v -d "nasafiremap" $file_name"
+
     fi
 done
 

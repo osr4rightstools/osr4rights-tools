@@ -118,7 +118,8 @@ sudo unzip viirs-snpp_2021_Myanmar.csv.zip
 
 
 cd /home/dave/source/fire-map-infra
-sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
+# this is a sample script.. we are now restoring from the old version at the end of infra.azcli script
+#sudo -u postgres psql --echo-all --dbname=nasafiremap --file=postgres-populate-db.sql
 
 #php
 sudo apt install php7.4-pgsql -y
