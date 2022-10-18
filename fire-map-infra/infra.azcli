@@ -178,6 +178,7 @@ do
         exit 1
     else
         echo "continuing"
+    fi
 done
 
 # backup db from old and restore to new
