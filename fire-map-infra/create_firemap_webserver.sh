@@ -238,8 +238,10 @@ sudo chmod -R 777 /var/datadownloads/
 
 ## CRON RUN EVERY x 
 
-# so the cron job can execute the shell script (running as user dave)
+# so the cron job can execute the python nasa shell script (running as user dave)
 sudo chmod +x /home/dave/source/fire-map-infra/cron.sh
+
+sudo chmod +x /home/dave/source/fire-map-infra/postgres-cron-backup.sh
 
 # don't want it to run until after the reboot
 sudo service cron stop
