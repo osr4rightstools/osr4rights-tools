@@ -40,6 +40,29 @@ nicName=nic${int}
 
 # echo -e "az group delete --name ${rg} --no-wait --yes \n" > delCurrentRg.sh
 
+
+resourcegroups=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
+
+# check 2 resource groups only 
+counter=0
+for resourcegroup in $resourcegroups
+do
+    let counter++
+    echo "counter is $counter"
+    if [ "$counter" = "3" ]; then  
+        echo "more than 2 resources groups so exiting - MANUAL intervention needed"
+        exit 1
+    else
+        echo "continuing"
+done
+
+exit
+
+
+
+
+
+
 # resource group
 az group create \
    --name ${rg} \
