@@ -54,6 +54,7 @@ do
         exit 1
     else
         echo "continuing"
+    fi
 done
 
 exit
@@ -240,7 +241,7 @@ do
     #         --name $rgtodel \
     #         --no-wait \
     #         --yes
-    # fi
+    fi
 done
 
 
