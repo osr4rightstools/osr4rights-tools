@@ -173,7 +173,6 @@ counter=0
 for resourcegroup in $resourcegroups
 do
     let counter++
-    echo "counter is $counter"
     if [ "$counter" = "3" ]; then  
         echo "more than 2 resources groups so exiting - MANUAL intervention needed"
         exit 1
@@ -191,31 +190,25 @@ do
         echo "backing up database from old vm on $resourcegroup"
         pgpassword=$(<../secrets/pgpassword.txt)
         file_name=`date +%d-%m-%Y-%I-%M-%S-%p`.backup
-
         pg_dump -Fc -d postgres://postgres:${pgpassword}@$resourcegroup.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name
-        # echo "pg_dump -Fc -d postgres://postgres:${pgpassword}@$resourcegroup.westeurope.cloudapp.azure.com:5432/nasafiremap > $file_name"
-
 
         echo "restoring to new vm on $rg"
         export PGPASSWORD=$pgpassword
-
         pg_restore -h $rg.westeurope.cloudapp.azure.com -U postgres -v -d "nasafiremap" $file_name
     fi
 done
 
 # delete old resource groups
-groupstodel=$(az group list --query "[?contains(name, '${rgprefix}')]".name --output tsv)
-
-for rgtodel in $groupstodel
+for rgtodel in $resourcegroups
 do
     if [ "$rgtodel" = "$rg" ]; then  
-    echo "not deleting $rgtodel as have just created it"
+        echo "not deleting $rgtodel as have just created it"
     else
-    echo "not deleting old rg"
-	# az group delete \
-    #         --name $rgtodel \
-    #         --no-wait \
-    #         --yes
+        echo "not deleting old rg"
+	    az group delete \
+                --name $rgtodel \
+                --no-wait \
+                --yes
     fi
 done
 
