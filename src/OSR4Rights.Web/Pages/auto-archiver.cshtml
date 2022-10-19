@@ -16,13 +16,51 @@
 
         <p>A tool for automatically archiving web page links and saving the images and videos. Currently used in monitoring human rights situations in Ukraine, Myanmar and Afghanistan</p>
 
-        <p class="py-md">Thanks to <a href="https://www.info-res.org/">The Centre for Information Resilience</a> for providing the datasets.
+        <h3 class="py-sm">Archiving Online Evidence of Human Rights Violations: How OSR4Rights Tools’ Auto Archiver Saves Investigators Time and Money and Meets the Latest Guidelines on Online Investigations </h3>
 
-        <h3>Bellingcat</h3>
+        <p class="py-sm"> Online open-source information has transformed how human rights organisations and civil society actors identify, gather, and preserve evidence of international crimes and human rights violations across the globe.  </p>
+
+        <p class="py-sm">Open-source information has been praised for its ability to bypass traditional information gatekeepers to retrieve information on international crimes and human rights violations through free and publicly accessible videos, photographs and social media posts. One major challenge that investigators face is the transient nature of social media evidence, which can be removed from the internet without warning.  </p>
+
+        <p class="py-sm">
+            Recently published guidelines by the International Criminal Court’s Office of the Prosecutor, Eurojust, and the EU Genocide Network entitled, ‘<a href="https://www.icc-cpi.int/news/documenting-international-crimes-and-human-rights-violations-accountability-purposes">Documenting International Crimes and Human Rights Violations for Accountability Purposes: Guidelines for Civil Society Organisations</a>’ provides useful tips on ways that civil society actors can collect, document and preserve information that can be used as evidence in future national and international prosecutions. On online investigations, the Guidelines recommend ‘the use of tools specifically developed to collect and preserve online content for accountability purposes.’ According to the Guidelines:
+        </p>
+
+        <p class="py-sm"><b>Online information is highly volatile – it can disappear from the internet or be easily modified. Therefore, capture online information in such a way that enables the authenticity and the integrity of the digital item to be established as collected at a certain time from a certain web location.</b> </p>
+
+        <p class="py-sm">
+            To this end, the Guidelines recommend using digital tools that allows human rights investigators to “download the online content, collect the relevant metadata, hashtag the information and create a digital package.”
+        </p>
+
+        <p class="py-sm">
+            If you are wondering whether such specialised tools exist, then look no further because with our version of <a href="https://github.com/bellingcat/auto-archiver">Bellingcat's Auto Archiver</a>, which we contribute to. Human rights investigators can automatically save web page links by entering the Web URL links of the online information into a simple Google Spreadsheet. More advanced archiving services are provided by groups like <a href="https://mnemonic.org/">Mnemonic</a>, but this is a good web-based ‘quick stop’ solution that will be helpful for many human rights investigators.
+        </p>
+
+        <div>
+            <img src="~/images/aa.jpg" />
+        </div>
+
+        <p class="py-sm">
+            The best feature of Auto Archiver tool is that it is automatic and it is on the lookout for links that requires processing every 60 seconds. Having identified a new link in the spreadsheet, Auto Archiver automatically saves a screen shot of the link, downloads and saves a copy of the relevant media (e.g. a video or photograph uploaded with a Tweet), saves information about the metadata of the post, and creates a cryptographic hash of the content.
+        </p>
+
+        <p class="py-sm">
+            As a result of these steps, Auto Archiver can save human rights investigators huge amounts of time that was previously used in archiving data from sites manually.
+        </p>
+
+        <p class="py-sm">
+            To find out more about how the Auto Archiver tool can support your organisation’s work on human rights investigations or for a quick demonstration of the tool, please contact the team at:  Yvonne.McDermottRees@swansea.ac.uk
+        </p>
+
+
+
+        <br />
+        <h3>Auto-Archiver tool</h3>
 
         <p><a href="https://www.bellingcat.com/resources/2022/09/22/preserve-vital-online-content-with-bellingcats-auto-archiver-tool/">Bellingcat Article</a> on the 22nd September 2022 is a great overview on their open source project which we are proud to contribute to. Thanks to their great developers and vision we can offer this tool to organisations that need it </p>
-        
-        <p class="py-md">As of 14th September 2022 we have archived <b>14,361 links</b> totaling over <b>272GB</b> of images and video which would have had to be done by hand. This is a huge time saver and we are proud to support the work of organisations like <a href="https://www.info-res.org/">The Centre for Information Resilience</a></p>
+
+        <p class="py-md">As of Oct 2022 we have archived <b>16,000 links</b> totaling over <b>300GB</b> of images and video which would have had to be done by hand. This is a huge time saver and we are proud to support the work of organisations like <a href="https://www.info-res.org/">The Centre for Information Resilience</a></p>
+
         <br />
 
 
@@ -114,7 +152,7 @@
 
         <p>Please contact us <a href="https://osr4rights.org/contact-us/">here</a> and we can do a demo for you, or we can add you to our demo spreadsheet, so you can test out the system in real time.</p>
         <!-- not logged in -->
-        @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
     {
         @*<h2 class="text-md py-md">If you wouldn't mind...</h2>*@
 
@@ -138,9 +176,9 @@
             @*<p class="text-danger">We need to manually approve you before you can upload your own files. </p>*@
         }
 
-       @* <h1 class="py-md">Further Information</h1>
+        @* <h1 class="py-md">Further Information</h1>
 
-        <p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>*@
+    <p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>*@
 
     }
 </div>
