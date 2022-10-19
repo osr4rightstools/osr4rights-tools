@@ -5,45 +5,49 @@
 }
 
 @section Styles {
-<link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
 }
 
-<div class="container">
-    <div class="wrapper">
-        <div class="company-info">
-            <h3>Welcome Back!</h3>
-            <p class="text-sm">If you have any problems please get in touch</p>
-            <ul>
-                <li class="text-sm"><i class="fa fa-envelope"></i> help@osr4rightstools.org</li>
-            </ul>
-        </div>
-        <div class="contact">
-            <form method="post">
-                <div class="py-md">
-                    <label class="text-sm">Email Address</label>
-                    <input asp-for="Email" class="input-text" value="">
-                    <span asp-validation-for="Email" class="text-danger text-sm"></span>
-                </div>
-                <div class="py-md">
-                    <label class="text-sm">Password</label>
-                    <input asp-for="Password" class="input-text" value="">
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+    <div class="container">
+        <div class="wrapper">
+            <div class="company-info">
+                <h3>Welcome Back!</h3>
+                <p class="text-sm">If you have any problems please get in touch</p>
+                <ul>
+                    <li class="text-sm"><i class="fa fa-envelope"></i> help@osr4rightstools.org</li>
+                </ul>
+            </div>
+            <div class="contact">
+                <form method="post">
+                    <div class="py-md">
+                        <label class="text-sm">Email Address</label>
+                        <input asp-for="Email" class="input-text" value="">
+                        <span asp-validation-for="Email" class="text-danger text-sm"></span>
+                    </div>
+                    <div class="py-md">
+                        <label class="text-sm">Password</label>
+                        <input asp-for="Password" class="input-text" value="">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
 
-                <p class="full">
-                    <button type="submit">Log in</button>
-                </p>
+                    <p class="full">
+                        <button type="submit">Log in</button>
+                    </p>
 
-                <div class="py-md">
-                    <a href="/account/forgot-password">Forgot your Password?</a>
-                </div>
+                    <div class="py-md">
+                        <a href="/account/forgot-password">Forgot your Password?</a>
+                    </div>
 
-            </form>
+                    <div class="py-sm">
+                        <a href="/account/register">Register</a>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-@*<h2>Login</h2>
+    @*<h2>Login</h2>
     <div class="row">
     <div class="col-md-4">
     <form method="post">
@@ -77,8 +81,8 @@
     </div>
     </div>*@
 
-@section Scripts {
-<partial name="_ValidationScriptsPartial" />
+    @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
 
 
