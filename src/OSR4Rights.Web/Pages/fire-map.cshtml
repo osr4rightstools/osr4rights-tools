@@ -6,26 +6,42 @@
 }
 @* bootstrap for tus progress bar*@
 @section Styles {
-<link href="/css/style-login.css" rel="stylesheet" type="text/css" />
-@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
-}
+    <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
+    }
 
-<div class="container-tool">
-    <h2 class="text-xl">FireMap</h2>
+    <div class="container-tool">
+        <h2 class="text-xl">FireMap</h2>
 
-        <p>We are currently developing a tool that can be used to monitor real-time fire data within set geographical parameters, incorporating NASA's Fire Information for Resource Management System (FIRMS) with a user-friendly map interface. Contact us at Yvonne.Mcdermottrees@swansea.ac.uk to find out more.</p>
+        <p>We are developing a tool that can be used to monitor real-time fire data within set geographical parameters, incorporating NASA's Fire Information for Resource Management System (FIRMS) with a user-friendly map interface. Contact us at Yvonne.Mcdermottrees@swansea.ac.uk to find out more.</p>
 
+        <p>To try out the tool, please make sure you are <a href="/account/login">logged in</a></p>
+
+        <div class="py-md">
+            <!-- submit the form -->
+            @*<button type="submit" class="btn btn-blue" disabled>Analyse URL (coming soon)</button>*@
+            <form action="/fire-mapx">
+                <button type="submit" class="btn btn-blue">Go to the Fire Map</button>
+            </form>
+        </div>
+
+        <p>If you've just registered please wait until we approve your registration then come back to this page</p>
+
+        <div class="videowrapper">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YwssKZ62_ew" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 
-@*  </div>
+
+    @*  </div>
     </section>*@
 
-@section Scripts {
-@*<partial name="_ValidationScriptsPartial" />*@
+    @section Scripts {
+    @*<partial name="_ValidationScriptsPartial" />*@
 
-@* jquery needed for tus script - todo refactor out*@
-<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    @* jquery needed for tus script - todo refactor out*@
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 
-<script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
-<script src="~/js/upload-tus.js" asp-append-version="true"></script>
+    <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
+    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
 }
