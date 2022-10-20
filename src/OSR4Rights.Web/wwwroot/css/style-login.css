@@ -25,6 +25,24 @@
     font-size: 15px;
 }
 
+
+.container-tool-narrow {
+    max-width: 700px;
+    /* centre the container */
+    margin-left: auto;
+    margin-right: auto;
+    /*margin-bottom: 10px;*/
+
+    padding: 20px 20px;
+    /*padding: 1em;*/
+}
+
+.container-tool-narrow p {
+    font-size: 15px;
+}
+
+
+
 .container {
     /*max-width: 1170px;*/
     max-width: 900px;

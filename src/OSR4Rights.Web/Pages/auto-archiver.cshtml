@@ -12,10 +12,13 @@
 }
 
     <div class="container-tool">
+
         <h2 class="text-xl">Auto Archiver of Web URLs</h2>
 
         <p>A tool for automatically archiving web page links and saving the images and videos. Currently used in monitoring human rights situations in Ukraine, Myanmar and Afghanistan</p>
+    </div>
 
+    <div class="container-tool-narrow">
         <h3 class="py-sm">Archiving Online Evidence of Human Rights Violations: How OSR4Rights Tools’ Auto Archiver Saves Investigators Time and Money and Meets the Latest Guidelines on Online Investigations </h3>
 
         <p class="py-sm"> Online open-source information has transformed how human rights organisations and civil society actors identify, gather, and preserve evidence of international crimes and human rights violations across the globe.  </p>
@@ -49,12 +52,11 @@
         </p>
 
         <p class="py-sm">
-            To find out more about how the Auto Archiver tool can support your organisation’s work on human rights investigations or for a quick demonstration of the tool, please contact the team at:  Yvonne.McDermottRees@swansea.ac.uk
+            To find out more about how the Auto Archiver tool can support your organisation’s work on human rights investigations or for a quick demonstration of the tool, please contact the team at:  <a href="mailto:Yvonne.McDermottRees@swansea.ac.uk">Yvonne.McDermottRees@swansea.ac.uk</a>
         </p>
 
-
-
-        <br />
+    </div>
+    <div class="container-tool">
         <h3>Auto-Archiver tool</h3>
 
         <p><a href="https://www.bellingcat.com/resources/2022/09/22/preserve-vital-online-content-with-bellingcats-auto-archiver-tool/">Bellingcat Article</a> on the 22nd September 2022 is a great overview on their open source project which we are proud to contribute to. Thanks to their great developers and vision we can offer this tool to organisations that need it </p>
@@ -151,46 +153,16 @@
 
 
         <p>Please contact us <a href="https://osr4rights.org/contact-us/">here</a> and we can do a demo for you, or we can add you to our demo spreadsheet, so you can test out the system in real time.</p>
-        <!-- not logged in -->
-    @if (!_httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
-    {
-        @*<h2 class="text-md py-md">If you wouldn't mind...</h2>*@
+    </div>
 
-        @*<p class="">Please Tell Us who you are by <a href="/account/register">Registering</a> then you can run the samples</p>*@
-
-        @*<p class="py-sm">Or <a href="/account/login">Login</a> if you have already registered</p>*@
-
-        @*<img src="img/sp.jpg" alt="">*@
-
-    }
-    else
-    {
-        <!-- tier 2-->
-        @if (Model.IsAllowedToUpload)
-        {
-            <br />
-        }
-        else
-        {
-            <!-- tier 1-->
-            @*<p class="text-danger">We need to manually approve you before you can upload your own files. </p>*@
-        }
-
-        @* <h1 class="py-md">Further Information</h1>
-
-    <p>Please see the article on <a href="https://davemateer.com">here</a> for more technical details</p>*@
-
-    }
-</div>
-
-@section Scripts {
+    @section Scripts {
     @*<partial name="_ValidationScriptsPartial" />*@
 
     @* jquery needed for tus script - todo refactor out*@
-    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    @* <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 
     <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
-    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
-}
+    <script src="~/js/upload-tus.js" asp-append-version="true"></script>*@
+    }
 
 
