@@ -3,6 +3,7 @@
 # Creates Ubuntu webserver to run osr4rightstools.org 
 
 # disable auto upgrades by apt - in dev mode only
+# trialling doing updates on proxmox
 cd /home/dave
 
 cat <<EOT >> 20auto-upgrades
@@ -52,8 +53,17 @@ sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
 # optional but need for pecl next
 sudo apt-get install -y unixodbc-dev
 
-sudo pecl install sqlsrv
-sudo pecl install pdo_sqlsrv
+# ***FAIL*****
+# sqlsrv 5.11.0 requires PHP 8.0.0 or newer
+# 5.10.1 requires 7.3.0 or newer
+# https://pecl.php.net/package/pdo_sqlsrv
+# WARNING: channel "pecl.php.net" has updated its protocols, use "pecl channel-update pecl.php.net" to update
+# pecl/sqlsrv requires PHP (version >= 8.0.0), installed version is 7.4.3-4ubuntu2.18
+# sudo pecl install sqlsrv
+sudo pecl install sqlsrv-5.10.1
+
+# sudo pecl install pdo_sqlsrv
+sudo pecl install pdo_sqlsrv-5.10.1
 
 sudo su -c "printf \"; priority=20\nextension=sqlsrv.so\n\" > /etc/php/7.4/mods-available/sqlsrv.ini"
 sudo su -c "printf \"; priority=30\nextension=pdo_sqlsrv.so\n\" > /etc/php/7.4/mods-available/pdo_sqlsrv.ini"
@@ -203,10 +213,10 @@ sudo service postgresql restart
 # to stop WARNING: The scripts pip, pip3 and pip3.8 are installed in '/home/dave/.local/bin' which is not on PATH.
 export PATH=/home/dave/.local/bin:$PATH
 
-# **HERE**
 sudo apt install python3-pip -y
 
 # update pip to 22.2.2
+# 23.0.1
 pip install --upgrade pip
 
 # We are calling pipenv from cron so need to install this way
@@ -248,6 +258,7 @@ sudo chmod +x /home/dave/source/fire-map-infra/postgres-cron-backup.sh
 sudo service cron stop
 
 # python nasa script every x
+cd /home/dave
 cat <<EOT >> run-python-download
 # every 15 minutes 
 #*/15 * * * * dave /home/dave/source/fire-map-infra/cron.sh
@@ -268,5 +279,12 @@ cat <<EOT >> postgres-cron-backup
 EOT
 sudo mv postgres-cron-backup /etc/cron.d
 
+# otherwise errors in /var/log/syslog
+# on azure I think it does create as root
+sudo chown root:root run-python-download
+sudo chown root:root postgres-cron-backup
+
+sudo chmod 600 run-python-download
+sudo chmod 600 postgres-cron-backup
 
 sudo reboot now
