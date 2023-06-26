@@ -15,7 +15,7 @@ INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (1, N'Tier1')
 GO
 INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (2, N'Tier2')
 GO
-INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (3, N'Admin')
+INSERT [dbo].[Role] ([RoleId], [Name]) VALUES (9, N'Admin')
 GO
 SET IDENTITY_INSERT [dbo].[Role] OFF
 GO
