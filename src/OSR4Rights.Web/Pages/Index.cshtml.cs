@@ -37,7 +37,7 @@ namespace OSR4Rights.Web.Pages
                 // { "text":"dave is an awesome dude!" }
 
                 var httpClient = new HttpClient();
-                var url = "http://hmsoftware.org/hs";
+                var url = "https://hmsoftware.org/hs";
                 var data = new HSDto { Text = q };
 
                 try
