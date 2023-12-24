@@ -78,7 +78,8 @@ az network nic create \
 
 # If one of my keys exist 
 # uncomment line below to get ssh keys working
-filename="../secrets/sshkey-rgb.pub"
+# filename="../secrets/sshkey-rgb.pub"
+filename="../secrets/sshkey-homelenovo.pub"
 if [ -f "$filename" ]; then
 az vm create \
     --resource-group ${rg} \
