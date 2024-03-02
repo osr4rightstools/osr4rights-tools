@@ -14,13 +14,14 @@ namespace OSR4Rights.Web.Pages.Account
     {
         public IHttpContextAccessor HttpContextAccessor { get; }
 
+        // don't know why jquery validate isn't firing
         [BindProperty]
         [EmailAddress]
         public string Email { get; set; } = null!;
 
-        // honeypot field
+        // honeypot field which is nullable
         [BindProperty]
-        public string Email2 { get; set; } = null!;
+        public string Email2 { get; set; }
 
         [BindProperty]
         [DataType(DataType.Password)]
@@ -40,10 +41,12 @@ namespace OSR4Rights.Web.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
-
-            if (Email2 == null) {
+            ModelState.Remove("Email2");
+            if (Email2 == null)
+            {
                 Log.Information("honeypot field not filled out - good!");
-            } else
+            }
+            else
             {
                 Log.Warning("honeypot field has something in it - possible bot");
                 ModelState.AddModelError("Password", "Are you a human?");
