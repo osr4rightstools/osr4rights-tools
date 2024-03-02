@@ -18,6 +18,10 @@ namespace OSR4Rights.Web.Pages.Account
         [EmailAddress]
         public string Email { get; set; } = null!;
 
+        // honeypot field
+        [BindProperty]
+        public string Email2 { get; set; } = null!;
+
         [BindProperty]
         [DataType(DataType.Password)]
         [StringLength(100, ErrorMessage = "Must be at least {2} characters long, and 1 capital letter", MinimumLength = 8)]
@@ -36,6 +40,15 @@ namespace OSR4Rights.Web.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
+
+            if (Email2 == null) {
+                Log.Information("honeypot field not filled out - good!");
+            } else
+            {
+                Log.Warning("honeypot field has something in it - possible bot");
+                ModelState.AddModelError("Password", "Are you a human?");
+            }
+
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
             //ReturnUrl = returnUrl;
