@@ -24,9 +24,13 @@ namespace OSR4Rights.Web.Pages.Account
         [StringLength(100, ErrorMessage = "Must be at least {2} characters long, and 1 capital letter", MinimumLength = 8)]
         public string PasswordB { get; set; } = null!;
 
+        // simple captcha
+        [BindProperty]
+        public string Answer { get; set; }
+
         // honeypot field which is nullable
         [BindProperty]
-        public string Email2 { get; set; } 
+        public string Email2 { get; set; }
 
 
         public RegisterModel(IHttpContextAccessor httpContextAccessor) => HttpContextAccessor = httpContextAccessor;
@@ -54,6 +58,23 @@ namespace OSR4Rights.Web.Pages.Account
                 Log.Warning($"password {PasswordB} ");
                 Log.Warning($"email2 {Email2} ");
                 ModelState.AddModelError("Password", "Are you a human?");
+            }
+
+            ModelState.Remove("Answer");
+            if (Answer == "3")
+            {
+                Log.Information("Captcha correctly answered as 3");
+            }
+            else
+            {
+                Log.Warning("Captcha not filled in");
+
+                Log.Warning($"captcha {Answer} ");
+                Log.Warning($"email {EmailB} ");
+                Log.Warning($"password {PasswordB} ");
+                Log.Warning($"email2 {Email2} ");
+
+                ModelState.AddModelError("Answer", "Try again.. are you sure you are human?");
             }
 
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
