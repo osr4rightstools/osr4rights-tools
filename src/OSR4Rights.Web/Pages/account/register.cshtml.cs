@@ -17,16 +17,16 @@ namespace OSR4Rights.Web.Pages.Account
         // don't know why jquery validate isn't firing
         [BindProperty]
         [EmailAddress]
-        public string Email { get; set; } = null!;
-
-        // honeypot field which is nullable
-        [BindProperty]
-        public string Email2 { get; set; }
+        public string EmailB { get; set; } = null!;
 
         [BindProperty]
         [DataType(DataType.Password)]
         [StringLength(100, ErrorMessage = "Must be at least {2} characters long, and 1 capital letter", MinimumLength = 8)]
-        public string Password { get; set; } = null!;
+        public string PasswordB { get; set; } = null!;
+
+        // honeypot field which is nullable
+        [BindProperty]
+        public string Email2 { get; set; } 
 
 
         public RegisterModel(IHttpContextAccessor httpContextAccessor) => HttpContextAccessor = httpContextAccessor;
@@ -49,30 +49,34 @@ namespace OSR4Rights.Web.Pages.Account
             else
             {
                 Log.Warning("honeypot field has something in it - possible bot");
+                // am failing out, so lets write to the logfile for interest
+                Log.Warning($"email {EmailB} ");
+                Log.Warning($"password {PasswordB} ");
+                Log.Warning($"email2 {Email2} ");
                 ModelState.AddModelError("Password", "Are you a human?");
             }
 
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
             //ReturnUrl = returnUrl;
-            if (Password.Any(char.IsUpper) != true)
+            if (PasswordB.Any(char.IsUpper) != true)
                 ModelState.AddModelError("Password", "At least 1 capital letter");
 
             if (ModelState.IsValid)
             {
                 // Check if the email exists in db?
-                var result = await Db.GetLoginByEmail(connectionString, Email);
+                var result = await Db.GetLoginByEmail(connectionString, EmailB);
 
                 if (result is { })
                 {
                     if (result.LoginStateId == LoginStateId.WaitingToBeInitiallyVerifiedByEmail)
                     {
                         // User is registering again with an unverified email - this is fine.
-                        await Db.DeleteLoginWithEmail(connectionString, Email);
+                        await Db.DeleteLoginWithEmail(connectionString, EmailB);
                     }
                     else
                     {
-                        Log.Information($@"User tried to register an already registered email address {Email}");
+                        Log.Information($@"User tried to register an already registered email address {EmailB}");
                         ModelState.AddModelError("Email", "Sorry email address is already registered - try logging in or resetting password");
                         return Page();
                     }
@@ -86,14 +90,15 @@ namespace OSR4Rights.Web.Pages.Account
                 (
                     // Will be assigned by the Db
                     LoginId: null,
-                    Email,
-                    Password.HashPassword(),
+                    EmailB,
+                    PasswordB.HashPassword(),
                     LoginStateId.WaitingToBeInitiallyVerifiedByEmail,
                     // RoleId is null until LoginStateId past WaitingToBeInitiallyVerifiedByEmail ie 2 - InUse
                     // which is set in /account/email-address-confirmation
                     RoleId: null
                 );
 
+                Log.Information($@"New user successfully registered: {EmailB}");
                 var returnedLogin = await Db.InsertLogin(connectionString, login);
 
                 // Generate EmailAddressConfirmationCode which will be checked by /account/email-address-confirmation
@@ -116,33 +121,33 @@ namespace OSR4Rights.Web.Pages.Account
                 var host = request?.Host.ToUriComponent();
 
                 // old email stuff before template
-//                var foo = $"{scheme}://" + host + $"/account/email-address-confirmation/{guid}";
-//                Log.Information(foo);
+                //                var foo = $"{scheme}://" + host + $"/account/email-address-confirmation/{guid}";
+                //                Log.Information(foo);
 
-//                var textBody = $@"Hi,
-//Here is your OSR4Rights Tools email address confirmation link: {foo}
-//Please click this link within 1 hour from now
-//Or register again if you miss this time
-//";
+                //                var textBody = $@"Hi,
+                //Here is your OSR4Rights Tools email address confirmation link: {foo}
+                //Please click this link within 1 hour from now
+                //Or register again if you miss this time
+                //";
 
-//                var htmlText = $@"<p>Hi,</p>
-//<p>Here is your OSR4Rights Tools email address confirmation link: </p>
-//<p><a href=""{foo}"">{foo}</a></p>
-//<p>Please click this link within 1 hour from now</p>
-//<p>Or register again if you miss this time</p>
-//                    ";
+                //                var htmlText = $@"<p>Hi,</p>
+                //<p>Here is your OSR4Rights Tools email address confirmation link: </p>
+                //<p><a href=""{foo}"">{foo}</a></p>
+                //<p>Please click this link within 1 hour from now</p>
+                //<p>Or register again if you miss this time</p>
+                //                    ";
 
-//                var osrEmail = new OSREmail(
-//                    ToEmailAddress: Email,
-//                    Subject: "OSR4RightsTools Account Confirm",
-//                    TextBody: textBody,
-//                    HtmlBody: htmlText
-//                );
+                //                var osrEmail = new OSREmail(
+                //                    ToEmailAddress: Email,
+                //                    Subject: "OSR4RightsTools Account Confirm",
+                //                    TextBody: textBody,
+                //                    HtmlBody: htmlText
+                //                );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
 
                 //var response = await Web.Email.Send(osrEmail, postmarkServerToken, gmailPassword);
-                var response = await Web.Email.SendTemplate("register", Email, guid.ToString(), postmarkServerToken);
+                var response = await Web.Email.SendTemplate("register", EmailB, guid.ToString(), postmarkServerToken);
 
                 if (response == false)
                 {
@@ -157,8 +162,8 @@ namespace OSR4Rights.Web.Pages.Account
                 var notifyEmail = new OSREmail(
                     ToEmailAddress: "dave@hmsoftware.co.uk",
                     Subject: "New User Registered",
-                    TextBody: $"New User Registered on OSR {Email}",
-                    HtmlBody: $"New User Registered on OSR {Email}"
+                    TextBody: $"New User Registered on OSR {EmailB}",
+                    HtmlBody: $"New User Registered on OSR {EmailB}"
                 );
 
                 var gmailPassword = AppConfiguration.LoadFromEnvironment().GmailPassword;
