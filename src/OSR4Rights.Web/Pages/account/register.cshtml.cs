@@ -61,9 +61,10 @@ namespace OSR4Rights.Web.Pages.Account
             }
 
             ModelState.Remove("Answer");
-            if (Answer == "3")
+            if (Answer.ToLower() == "edinburgh")
             {
-                Log.Information("Captcha correctly answered as 3");
+                Log.Information(Answer);
+                Log.Information("Captcha correctly answered as edinburgh.. see above for what was typed");
             }
             else
             {

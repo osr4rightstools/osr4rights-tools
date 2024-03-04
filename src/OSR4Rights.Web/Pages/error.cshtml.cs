@@ -34,7 +34,7 @@ namespace OSR4Rights.Web.Pages
         //public ActionResult OnPost()
         public void OnPost(int? statusCode = null)
         {
-            Log.Warning("An OnPost page threw an error");
+            Log.Warning("An OnPost page threw an error. See error below. Maybe antiforgery");
             //Log.Warning("See Stacktrace in previous ERR log");
             //Log.Warning("ASP.NET failure - maybe antiforgery. Caught by OnPost Custom Error. Sending a 400 to the user which is probable");
 
