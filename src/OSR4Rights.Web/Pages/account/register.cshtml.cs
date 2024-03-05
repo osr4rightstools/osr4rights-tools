@@ -52,11 +52,11 @@ namespace OSR4Rights.Web.Pages.Account
             }
             else
             {
-                Log.Warning("honeypot field has something in it - possible bot");
+                Log.Warning("STAGE1 bot protect on /account/register - honeypot field has something in it - possible bot");
                 // am failing out, so lets write to the logfile for interest
-                Log.Warning($"email {EmailB} ");
-                Log.Warning($"password {PasswordB} ");
-                Log.Warning($"email2 {Email2} ");
+                Log.Warning($"  email {EmailB} ");
+                Log.Warning($"  password {PasswordB} ");
+                Log.Warning($"  email2 {Email2} ");
                 ModelState.AddModelError("Password", "Are you a human?");
             }
 
@@ -68,12 +68,12 @@ namespace OSR4Rights.Web.Pages.Account
             }
             else
             {
-                Log.Warning("Captcha not filled in");
+                Log.Warning("STAGE2 bot protect on /account/registrer - Captcha not correct!");
 
-                Log.Warning($"captcha {Answer} ");
-                Log.Warning($"email {EmailB} ");
-                Log.Warning($"password {PasswordB} ");
-                Log.Warning($"email2 {Email2} ");
+                Log.Warning($"  captcha {Answer} ");
+                Log.Warning($"  email {EmailB} ");
+                Log.Warning($"  password {PasswordB} ");
+                Log.Warning($"  email2 {Email2} ");
 
                 ModelState.AddModelError("Answer", "Try again.. are you sure you are human?");
             }
