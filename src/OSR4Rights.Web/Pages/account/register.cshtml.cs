@@ -86,7 +86,7 @@ namespace OSR4Rights.Web.Pages.Account
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
             if (PasswordB.Any(char.IsUpper) != true)
-                ModelState.AddModelError("Password", "At least 1 capital letter");
+                ModelState.AddModelError("PasswordB", "At least 1 capital letter");
 
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace OSR4Rights.Web.Pages.Account
                     else
                     {
                         Log.Information($@"User tried to register an already registered email address {EmailB}");
-                        ModelState.AddModelError("Email", "Sorry email address is already registered - try logging in or resetting password");
+                        ModelState.AddModelError("EmailB", "Sorry email address is already registered - try logging in or resetting password");
                         return Page();
                     }
                 }
@@ -156,7 +156,7 @@ namespace OSR4Rights.Web.Pages.Account
                     // Calls to the client can throw an exception 
                     // if the request to the API times out.
                     // or if the From address is not a Sender Signature 
-                    ModelState.AddModelError("Email", "Sorry problem sending the confirmation email - please try again later. We are working on resolving it.");
+                    ModelState.AddModelError("EmailB", "Sorry problem sending the confirmation email - please try again later. We are working on resolving it.");
                     return Page();
                 }
 
