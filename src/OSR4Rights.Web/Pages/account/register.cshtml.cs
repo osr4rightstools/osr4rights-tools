@@ -17,20 +17,23 @@ namespace OSR4Rights.Web.Pages.Account
         // don't know why jquery validate isn't firing
         [BindProperty]
         [EmailAddress]
+        [Required(ErrorMessage = "Please enter your email address")]
         public string EmailB { get; set; } = null!;
 
         [BindProperty]
+        [Required(ErrorMessage = "Please enter a password")]
         [DataType(DataType.Password)]
+        
         [StringLength(100, ErrorMessage = "Must be at least {2} characters long, and 1 capital letter", MinimumLength = 8)]
         public string PasswordB { get; set; } = null!;
 
         // simple captcha
         [BindProperty]
-        public string Answer { get; set; }
+        public string Answer { get; set; } = null!;
 
         // honeypot field which is nullable
         [BindProperty]
-        public string Email2 { get; set; }
+        public string Email2 { get; set; } = null!;
 
 
         public RegisterModel(IHttpContextAccessor httpContextAccessor) => HttpContextAccessor = httpContextAccessor;
@@ -54,14 +57,15 @@ namespace OSR4Rights.Web.Pages.Account
             {
                 Log.Warning("STAGE1 bot protect on /account/register - honeypot field has something in it - possible bot");
                 // am failing out, so lets write to the logfile for interest
-                Log.Warning($"  email {EmailB} ");
-                Log.Warning($"  password {PasswordB} ");
-                Log.Warning($"  email2 {Email2} ");
+                Log.Warning($"  email: {EmailB} ");
+                Log.Warning($"  password: {PasswordB} ");
+                Log.Warning($"  email2: {Email2} ");
                 ModelState.AddModelError("Password", "Are you a human?");
+                return Page();
             }
 
             ModelState.Remove("Answer");
-            if (Answer.ToLower() == "edinburgh")
+            if (Answer?.ToLower() == "edinburgh")
             {
                 Log.Information(Answer);
                 Log.Information("Captcha correctly answered as edinburgh.. see above for what was typed");
@@ -70,17 +74,17 @@ namespace OSR4Rights.Web.Pages.Account
             {
                 Log.Warning("STAGE2 bot protect on /account/registrer - Captcha not correct!");
 
-                Log.Warning($"  captcha {Answer} ");
-                Log.Warning($"  email {EmailB} ");
-                Log.Warning($"  password {PasswordB} ");
-                Log.Warning($"  email2 {Email2} ");
+                Log.Warning($"  captcha: {Answer} ");
+                Log.Warning($"  email: {EmailB} ");
+                Log.Warning($"  password: {PasswordB} ");
+                Log.Warning($"  email2: {Email2} ");
 
-                ModelState.AddModelError("Answer", "Try again.. are you sure you are human?");
+                ModelState.AddModelError("Answer", "Try again.. use google if you are not sure");
+                return Page();
             }
 
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
-            //ReturnUrl = returnUrl;
             if (PasswordB.Any(char.IsUpper) != true)
                 ModelState.AddModelError("Password", "At least 1 capital letter");
 
@@ -141,30 +145,6 @@ namespace OSR4Rights.Web.Pages.Account
 
                 // eg localhost:5001
                 var host = request?.Host.ToUriComponent();
-
-                // old email stuff before template
-                //                var foo = $"{scheme}://" + host + $"/account/email-address-confirmation/{guid}";
-                //                Log.Information(foo);
-
-                //                var textBody = $@"Hi,
-                //Here is your OSR4Rights Tools email address confirmation link: {foo}
-                //Please click this link within 1 hour from now
-                //Or register again if you miss this time
-                //";
-
-                //                var htmlText = $@"<p>Hi,</p>
-                //<p>Here is your OSR4Rights Tools email address confirmation link: </p>
-                //<p><a href=""{foo}"">{foo}</a></p>
-                //<p>Please click this link within 1 hour from now</p>
-                //<p>Or register again if you miss this time</p>
-                //                    ";
-
-                //                var osrEmail = new OSREmail(
-                //                    ToEmailAddress: Email,
-                //                    Subject: "OSR4RightsTools Account Confirm",
-                //                    TextBody: textBody,
-                //                    HtmlBody: htmlText
-                //                );
 
                 var postmarkServerToken = AppConfiguration.LoadFromEnvironment().PostmarkServerToken;
 
