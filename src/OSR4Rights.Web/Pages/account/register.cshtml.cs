@@ -85,8 +85,8 @@ namespace OSR4Rights.Web.Pages.Account
 
             var connectionString = AppConfiguration.LoadFromEnvironment().ConnectionString;
 
-            if (PasswordB.Any(char.IsUpper) != true)
-                ModelState.AddModelError("PasswordB", "At least 1 capital letter");
+            //if (PasswordB.Any(char.IsUpper) != true)
+            //    ModelState.AddModelError("PasswordB", "At least 1 capital letter");
 
             if (ModelState.IsValid)
             {
