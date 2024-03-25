@@ -350,7 +350,6 @@ logs
 # for testing we are writing out passwords to a file
 password.txt
 delCurrentRg.sh
-sshCurrentVm.sh
 
 
 test.sh
