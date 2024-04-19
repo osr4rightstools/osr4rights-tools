@@ -86,7 +86,7 @@ az vm create \
     --location ${region} \
     --nics ${nicName} \
     --image ${image} \
-    --ssh-key-values ../secrets/sshkey-rgb.pub ../secrets/sshkey-homelenovo.pub \
+    --ssh-key-values ../secrets/sshkey-rgb.pub ../secrets/sshkey-homelenovo-2024.pub \
     --size Standard_B1s
 else
  echo "ping"
