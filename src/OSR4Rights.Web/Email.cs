@@ -98,7 +98,7 @@ namespace OSR4Rights.Web
             var postmarkMessage = new PostmarkMessage
             {
                 To = toEmailAddress,
-                From = "help@osr4rightstools.org", // has to be a Sender Signature on postmark account
+                From = "dave@hmsoftware.co.uk", // has to be a Sender Signature on postmark account
                 Subject = subject,
                 TextBody = textBody,
                 HtmlBody = htmlBody
@@ -387,9 +387,9 @@ namespace OSR4Rights.Web
                 var postmarkMessage = new PostmarkMessage
                 {
                     To = toEmailAddress,
-                    //From = "dave@hmsoftware.co.uk", // has to be a Sender Signature on postmark account
-                    From = "help@osr4rightstools.org", // has to be a Sender Signature on postmark account
-                                                       //TrackOpens = true,
+                    From = "dave@hmsoftware.co.uk", // has to be a Sender Signature on postmark account
+                                                    //From = "help@osr4rightstools.org", // has to be a Sender Signature on postmark account
+                                                    //TrackOpens = true,
                     Subject = osrEmail.Subject,
                     TextBody = textBody,
                     //HtmlBody = "<html><body><img src=\"cid:embed_name.jpg\"/></body></html>",
