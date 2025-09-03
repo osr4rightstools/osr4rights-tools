@@ -86,10 +86,12 @@ az vm create \
     --location ${region} \
     --nics ${nicName} \
     --image ${image} \
-    --ssh-key-values ../secrets/sshkey-rgb.pub ../secrets/sshkey-homelenovo-2024.pub \
+    --ssh-key-values @~/.ssh/id_rsa_azure.pub \
     --size Standard_B1s
 else
  echo "ping"
+
+    # --ssh-key-values ../secrets/sshkey-rgb.pub ../secrets/sshkey-homelenovo-2024.pub \
 # az vm create \
 #     --resource-group ${rg} \
 #     --name ${vmname} \
