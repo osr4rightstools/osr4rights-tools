@@ -2,6 +2,9 @@
 
 # File to build OSR4Rights Webserver
 
+# the ssh key I'm using is forced to be rsa
+# see ~/ssh/config
+
 # For dev purposes only
 cd ..
 git add .
@@ -90,8 +93,6 @@ az vm create \
     --size Standard_B1s
 else
  echo "ping"
-
-    # --ssh-key-values ../secrets/sshkey-rgb.pub ../secrets/sshkey-homelenovo-2024.pub \
 # az vm create \
 #     --resource-group ${rg} \
 #     --name ${vmname} \
@@ -102,7 +103,6 @@ else
 #     --admin-username ${adminusername} \
 #     --admin-password ${adminpassword} \
 #     --size Standard_B1s 
-
     # --size Standard_B1LS  # £2.82
     # --size Standard_B1s # £6.5pm (1GB and 1CPU)
     # --size Standard_B1ms # £13 (2GB and 1CPU)
