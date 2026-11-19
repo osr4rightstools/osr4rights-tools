@@ -31,8 +31,6 @@ namespace OSR4Rights.Web.IntegrationTests
         [MemberData(nameof(ValidUrls))]
         public async Task ValidUrls_ReturnSuccessAndExpectedContentType(string path)
         {
-            var expected = new MediaTypeHeaderValue("text/html");
-
             var client = _factory.CreateClient();
             //var client = _factory.CreateDefaultClient();
 
@@ -40,7 +38,7 @@ namespace OSR4Rights.Web.IntegrationTests
 
             response.EnsureSuccessStatusCode();
 
-            Assert.Equal(expected.MediaType, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal("text/html", response.Content.Headers.ContentType?.MediaType);
         }
 
     }

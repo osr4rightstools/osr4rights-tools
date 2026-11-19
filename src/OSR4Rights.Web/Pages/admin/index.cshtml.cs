@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azure.Identity;
-using Azure.ResourceManager.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,10 +18,6 @@ namespace OSR4Rights.Web.Pages.Admin
         [BindProperty]
         public int SelectedTag { get; set; }
         public List<SelectListItem> Options { get; set; } = null!;
-
-        public List<string> FaceSearchRgs { get; set; } = new();
-        public List<string> HateSpeechRgs { get; set; } = new();
-        public List<string> SpeechPartsRgs { get; set; } = new();
 
         public async Task OnGet()
         {
@@ -59,34 +53,6 @@ namespace OSR4Rights.Web.Pages.Admin
 
             }
             Logins = loginAdminViewModels;
-
-
-            var subscriptionId = Environment.GetEnvironmentVariable("AZURE_SUBSCRIPTION_ID");
-
-            var resourcesClient = new ResourcesManagementClient(subscriptionId, new DefaultAzureCredential(),
-                new ResourcesManagementClientOptions() { Diagnostics = { IsLoggingContentEnabled = true } });
-
-            var resourceGroupClient = resourcesClient.ResourceGroups;
-
-            var foo = resourceGroupClient.List();
-
-            // eg webfacesearchgpu47
-            foreach (var bar in foo)
-            {
-                if (bar.Name.StartsWith("webfacesearchgpu")) FaceSearchRgs.Add(bar.Name);
-            }
-
-
-            foreach (var bar in foo)
-            {
-                if (bar.Name.StartsWith("webhatespeechcpu")) HateSpeechRgs.Add(bar.Name);
-            }
-
-            foreach (var bar in foo)
-            {
-                if (bar.Name.StartsWith("speechpartscpu")) SpeechPartsRgs.Add(bar.Name);
-            }
-
         }
 
         // Sample data buttons

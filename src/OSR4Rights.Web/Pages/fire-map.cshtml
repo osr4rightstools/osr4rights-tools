@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Fire Map";
 }
-@* bootstrap for tus progress bar*@
 @section Styles {
     <link href="/css/style-login.css" rel="stylesheet" type="text/css" />
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
@@ -36,12 +35,3 @@
     @*  </div>
     </section>*@
 
-    @section Scripts {
-    @*<partial name="_ValidationScriptsPartial" />*@
-
-    @* jquery needed for tus script - todo refactor out*@
-    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-
-    <script src="~/js/tus-js-client/dist/tus.js" asp-append-version="true"></script>
-    <script src="~/js/upload-tus.js" asp-append-version="true"></script>
-}

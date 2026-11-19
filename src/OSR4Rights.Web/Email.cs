@@ -46,45 +46,6 @@ namespace OSR4Rights.Web
 
                 subject = "Forgot Password";
             }
-            else if (templateName == "face-search-job-complete")
-            {
-                // html
-                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-face-search-job-complete.html"));
-                htmlMiddle = htmlMiddle.Replace("{{jobId}}", dataToSendUser);
-                htmlBody = htmlTop + htmlMiddle + htmlBottom;
-
-                // text
-                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-face-search-job-complete.html"));
-                textBody = textBody.Replace("{{jobId}}", dataToSendUser);
-
-                subject = "FaceSearch Job Complete";
-            }
-            else if (templateName == "hate-speech-job-complete")
-            {
-                // html
-                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-hate-speech-job-complete.html"));
-                htmlMiddle = htmlMiddle.Replace("{{jobId}}", dataToSendUser);
-                htmlBody = htmlTop + htmlMiddle + htmlBottom;
-
-                // text
-                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-hate-speech-job-complete.html"));
-                textBody = textBody.Replace("{{jobId}}", dataToSendUser);
-
-                subject = "HateSpeech Job Complete";
-            }
-            else if (templateName == "speech-parts-job-complete")
-            {
-                // html
-                var htmlMiddle = await File.ReadAllTextAsync(Path.Combine(folder, "html-template-speech-parts-job-complete.html"));
-                htmlMiddle = htmlMiddle.Replace("{{jobId}}", dataToSendUser);
-                htmlBody = htmlTop + htmlMiddle + htmlBottom;
-
-                // text
-                textBody = await File.ReadAllTextAsync(Path.Combine(folder, "text-speech-parts-job-complete.html"));
-                textBody = textBody.Replace("{{jobId}}", dataToSendUser);
-
-                subject = "SpeechParts Job Complete";
-            }
             else
             {
                 Log.Warning($"Unrecognised template name passed of {templateName} - look in SendTemplate method");

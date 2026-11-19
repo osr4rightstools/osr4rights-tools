@@ -1,38 +1,55 @@
 #!/bin/sh
 
-# Creates Ubuntu webserver to run osr4rightstools.org 
+# Creates Ubuntu webserver to run osr4rightstools.org
 
-# disable auto upgrades by apt - in dev mode only
+# Ubuntu 26.04 LTS
+# daily unattended security upgrades (keeps nginx patched between deploys)
 cd /home/dave
 
-cat <<EOT >> 20auto-upgrades
-APT::Periodic::Update-Package-Lists "0";
-APT::Periodic::Download-Upgradeable-Packages "0";
-APT::Periodic::AutocleanInterval "0";
+cat <<EOT > 20auto-upgrades
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "7";
 APT::Periodic::Unattended-Upgrade "1";
 EOT
 
 sudo mv /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
-# go with newer apt which gets dependency updates too (like linux-azure)
-sudo apt update -y
-sudo apt upgrade -y
-  
-# Install packages for .NET for Ubutu 20.04 LTS
-wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
+sudo apt-get update -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
-# nginx
-sudo apt-get install nginx -y
+# nginx from the Ubuntu archive (Ubuntu backports security fixes)
+sudo apt-get install -y nginx
 
-# .NET 6 SDK
-sudo apt-get update; \
-  sudo apt-get install -y apt-transport-https && \
-  sudo apt-get update && \
-  sudo apt-get install -y dotnet-sdk-6.0
+# fail if nginx is older than the nginx2root fix (USN-9159-1) for 26.04
+nginx_version=$(dpkg-query -W -f='${Version}' nginx)
+if ! dpkg --compare-versions "$nginx_version" ge 1.28.3-2ubuntu1.13; then
+  echo "nginx $nginx_version is not patched for nginx2root - stopping"
+  exit 1
+fi
 
-# create document root for published files 
+# .NET 10 SDK from the Ubuntu archive
+sudo apt-get install -y dotnet-sdk-10.0
+
+# SSL cert from Let's Encrypt via DNS-01 challenge on DNSimple
+# certbot snap installs a systemd timer which auto renews
+sudo snap wait system seed.loaded
+sudo snap install --classic certbot
+sudo snap set certbot trust-plugin-with-root=ok
+sudo snap install certbot-dns-dnsimple
+
+# token was scp'd to /home/dave by infra.azcli
+sudo mkdir -p /etc/letsencrypt
+echo "dns_dnsimple_token = $(head -n 1 /home/dave/dnsimpletoken.txt)" | sudo tee /etc/letsencrypt/dnsimple.ini > /dev/null
+sudo chmod 600 /etc/letsencrypt/dnsimple.ini
+rm /home/dave/dnsimpletoken.txt
+
+sudo certbot certonly --non-interactive --agree-tos --register-unsafely-without-email \
+  --dns-dnsimple --dns-dnsimple-credentials /etc/letsencrypt/dnsimple.ini \
+  -d osr4rightstools.org -d www.osr4rightstools.org \
+  --deploy-hook "systemctl reload nginx"
+
+# create document root for published files
 sudo mkdir /var/www
 
 # create gitsource folder and clone
@@ -41,8 +58,7 @@ cd /gitsource
 sudo git clone https://github.com/osr4rightstools/osr4rights-tools .
 
 # nginx config
-# ssl certs will already be in /certs
-# copied in with create-kestrel-osr-with-secrets.sh file
+# ssl certs are in /etc/letsencrypt/live/osr4rightstools.org/ from certbot above
 sudo cp /gitsource/infra/nginx.conf /etc/nginx/sites-available/default
 sudo nginx -s reload
 
@@ -61,22 +77,10 @@ sudo chown -R www-data:www-data /var/osr-cookie-keys
 # allow read and write
 sudo chmod +rw /var/osr-cookie-keys
 
-# fileStores
-sudo mkdir /tusFileStore
-sudo chown -R www-data:www-data /tusFileStore
-# todo - make less
-# sudo chmod +rwx /tusFileStore
-# sudo chmod +rw /tusFileStore
-
-sudo mkdir /osrFileStore
-sudo chown -R www-data:www-data /osrFileStore
-# todo - make less
-# sudo chmod +rwx /osrFileStore
-
 # auto start on machine reboot
 sudo systemctl enable kestrel-osr.service
 
-# start the Kestrel web app using systemd using kestrel-blc.service text files
+# start the Kestrel web app using systemd using kestrel-osr.service text files
 sudo systemctl start kestrel-osr.service
 
 # https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0#configure-the-firewall

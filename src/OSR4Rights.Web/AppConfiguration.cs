@@ -8,17 +8,13 @@ public class AppConfiguration
 {
     public string ConnectionString { get; }
     public string PostmarkServerToken { get; }
-    public string TusFileStorePath { get; }
-    public string OsrFileStorePath { get; }
     public string CookieKeyPath { get; }
     public string GmailPassword { get; }
 
-    private AppConfiguration(string connectionString, string postmarkServerToken, string tusFileStorePath, string osrFileStorePath, string cookieKeyPath, string gmailPassword)
+    private AppConfiguration(string connectionString, string postmarkServerToken, string cookieKeyPath, string gmailPassword)
     {
         ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         PostmarkServerToken = postmarkServerToken ?? throw new ArgumentNullException(nameof(postmarkServerToken));
-        TusFileStorePath = tusFileStorePath;
-        OsrFileStorePath = osrFileStorePath;
         CookieKeyPath = cookieKeyPath;
         GmailPassword = gmailPassword;
     }
@@ -33,12 +29,6 @@ public class AppConfiguration
         var aspnetcore = "ASPNETCORE_ENVIRONMENT";
         var env = Environment.GetEnvironmentVariable(aspnetcore);
 
-
-        string tusFileStorePath;
-
-        // used to store job-123.tmp
-        // which could be a zip (for FaceSearch) or csv (for hatespeech)
-        string osrFileStorePath;
 
         string connectionString;
         string postmarkServerToken = "";
@@ -60,9 +50,6 @@ public class AppConfiguration
                 {
                     // swallow for integration tests
                 }
-                tusFileStorePath = @"c:\tusFileStore";
-                osrFileStorePath = @"c:\osrFileStore";
-
                 var foo = @"c:\osr-cookie-keys";
 
                 // Create a directory for keys if it doesn't exist
@@ -78,12 +65,6 @@ public class AppConfiguration
                 postmarkServerToken = Environment.GetEnvironmentVariable("POSTMARK_OSR4RIGHTSTOOLS")
                                       ?? throw new ApplicationException(
                                           "Can't read POSTMARK_OSR4RIGHTSTOOLS environment variable. It should be set when building the webserver specifically when creating the kestrel service which is in /etc/systemd/system/kestrel-osr.service");
-
-                // assumption here is that production is linux
-                // https://docs.microsoft.com/en-us/dotnet/api/system.io.directory.createdirectory?view=net-5.0
-                // unix use a forward slash
-                tusFileStorePath = @"/tusFileStore";
-                osrFileStorePath = @"/osrFileStore";
 
                 cookieKeyPath = @"/mnt/osrshare/osr-cookie-keys";
 
@@ -120,7 +101,7 @@ public class AppConfiguration
         //    postmarkServerToken = File.ReadAllText("../../secrets/postmark-osr4rightstools.txt");
         //}
 
-        return new AppConfiguration(connectionString, postmarkServerToken, tusFileStorePath, osrFileStorePath, cookieKeyPath, gmailPassword);
+        return new AppConfiguration(connectionString, postmarkServerToken, cookieKeyPath, gmailPassword);
 
     }
 }

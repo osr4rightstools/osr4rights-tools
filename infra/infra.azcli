@@ -5,16 +5,23 @@
 # the ssh key I'm using is forced to be rsa
 # see ~/ssh/config
 
-# For dev purposes only
-cd ..
-git add .
-git commit -m "auto"
-git push
-cd infra
+# The VM clones main from GitHub, so only deploy when everything is committed and pushed
+if [ -n "$(git status --porcelain)" ]; then
+  echo "Uncommitted changes - commit and push first"
+  exit 1
+fi
+
+git fetch origin main
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+  echo "Local HEAD is not the same as origin/main - push (or pull) first"
+  exit 1
+fi
 
 set -x
 
-image=Canonical:0001-com-ubuntu-server-focal:20_04-lts-gen2:latest
+# Ubuntu 26.04 LTS - check with:
+# az vm image list --publisher Canonical --offer ubuntu-26_04-lts --all -o table
+image=Canonical:ubuntu-26_04-lts:server:latest
 
 # Generate a random suffix between 1 and 1000
 int=$(shuf -i 1-1000 -n 1)
@@ -127,19 +134,18 @@ az vm run-command invoke \
     --command-id RunShellScript \
     --scripts @../secrets/create-kestrel-osr-with-secrets.sh
 
-# /certs directory has been created above
+# copy dnsimple token so certbot on the vm can do the DNS-01 challenge
+# create_webserver.sh moves it into /etc/letsencrypt and deletes this copy
 
 # I have seen this timeout so retry until it works
 # https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times
 n=0
 until [ "$n" -ge 5 ]
 do
-   scp -o StrictHostKeyChecking=no ../secrets/www_osr4rightstools_org.pem dave@${dnsname}.westeurope.cloudapp.azure.com:/certs/ && break
-   n=$((n+1)) 
+   scp -o StrictHostKeyChecking=no ../secrets/dnsimpletoken.txt dave@${dnsname}.westeurope.cloudapp.azure.com:/home/dave/ && break
+   n=$((n+1))
    sleep 15
 done
-
-scp -o StrictHostKeyChecking=no ../secrets/www_osr4rightstools_org.key dave@${dnsname}.westeurope.cloudapp.azure.com:/certs/
 
 # gets .NET, clones source code, does a release build, starts systemd kestrel service
 # systemd reads from file created on the vm above
@@ -197,6 +203,9 @@ generate_post_data()
 EOF
 }
 
+# stop echoing commands so the token isn't printed
+set +x
+
 # patch DNS through to the new VM only if the token file exist
 filename=../secrets/dnsimpletoken.txt
 if [ -f "$filename" ]; then
@@ -204,7 +213,6 @@ if [ -f "$filename" ]; then
 
     # get the first and only line
     token=$(head -n 1 $filename)
-    echo "token is $token"
 
     # update DNS
     # osr4rightstools.org
