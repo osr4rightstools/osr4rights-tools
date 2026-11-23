@@ -4,6 +4,7 @@
 
 # Ubuntu 26.04 LTS
 # daily unattended security upgrades (keeps nginx patched between deploys)
+# reboot at 04:00 UTC only when an update needs it (/var/run/reboot-required), eg a new kernel
 cd /home/dave
 
 cat <<EOT > 20auto-upgrades
@@ -11,12 +12,32 @@ APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Download-Upgradeable-Packages "1";
 APT::Periodic::AutocleanInterval "7";
 APT::Periodic::Unattended-Upgrade "1";
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-Time "04:00";
 EOT
 
 sudo mv /home/dave/20auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
+# 2GB swap file - the VM only has 1GB RAM and no temp disk (dotnet publish needs more)
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
+
 sudo apt-get update -y
 sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+# sysstat (already on the image): sample every minute instead of every 10 so short memory spikes show,
+# keep 28 days, and -S XALL adds memory/CPU/IO pressure (sar -q MEM)
+sudo sed -i 's/^ENABLED=.*/ENABLED="true"/' /etc/default/sysstat
+sudo sed -i -E -e 's/^HISTORY=.*/HISTORY=28/' -e 's/^SADC_OPTIONS=.*/SADC_OPTIONS="-S XALL"/' /etc/sysstat/sysstat
+sudo mkdir -p /etc/systemd/system/sysstat-collect.timer.d
+# the empty OnCalendar= clears the package's every-10-minutes one
+printf '%s\n' '[Timer]' 'OnCalendar=' 'OnCalendar=*:*:00' | sudo tee /etc/systemd/system/sysstat-collect.timer.d/zz-every-minute.conf > /dev/null
+sudo systemctl daemon-reload
+sudo systemctl enable --now sysstat sysstat-collect.timer
+sudo systemctl restart sysstat-collect.timer
 
 # nginx from the Ubuntu archive (Ubuntu backports security fixes)
 sudo apt-get install -y nginx
@@ -31,23 +52,31 @@ fi
 # .NET 10 SDK from the Ubuntu archive
 sudo apt-get install -y dotnet-sdk-10.0
 
-# SSL cert from Let's Encrypt via DNS-01 challenge on DNSimple
-# certbot snap installs a systemd timer which auto renews
+# SSL cert from Let's Encrypt (DNS-01 challenge on DNSimple), copied from the live VM
+# so a rebuild doesn't request a new cert. The renewal config comes with it, so the
+# certbot snap's systemd timer renews it here (DNS-01 works before DNS points here).
+# Original request, if ever starting from scratch:
+# sudo certbot certonly --non-interactive --agree-tos --register-unsafely-without-email \
+#   --dns-dnsimple --dns-dnsimple-credentials /etc/letsencrypt/dnsimple.ini \
+#   -d osr4rightstools.org -d www.osr4rightstools.org \
+#   --deploy-hook "systemctl reload nginx"
 sudo snap wait system seed.loaded
 sudo snap install --classic certbot
 sudo snap set certbot trust-plugin-with-root=ok
 sudo snap install certbot-dns-dnsimple
 
-# token was scp'd to /home/dave by infra.azcli
-sudo mkdir -p /etc/letsencrypt
+# certs and token were scp'd to /home/dave by infra.azcli
+sudo tar xzf /home/dave/live-letsencrypt.tgz -C /etc
+rm /home/dave/live-letsencrypt.tgz
+
+# token from secrets/ overwrites the copied one, in case it has been rotated
 echo "dns_dnsimple_token = $(head -n 1 /home/dave/dnsimpletoken.txt)" | sudo tee /etc/letsencrypt/dnsimple.ini > /dev/null
 sudo chmod 600 /etc/letsencrypt/dnsimple.ini
 rm /home/dave/dnsimpletoken.txt
 
-sudo certbot certonly --non-interactive --agree-tos --register-unsafely-without-email \
-  --dns-dnsimple --dns-dnsimple-credentials /etc/letsencrypt/dnsimple.ini \
-  -d osr4rightstools.org -d www.osr4rightstools.org \
-  --deploy-hook "systemctl reload nginx"
+# prove renewal works here (snap, dnsimple plugin, token) - uses the Let's Encrypt
+# staging server, so no real cert is issued and it doesn't count towards rate limits
+sudo certbot renew --dry-run
 
 # create document root for published files
 sudo mkdir /var/www

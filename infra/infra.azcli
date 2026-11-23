@@ -17,11 +17,25 @@ if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
   exit 1
 fi
 
+# the live Let's Encrypt cert, key and renewal config - reusing it avoids the
+# duplicate certificate rate limit (5 per 7 days) when rebuilding often
+# holds the private key, so it goes in secrets/ (git ignored) and is deleted once uploaded
+live=dave@osr4rightstools.org
+# ~/.ssh/config only maps the azure key to *.cloudapp.azure.com, so name it here
+sshopts="-i ${HOME}/.ssh/id_rsa_azure -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+livecerts=../secrets/live-letsencrypt.tgz
+if ! ssh ${sshopts} ${live} "sudo tar czf - -C /etc letsencrypt" > ${livecerts} \
+   || ! gzip -t ${livecerts}; then
+  echo "Could not copy the live certs - stopping"
+  rm -f ${livecerts}
+  exit 1
+fi
+
 set -x
 
-# Ubuntu 26.04 LTS - check with:
-# az vm image list --publisher Canonical --offer ubuntu-26_04-lts --all -o table
-image=Canonical:ubuntu-26_04-lts:server:latest
+# Ubuntu 26.04 LTS on Arm64 (the VM size below is Arm) - check with:
+# az vm image list --publisher Canonical --offer ubuntu-26_04-lts --all --architecture Arm64 -o table
+image=Canonical:ubuntu-26_04-lts:server-arm64:latest
 
 # Generate a random suffix between 1 and 1000
 int=$(shuf -i 1-1000 -n 1)
@@ -66,6 +80,36 @@ az network nsg create \
     --resource-group ${rg} \
     --name ${nsgname}
 
+# allow port 22 ssh (so that scp will work below)
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleSSH22 \
+    --protocol tcp \
+    --priority 998 \
+    --destination-port-range 22 \
+    --access allow
+
+# allow port 80
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleWeb80 \
+    --protocol tcp \
+    --priority 1001 \
+    --destination-port-range 80 \
+    --access allow
+
+# allow port 443
+az network nsg rule create \
+    --resource-group ${rg} \
+    --nsg-name ${nsgname} \
+    --name nsgGroupRuleWeb443 \
+    --protocol tcp \
+    --priority 1002 \
+    --destination-port-range 443 \
+    --access allow
+
 # public IP and associate with the given DNS name
 # Basic or Standard for the ip-sku
 az network public-ip create \
@@ -86,10 +130,7 @@ az network nic create \
 
 # Create vm which runs the cloud init script to provision 
 
-# If one of my keys exist 
-# uncomment line below to get ssh keys working
-filename="../secrets/sshkey-rgb.pub"
-if [ -f "$filename" ]; then
+# admin username defaults to my local username (dave)
 az vm create \
     --resource-group ${rg} \
     --name ${vmname} \
@@ -97,35 +138,14 @@ az vm create \
     --nics ${nicName} \
     --image ${image} \
     --ssh-key-values @~/.ssh/id_rsa_azure.pub \
-    --size Standard_B1s
-else
- echo "ping"
-# az vm create \
-#     --resource-group ${rg} \
-#     --name ${vmname} \
-#     --location ${region} \
-#     --nics ${nicName} \
-#     --image ${image} \
-#     --custom-data create_webserver.sh \
-#     --admin-username ${adminusername} \
-#     --admin-password ${adminpassword} \
-#     --size Standard_B1s 
-    # --size Standard_B1LS  # £2.82
-    # --size Standard_B1s # £6.5pm (1GB and 1CPU)
-    # --size Standard_B1ms # £13 (2GB and 1CPU)
-    # --size Standard_B2s # £26.63 (4GB)
-    # --size Standard_B2ms # £45 (8GB)
-fi
-
-# allow port 22 ssh (so that scp will work below)
-az network nsg rule create \
-    --resource-group ${rg} \
-    --nsg-name ${nsgname} \
-    --name nsgGroupRuleSSH22 \
-    --protocol tcp \
-    --priority 998 \
-    --destination-port-range 22 \
-    --access allow
+    --storage-sku StandardSSD_LRS \
+    --security-type Standard \
+    --size Standard_B2pts_v2
+    # B2pts_v2 doesn't support Trusted Launch, so the security type has to be Standard
+    # West Europe pay-as-you-go prices Nov 2026. OS disk: Standard SSD E4 £1.80pm (Premium P4 was £4.37)
+    # --size Standard_B2pts_v2 # £5.27pm (2 vCPU Arm, 1GB) - needs the swap in create_webserver.sh
+    # --size Standard_B2pls_v2 # £21.08pm (2 vCPU Arm, 4GB) - next step up if 1GB struggles
+    # --size Standard_B1s # £6.5pm (1 vCPU Intel, 1GB) - previous size, B-series v1, needs the x64 image
 
 # creates /etc/systemd/system/kestrel-osr.service
 az vm run-command invoke \
@@ -134,18 +154,22 @@ az vm run-command invoke \
     --command-id RunShellScript \
     --scripts @../secrets/create-kestrel-osr-with-secrets.sh
 
-# copy dnsimple token so certbot on the vm can do the DNS-01 challenge
-# create_webserver.sh moves it into /etc/letsencrypt and deletes this copy
+# copy dnsimple token (for certbot DNS-01 renewals) and the live certs to the VM
+# create_webserver.sh moves them into /etc/letsencrypt and deletes these copies
 
 # I have seen this timeout so retry until it works
 # https://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times
 n=0
 until [ "$n" -ge 5 ]
 do
-   scp -o StrictHostKeyChecking=no ../secrets/dnsimpletoken.txt dave@${dnsname}.westeurope.cloudapp.azure.com:/home/dave/ && break
+   scp -o StrictHostKeyChecking=no ../secrets/dnsimpletoken.txt dave@${dnsname}.westeurope.cloudapp.azure.com:/home/dave/ \
+     && scp -o StrictHostKeyChecking=no ${livecerts} dave@${dnsname}.westeurope.cloudapp.azure.com:/home/dave/live-letsencrypt.tgz && break
    n=$((n+1))
    sleep 15
 done
+
+# the cert copy holds the private key and is no use as a backup (a cert can always be reissued)
+rm ${livecerts}
 
 # gets .NET, clones source code, does a release build, starts systemd kestrel service
 # systemd reads from file created on the vm above
@@ -171,26 +195,6 @@ do
             --yes
     fi
 done
-
-# allow port 80
-az network nsg rule create \
-    --resource-group ${rg} \
-    --nsg-name ${nsgname} \
-    --name nsgGroupRuleWeb80 \
-    --protocol tcp \
-    --priority 1001 \
-    --destination-port-range 80 \
-    --access allow
-
-# allow port 443
-az network nsg rule create \
-    --resource-group ${rg} \
-    --nsg-name ${nsgname} \
-    --name nsgGroupRuleWeb443 \
-    --protocol tcp \
-    --priority 1002 \
-    --destination-port-range 443 \
-    --access allow
 
 # generate dns here.. had trouble doing inside next if statement
 generate_post_data()
