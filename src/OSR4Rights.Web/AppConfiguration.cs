@@ -66,7 +66,8 @@ public class AppConfiguration
                                       ?? throw new ApplicationException(
                                           "Can't read POSTMARK_OSR4RIGHTSTOOLS environment variable. It should be set when building the webserver specifically when creating the kestrel service which is in /etc/systemd/system/kestrel-osr.service");
 
-                cookieKeyPath = @"/mnt/osrshare/osr-cookie-keys";
+                // created by infra/create_webserver.sh, owned by www-data
+                cookieKeyPath = @"/var/osr-cookie-keys";
 
                 gmailPassword = Environment.GetEnvironmentVariable("GMAIL_PASSWORD")
                                 ?? throw new ApplicationException(

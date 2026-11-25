@@ -92,14 +92,12 @@ public class Startup
             // TWO - Get the encrypted cookie value
             var cookie = opt.CookieManager.GetRequestCookie(context, opt.Cookie.Name);
 
-            if (cookie == null)
-            {
-            }
-            else
-            {
-                // THREE - decrypt it
-                var asdf = opt.TicketDataFormat.Unprotect(cookie);
+            // THREE - decrypt it
+            // null if the cookie was made with different keys (eg from an old VM), so skip it
+            var asdf = cookie == null ? null : opt.TicketDataFormat.Unprotect(cookie);
 
+            if (asdf != null)
+            {
                 var issuedUtc = asdf.Properties.IssuedUtc;
                 var expiresUtc = asdf.Properties.ExpiresUtc;
 
